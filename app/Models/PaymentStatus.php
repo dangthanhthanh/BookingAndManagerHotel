@@ -12,11 +12,15 @@ class PaymentStatus extends Model
     use HasFactory, HasSlug;
 
     protected $table = 'payment_statuses';// Set the table name for the model
-    protected $primaryKey = 'id'; // Set the primary key column of the table
     protected $fillable = [// Define the columns that can be mass-assigned
         'slug',
         'name',
     ];
+
+    public function payment()
+    {
+        return $this->hasMany(Payment::class, 'payment_status_id', 'id');
+    }
     // Define the slug options for the 'slug' column
     public function getSlugOptions(): SlugOptions
     {

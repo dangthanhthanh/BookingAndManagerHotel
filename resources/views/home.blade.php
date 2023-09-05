@@ -124,10 +124,10 @@
 	<div class="gallery_slider_container">
 		<div class="owl-carousel owl-theme gallery_slider">
 			<!-- Slide -->
-			@foreach ($gallerys as $itemt)
+			@foreach ($gallerys as $item)
 				<div class="gallery_item">
-					<div class="background_image" style='background-image:url("{{$itemt->image->url}}")'></div>
-					<a class="colorbox" href="{{$itemt->image->url}}"></a>
+					<div class="background_image" style='background-image:url("{{$item->image->url}}")'></div>
+					<a class="colorbox" href="{{$item->image->url}}"></a>
 				</div>
 			@endforeach
 		</div>
@@ -172,16 +172,16 @@
 				<div class="testimonials_slider_container" style="height: 100%;">
 					<!-- Testimonials Slider -->
 					<div class="owl-carousel owl-theme test_slider" style="height: 100%;">
-						@foreach ($reviews as $itemt)
+						@foreach ($reviews as $item)
 						<!-- Slide -->
 						<div  class="test_slider_item text-center" style="height: 100%;">
-							<div class="rating rating_{{$itemt->rate}} d-flex flex-row align-items-start justify-content-center"><i></i><i></i><i></i><i></i><i></i></div>
-							<div class="testimonial_title"><a href="#">{{$itemt->title}}</a></div>
+							<div class="rating rating_{{$item->rate}} d-flex flex-row align-items-start justify-content-center"><i></i><i></i><i></i><i></i><i></i></div>
+							<div class="testimonial_title"><a href="#">{{$item->title}}</a></div>
 							<div class="testimonial_text">
-								<p>{{$itemt->review}}</p>
+								<p>{{$item->review}}</p>
 							</div>
-							<div class="testimonial_image"><img src="{{$itemt->customer->avatar->url}}" alt=""></div>
-							<div class="testimonial_author"><a href="#">{{$itemt->customer->user_name}}</a>, Greece</div>
+							<div class="testimonial_image"><img src="{{$item->customer->avatar->url}}" alt=""></div>
+							<div class="testimonial_author"><a href="#">{{$item->customer->user_name}}</a>, Greece</div>
 						</div>
 						@endforeach
 					</div>
@@ -194,24 +194,24 @@
 <div class="booking">
 	<div class="container">
 		<div class="row">
-			<div class="col">
-				<div class="booking_title text-center"><h2>Book a room</h2></div>
-				<div class="booking_text text-center">
-					<p>{{$itemt->short_description}}</p>
-				</div>
-				<div class="booking_slider_container">
-					<div class="owl-carousel owl-theme booking_slider">
-						@foreach ($rooms as $itemt)
-						<div class="booking_item">
-							<div class="background_image" style='background-image:url("{{$itemt->image->url}}")'></div>
-							<div class="booking_overlay trans_200"></div>
-							<div class="booking_price">{{$itemt->cost}}.vnd/Night</div>
-							<div class="booking_link"><a href="{{route('booking',['room_type' => $itemt->id])}}">{{$itemt->name}}</a></div>
+			@foreach ($rooms as $item)
+				<div class="col">
+					<div class="booking_title text-center"><h2>Book a room</h2></div>
+					<div class="booking_text text-center">
+						<p>{{$item->short_description}}</p>
+					</div>
+					<div class="booking_slider_container">
+						<div class="owl-carousel owl-theme booking_slider">
+							<div class="booking_item">
+								<div class="background_image" style='background-image:url("{{$item->image->url}}")'></div>
+								<div class="booking_overlay trans_200"></div>
+								<div class="booking_price">{{$item->cost}}.vnd/Night</div>
+								<div class="booking_link"><a href="booking a room type">{{$item->name}}</a></div>
+							</div>
 						</div>
-						@endforeach
 					</div>
 				</div>
-			</div>
+			@endforeach
 		</div>
 	</div>
 </div>
@@ -219,12 +219,12 @@
 	<!-- Blog Slider -->
 	<div class="blog_slider_container">
 		<div class="owl-carousel owl-theme blog_slider">
-			@foreach ($blogs as $itemt)
+			@foreach ($blogs as $item)
 			<div class="blog_slide">
-				<div class="background_image" style='background-image:url("{{$itemt->image->url}}")'></div>
+				<div class="background_image" style='background-image:url("{{$item->image->url}}")'></div>
 				<div class="blog_content">
-					<div class="blog_date"><a href="{{route('blog.detail',$itemt->id)}}">{{$itemt->created_at->format('M d, Y')}}</a></div>
-					<div class="blog_title"><a href="{{route('blog.detail',$itemt->id)}}">{{$itemt->title}}</a></div>
+					<div class="blog_date"><a href="{{route('blog.detail',$item->id)}}">{{$item->created_at->format('M d, Y')}}</a></div>
+					<div class="blog_title"><a href="{{route('blog.detail',$item->id)}}">{{$item->title}}</a></div>
 				</div>
 			</div>
 			@endforeach

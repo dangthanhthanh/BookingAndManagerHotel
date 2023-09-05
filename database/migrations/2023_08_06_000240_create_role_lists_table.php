@@ -13,12 +13,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('role_lists', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('role_id');
+            $table->unsignedBigInteger('staff_id')->index();
+            $table->unsignedBigInteger('role_id')->index();
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('users');
+            $table->primary(['staff_id', 'role_id']);
+            $table->unique(['staff_id', 'role_id']); 
+
+            $table->foreign('staff_id')->references('id')->on('users');
             $table->foreign('role_id')->references('id')->on('roles');
         });
     }

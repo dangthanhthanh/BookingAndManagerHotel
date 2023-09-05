@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('room_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('slug', 255);
-            $table->string('name', 100);
+            $table->string('name', 255);
+            $table->string('slug', 255)->unique()->index();
+            $table->unsignedBigInteger('image_id');
             $table->text('short_description')->nullable();
             $table->text('description')->nullable();
             $table->unsignedBigInteger('cost')->nullable();
-            $table->unsignedBigInteger('image_id');
+            $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('image_id')->references('id')->on('images');

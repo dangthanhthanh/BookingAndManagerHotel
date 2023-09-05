@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('slug', 255)->unique()->index();
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('food_id');
+            $table->dateTime('check_in');
             $table->unsignedBigInteger('cost')->nullable();
             $table->unsignedInteger('qty')->nullable();
             $table->text('note')->nullable();

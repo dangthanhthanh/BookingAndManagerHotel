@@ -16,7 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('customer_id');
             $table->integer('rate');
             $table->string('title', 255);
-            $table->text('name');
+            $table->text('description');
+            $table->boolean('active')->default(0);
             $table->timestamps();
 
             $table->foreign('customer_id')->references('id')->on('users');

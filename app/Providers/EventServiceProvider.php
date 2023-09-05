@@ -2,10 +2,15 @@
 
 namespace App\Providers;
 
+use App\Events\ReplyTheMessageForCustommerContact;
+use App\Events\ResetPassword;
+use App\Events\SendNotificationMail;
+use App\Jobs\SendManyMailWithManyCustom;
+use App\Jobs\SendOneMailWithManyCustom;
+use App\Jobs\SendReplyCustomerContactMail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +23,16 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        ResetPassword::class => [
+            \App\Listeners\ResetPassword::class
+        ],
+        ReplyTheMessageForCustommerContact::class => [
+            SendReplyCustomerContactMail::class
+        ],
+        SendNotificationMail::class => [
+            SendManyMailWithManyCustom::class,
+            // SendOneMailWithManyCustom::class,
+        ]
     ];
 
     /**

@@ -12,7 +12,6 @@ class Room extends Model
 {
     use HasFactory, SoftDeletes, HasSlug;
     protected $table = 'rooms'; //table_name
-
     public $timestamps = true;
 
     protected $fillable = [ // Define the columns that can be mass-assigned
@@ -24,6 +23,7 @@ class Room extends Model
         'bed',
         'capacity',
         'description',
+        'active',
     ];
 
     protected $casts = [ // convert data type

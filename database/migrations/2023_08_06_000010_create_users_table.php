@@ -14,20 +14,20 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('slug', 255)->unique()->index();
+            $table->string('user_name');
             $table->string('provider_name')->nullable();
             $table->string('provider_id')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('avatar_id')->nullable();
-            $table->string('user_name')->nullable();
             $table->string('gender')->nullable();
             $table->string('email')->unique()->nullable();
-            $table->string('cccd')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('cccd')->unique()->nullable();
+            $table->string('phone')->unique()->nullable();
             $table->dateTime('email_verified_at')->nullable();
             $table->string('address')->nullable();
             $table->tinyInteger('active')->default(1);
             $table->string('remember_token')->nullable();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('avatar_id')->references('id')->on('images');

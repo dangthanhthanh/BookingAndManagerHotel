@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->string('slug', 255)->index();
-            $table->string('name', 50);
+            $table->string('name', 50)->unique();
+            $table->string('slug', 255)->unique()->index();
             $table->unsignedBigInteger('image_id');
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('cost')->default(0);

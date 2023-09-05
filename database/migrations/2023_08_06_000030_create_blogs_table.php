@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('blogs', function (Blueprint $table) {
-            $table->string('slug', 255)->primary()->index();
-            $table->string('name', 255);
+            $table->id();
+            $table->string('slug', 255)->index();
+            $table->string('name', 255)->unique();
             $table->unsignedBigInteger('image_id');
             $table->unsignedBigInteger('category_id');
             $table->text('short_description');

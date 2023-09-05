@@ -12,14 +12,24 @@ class Review extends Model
     use HasFactory, HasSlug;
 
     protected $table = 'reviews';// Set the table name for the model
-    protected $primaryKey = 'id'; // Set the primary key column of the table
+
+    protected $primaryKey = 'slug'; // Set the primary key column of the table
+
+    protected $keyType = 'string';// Define the columns that can be mass-assigned
+
+    public $incrementing = false;//off autoincrement
     public $timestamps = true;
     protected $fillable = [// Define the columns that can be mass-assigned
         'slug',
         'customer_id',
         'rate',
-        'name',
-        'script',
+        'title',
+        'description',
+        'active',
+    ];
+
+    protected $casts = [ // convert data type
+        'active' => 'boolean',
     ];
     public function customer()
     {

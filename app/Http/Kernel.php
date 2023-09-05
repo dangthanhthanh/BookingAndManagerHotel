@@ -43,6 +43,12 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+
+        'manager.cashier.bloger' => [
+            \App\Http\Middleware\IsManager::class,
+            \App\Http\Middleware\IsCashier::class,
+            \App\Http\Middleware\IsBloger::class
+        ],
     ];
 
     /**
@@ -64,5 +70,10 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'is.manager' => \App\Http\Middleware\IsManager::class,
+        'is.bloger' => \App\Http\Middleware\IsBloger::class,
+        'is.cashier' => \App\Http\Middleware\IsCashier::class,
+        'is.customer' => \App\Http\Middleware\IsCustomer::class,
+        'is.staff' => \App\Http\Middleware\IsStaff::class,
     ];
 }

@@ -11,16 +11,17 @@ use Spatie\Sluggable\SlugOptions;
 class Service extends Model
 {
     use HasFactory, SoftDeletes, HasSlug;
-    protected $table = 'services'; //table_name
+    protected $table = 'services'; 
     public $timestamps = true;
-    protected $fillable = [ // Define the columns that can be mass-assigned
+    protected $fillable = [ 
         'slug',
         'name',
+        'short_description',
+        'description',
+        'cost',
         'image_id',
         'category_id',
-        'short_description',
-        'rate',
-        'price',
+        'active',
     ];
 
     protected $casts = [ // convert data type

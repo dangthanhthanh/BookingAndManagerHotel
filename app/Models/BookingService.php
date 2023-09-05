@@ -4,14 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Support\Str;
 
 class BookingService extends Model
 {
-    use HasFactory, SoftDeletes, HasSlug;
+    use HasFactory, HasSlug;
 
     protected $table = 'booking_services';// Set the table name for the model
     protected $primaryKey = 'id'; // Set the primary key column of the table
@@ -20,7 +19,7 @@ class BookingService extends Model
         'slug',
         'order_id',
         'service_id',
-        'room_status_id',
+        'check_in',
         'cost',
         'qty',
         'note',
@@ -32,7 +31,7 @@ class BookingService extends Model
 
     public function service()
     {
-        return $this->belongsTo(Service::class, 'food_id');
+        return $this->belongsTo(Service::class, 'service_id');
     }
 
     public function status()

@@ -12,10 +12,6 @@ class Payment extends Model
     use HasFactory, HasSlug;
     protected $table = 'payments'; //table_name
 
-    protected $primaryKey = 'slug'; // Set the primary key column of the table
-
-    protected $keyType = 'string';// Define the columns that can be mass-assigned
-
     public $incrementing = false;//off autoincrement
     
     public $timestamps = true;
@@ -24,7 +20,6 @@ class Payment extends Model
         'slug',
         'order_id',
         'payment_method_id',
-        'is_cash',
         'payment_status_id',
     ];
 
@@ -46,11 +41,9 @@ class Payment extends Model
     // Define Slug configuration
     public function getSlugOptions(): SlugOptions
     {
-        $separator = '%+%'; // Phân tách trong slug
-
+        $hash = md5('payment'.$this->id.$this->payment_method_id.$this->payment_status_id); 
         return SlugOptions::create()
-            ->generateSlugsFrom('name')
             ->saveSlugsTo('slug')
-            ->usingSeparator($separator);
+            ->usingSeparator($hash);
     }
 }

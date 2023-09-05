@@ -13,12 +13,15 @@ class RoomStatus extends Model
     use HasFactory, SoftDeletes, HasSlug;
     protected $table = 'room_statuses'; //table_name
 
-    protected $primaryKey = 'slug'; // Set the primary key column of the table
     protected $fillable = [ // Define the columns that can be mass-assigned
         'slug',
         'name',
     ];
     protected $dates = ['deleted_at']; // date
+    public function room()
+    {
+        return $this->hasMany(BookingRoom::class, 'room_status_id', 'id');
+    }
     
     // Define Slug configuration
     public function getSlugOptions(): SlugOptions

@@ -17,6 +17,10 @@ class PaymentMethod extends Model
         'slug',
         'name',
     ];
+    public function payment()
+    {
+        return $this->hasMany(Payment::class, 'payment_method_id', 'id');
+    }
     // Define the slug options for the 'slug' column
     public function getSlugOptions(): SlugOptions
     {

@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('food_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('slug', 255)->index();
+            $table->string('slug', 255)->unique()->index();
             $table->string('name', 255);
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 

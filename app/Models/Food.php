@@ -12,11 +12,6 @@ class Food extends Model
 {
     use HasFactory, SoftDeletes, HasSlug;
     protected $table = 'food'; //table_name
-
-    protected $primaryKey = 'slug'; // Set the primary key column of the table
-
-    protected $keyType = 'string';// Define the columns that can be mass-assigned
-
     public $incrementing = false;//off autoincrement
     
     public $timestamps = true;
@@ -27,7 +22,7 @@ class Food extends Model
         'name',
         'short_description',
         'description',
-        'price',
+        'cost',
         'image_id',
         'category_id',
         'active',

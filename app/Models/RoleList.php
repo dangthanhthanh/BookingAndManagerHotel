@@ -10,14 +10,18 @@ class RoleList extends Model
     use HasFactory;
 
     protected $table = 'role_lists';// Set the table name for the model
-    protected $primaryKey = 'id'; // Set the primary key column of the table
     public $timestamps = true;
     protected $fillable = [// Define the columns that can be mass-assigned
-        'customer_id',
+        'staff_id',
         'role_id',
+        'created_at',
     ];
-    public function customer()
+    public function staff()
     {
-        return $this->belongsTo(User::class, 'customer_id');
+        return $this->belongsTo(User::class, 'staff_id');
+    }
+    public function role()
+    {
+        return $this->belongsTo(role::class, 'role_id');
     }
 }

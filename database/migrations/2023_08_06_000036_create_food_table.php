@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('food', function (Blueprint $table) {
             $table->id();
             $table->string('slug', 255)->unique()->index();
+            $table->unsignedBigInteger('image_id');
+            $table->unsignedBigInteger('category_id');
             $table->string('name', 255);
             $table->text('short_description');
             $table->text('description');
-            $table->unsignedBigInteger('price')->nullable();
-            $table->unsignedBigInteger('image_id');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('cost');
             $table->tinyInteger('active')->default(1);
             $table->timestamps();
             $table->softDeletes();

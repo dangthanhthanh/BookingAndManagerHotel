@@ -4,14 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Support\Str;
 
 class BookingRoom extends Model
 {
-    use HasFactory, SoftDeletes, HasSlug;
+    use HasFactory, HasSlug;
 
     protected $table = 'booking_rooms';// Set the table name for the model
     protected $primaryKey = 'id'; // Set the primary key column of the table
@@ -21,6 +20,8 @@ class BookingRoom extends Model
         'order_id',
         'room_id',
         'room_status_id',
+        'check_in',
+        'check_out',
         'number_per',
         'cost',
         'cus_request',
@@ -38,7 +39,7 @@ class BookingRoom extends Model
 
     public function room()
     {
-        return $this->belongsTo(Room::class, 'food_id');
+        return $this->belongsTo(Room::class, 'room_id');
     }
 
     public function status()
@@ -46,7 +47,6 @@ class BookingRoom extends Model
         return $this->belongsTo(RoomStatus::class, 'room_status_id');
     }
     
-    // Define the slug options for the 'slug' column
     public function getSlugOptions(): SlugOptions
     {
         $separator = '%+%'; 

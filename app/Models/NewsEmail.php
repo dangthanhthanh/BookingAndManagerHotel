@@ -4,22 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
+use Illuminate\Support\Str;
 class NewsEmail extends Model
 {
-    use HasFactory;
+    use HasFactory,HasSlug;
 
     protected $table = 'news_emails';// Set the table name for the model
-    protected $primaryKey = 'email'; // Set the primary key column of the table
-    public $incrementing = false;//off autoincrement
     public $timestamps = true;
     protected $fillable = [// Define the columns that can be mass-assigned
+        'slug',
         'email',
         'hash_token',
-        'verificated_at',
-        'sent',
+        'email_verified_at',
     ];
-    protected $casts = [ // convert data type
-        'sent' => 'boolean',
-    ];
+    public function getSlugOptions(): SlugOptions
+
+    {
+        $separator = '%+%'; 
+        $idHash = Str::slug(hash('md5', $this->id));
+        return SlugOptions::create()
+            ->generateSlugsFrom($idHash)
+            ->saveSlugsTo('slug')
+            ->usingSeparator($separator);
+    }
 }

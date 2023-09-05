@@ -21,11 +21,10 @@ class BlogCategory extends Model
 
     protected $dates = ['deleted_at'];
     
-    public function posts()
+    public function blog()
     {
         return $this->hasMany(Blog::class, 'category_id', 'id');
     }
-    // Define the slug options for the 'slug' column
     public function getSlugOptions(): SlugOptions
     {
         $separator = '%+%'; 

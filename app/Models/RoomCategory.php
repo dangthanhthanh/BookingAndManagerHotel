@@ -12,7 +12,7 @@ class RoomCategory extends Model
 {
     use HasFactory, SoftDeletes, HasSlug;
     protected $table = 'room_categories'; //table_name
-    public $timestamps = true;
+    public $timestamps = false;
     protected $fillable = [ // Define the columns that can be mass-assigned
         'slug',
         'name',
@@ -34,10 +34,15 @@ class RoomCategory extends Model
     {
         return $this->belongsTo(Image::class, 'image_id');
     }
+
+    public function room()
+    {
+        return $this->hasMany(Room::class, 'category_id', 'id');
+    }
     // Define Slug configuration
     public function getSlugOptions(): SlugOptions
     {
-        $separator = '%+%'; // Phân tách trong slug
+        $separator = '%+'.$this->id.'%'; // Phân tách trong slug
 
         return SlugOptions::create()
             ->generateSlugsFrom('name')
