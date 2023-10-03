@@ -14,22 +14,22 @@ class VerificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $url;
-    protected $name;
+    public $url;
+    public $subject;
     /**
      * Create a new message instance.
      */
-    public function __construct(string $url , $name = '')
+    public function __construct(string $url , string $subject)
     {
         $this->url = $url;
-        $this->name = $name;
+        $this->subject = $subject;
     }
 
     public function build()
     {
-        Log::info('Email sent to: ' . "test_build ok");
-        return $this->subject('Email Verification')
-                    ->view('emails.pages.verification')
-                    ->with(['verificationUrl' => $this->url, "name" => $this->name]);
+        Log::info('Email sent to: ' . "test_build ok + view email.pages.mail_1");
+        return $this->subject($this->subject)
+                    ->view('email.pages.mail_1')
+                    ->with(['url' => $this->url]);
     }
 }

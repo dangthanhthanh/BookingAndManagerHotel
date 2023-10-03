@@ -67,6 +67,7 @@ class ModelFactory implements ModelFactoryInterface
         'image'=>Image::class,
         'review'=>Review::class,
         'news_email'=>NewsEmail::class,
+
     ];
 
     public function createModel(string $table)

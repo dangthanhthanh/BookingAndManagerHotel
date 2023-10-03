@@ -1,6 +1,6 @@
-@extends("auth.layouts.auth")
+@extends("auth.layout.auth")
 @section("css")
-    @include("client.public.cssform")
+    @include("client.component.css_js.cssform")
 @endsection
 @section("home_title","Wellcome")
 @section("form")
@@ -33,19 +33,21 @@
         <button type="submit" onclick="Swal.showLoading()"><strong>LOGIN</strong></button>
         <br>OR<br>
         <a href="{{ route('login.google') }}" onclick="Swal.showLoading()" style="width:200px; height: 50px; color: white;" class="btn button">{{ __('Google Sign in') }} <i style="font-size: 30px;" class="fab fa-google"></i></a>
-        <div class="container">
-            <span class="psw">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                    <label class="form-check-label" for="remember">
-                        {{ __('Remember Me') }}
-                    </label>
-                </div>
-            </span>
-            <span class="psw"><a onclick="Swal.showLoading()" href="{{route("password.request")}}"><strong>Forgot password?</strong></a></span>
+        <div class="d-flex justify-content-between">
+            <style>
+                .check_remenber{
+                    display: inline;
+                }
+            </style>
+            <div class="check_remenber">
+                <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                <label for="remember">
+                    {{ __('Remember Me') }}
+                </label>
+            </div>
+            <a onclick="Swal.showLoading()" href="{{route("password.request")}}"><strong>Forgot password?</strong></a>
         </div>
     </div>
-  </form>
+</form>
 @endsection
             

@@ -4,17 +4,19 @@
         $("#order_payment_method").hide();
         $("#cash_payment_table").hide();
         var selectedProducts = [];
-        let table = "{{$table}}";
+        const table = "service";
         let localData = localStorage.getItem(table + "_booking")
         if (localData !== null && localData.length > 0) {
             selectedProducts = JSON.parse(localData);
             updateTable();
         }
         $(".add").click(function() {
-            let productId = $(this).data("id");
-            let productName = $(this).data("name");
-            let productCost = $(this).data("cost");
-            // console.log(productId,productName,productCost);
+            const productId = $(this).data("id");
+            const productName = $(this).data("name");
+            const productCost = $(this).data("cost");
+            const checkIn = "{{$checkDate['check_in']}}";
+            const scort = parseFloat("{{$checkDate['cost_per']}}");
+            
             var existingProductIndex = selectedProducts.findIndex(function(item) {
                 return item.productId === productId;
             });
@@ -25,6 +27,8 @@
                     productId: productId,
                     productName: productName,
                     productCost: productCost,
+                    checkIn: checkIn,
+                    scort: scort,
                     quantity: 1
                 });
             }
@@ -34,50 +38,64 @@
         function updateTable() {
             console.log(selectedProducts);
             let totalCost=0;
+            let totalCostItem=0;
             let totalQty=0;
             var tableHtml = `<thead>
                                 <tr>
                                     <th scope="col">Item</th>
-                                    <th scope="col" class="product-quantity" width="120">Qty</th>
-                                    <th scope="col" width="120">Price</th>
+                                    <th scope="col" style='min-width:150px;'>Check In</th>
+                                    <th scope="col" style='min-width:120px;' class="product-quantity">Qty</th>
+                                    <th scope="col" >Price</th>
                                     <th scope="col" >Delete</th>
                                 </tr>
                             </thead>
                             <tbody>`;
     
             selectedProducts.forEach(function(product) {
-                totalCost += product.quantity*product.productCost;
-                totalQty += product.quantity;
+                const { productId: id, productName: name, productCost: cost, quantity: quantity, checkIn: checkIn, scort: scort} = product;
+                totalCostItem = cost*quantity*scort;
+                totalCost += totalCostItem;
+
                 tableHtml +=  `<tr>
                                     <td class="custom-text-center custom-text-justify">
                                         <div class="btn-group">
-                                            <h6 class="btn btn-outline">`+product.productName+`</h6>
+                                            <h6 class="btn btn-outline">`+name+`</h6>
                                         </div>
                                     </td class="custom-text-center custom-text-justify">
-                                    <td class="text-center product-quantity">
+                                    <td class='check_in_date'>`+checkIn+`</td>`;
+                                    
+                //button group quantity
+                tableHtml +=        `<td class="text-center product-quantity">
                                         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                            <button type="button" class="btn btn-outline-secondary decrease" data-id="`+product.productId+`"><i class="fa fa-minus"></i></button>
-                                            <button type="button" class="btn btn-outline">`+product.quantity+`</button>
-                                            <button type="button" class="btn btn-outline-primary increase" data-id="`+product.productId+`"><i class="fa fa-plus"></i></button>
+                                            <button type="button" class="btn btn-outline-secondary decrease" data-id="`+id+`"><i class="fa fa-minus"></i></button>
+                                            <button type="button" class="btn btn-outline">`+quantity+`</button>
+                                            <button type="button" class="btn btn-outline-primary increase" data-id="`+id+`"><i class="fa fa-plus"></i></button>
                                         </div>
-                                    </td>
-                                    <td class="custom-text-center custom-text-justify">
+                                    </td>`;
+                //total  item
+                tableHtml +=        `<td class="custom-text-center custom-text-justify">
                                         <div class="btn-group">
                                             <var class="btn btn-outline">
-                                                    `+product.productCost*product.quantity+`
+                                                    `+totalCostItem+`
                                             </var>
                                         </div>
-                                    </td>
-                                    <td class="custom-text-center custom-text-justify">
+                                    </td>`;
+                //delete
+                tableHtml +=        `<td class="custom-text-center custom-text-justify">
                                         <a href="#" class="btn btn-outline-danger deleted-item"><i class="fa fa-trash"></i></a>
                                     </td>
-                                </tr>`
-                            }); 
-    
+                                </tr>`;
+                
+                
+                }); 
+
+                //tfoot
                 tableHtml += `<tfoot>
                                 <tr>
                                     <th scope="col">Total:_</th>
-                                    <td scope="col" class="product-quantity">`+totalQty+`</td>
+                                    <td class='check_in_date'></td>
+                                    <td class='check_out_date'></td>
+                                    <td scope="col"></td>
                                     <td scope="col">`+totalCost+`</td>
                                     <td scope="col">Vnd</td>
                                 </tr>
@@ -91,9 +109,13 @@
             $("#order_save").click(function() {
                 saveSelectedProductsToLocalStorage();
                 // logLocalStorageContents();
+                // $(this).addClass('active');
+                $(this).prop('disabled', true);
             });
             $("#order_delete").click(function() {
-                deleteSelectedProductsToLocalStorage()
+                deleteSelectedProductsToLocalStorage();
+                $(this).addClass('active');
+                $(this).prop('disabled', true);
             });
             updatePaymentFields(totalCost)
             $("#cashInput").on("input", function() {
@@ -101,8 +123,10 @@
             });
 
             if(table === 'room'){
+                $(".check_out_date").show();
                 $(".product-quantity").hide();
             }else{
+                $(".check_out_date").hide();
                 $(".product-quantity").show();
             }
         };
@@ -187,10 +211,10 @@
                 },
                 dataType: "json",
                 success: function(response) {
-                    console.log({
-                    table: table,
-                    data: datas,
-                    });
+                    // console.log({
+                    // table: table,
+                    // data: datas,
+                    // });
                     console.log('sending data: true');
                 },
                 error: function(error) {

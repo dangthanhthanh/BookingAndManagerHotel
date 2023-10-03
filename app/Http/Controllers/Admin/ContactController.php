@@ -2,46 +2,30 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\ReplyTheMessageForCustommerContact;
+use App\Http\Controllers\Core\ContactController as CoreContactController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 
-class ContactController extends AdminController
+class ContactController extends CoreContactController
 {
-    public function __construct()
-    {
-        parent::__construct('contact');
-    }
-    //the page index with role = telesale return one value item 
     public function index(Request $request)
     {
-        $query = $this->getModel();
-        $datas = $query
-        ->when(true, function ($query) use ($request) {
-            $this->sortByWithType($query, $request);
-        })
-        ->paginate(10);
-
+        $query = $this->getAlls()
+            ->when($request->has('sortType') && $request->sortType === 'desc', function ($query) use ($request) {
+                $query->orderByDesc($request->input('sortBy'));
+            })
+            ->when($request->has('sortType') && $request->sortType === 'asc', function ($query) use ($request) {
+                $query->orderBy($request->input('sortBy'));
+            });
+        $datas = $query->paginate(10);
         return view('admin.page.contact.index', compact('datas'));
     }
-    //muc nay danh cho nhan vien tra oi tin nhan cho the dat ten la chatBot nhung ma minh danh muong nhung con chat gpt vao day de dung cho viec tra loi tin nhan truc tuyen
     public function sendMailToCustomer(Request $request){
         $request->validate([
             'content' => "required|string",
             'mail' => "required|email",
         ]);
-        event(new ReplyTheMessageForCustommerContact($request->mail, $request->content));
-        return redirect()->back()->with('messenger',1);//thao tac cho duyet
+        $this->sendToCustomer($request->mail,$request->content);
+        return redirect()->back();
     }
 
-    public function chatBot(Request $request){
-        $request->validate([
-            'messenger' => 'required',
-        ]);
-
-        //dung chatbox ai return $reply; thang nao chat bot khong tra loi duoc thi luu vao databse
-        $reply='not reply by chat gpt ,an other one';
-        
-        return Response::json([ 'status'=> true, 'response' => $reply]);
-    }
 }

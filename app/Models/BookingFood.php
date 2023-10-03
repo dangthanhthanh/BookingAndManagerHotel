@@ -21,6 +21,7 @@ class BookingFood extends Model
         'food_id',
         'check_in',
         'cost',
+        'ratio',
         'qty',
         'note',
     ];
@@ -35,14 +36,11 @@ class BookingFood extends Model
         return $this->belongsTo(Food::class, 'food_id');
     }
 
-    // Define the slug options for the 'slug' column
     public function getSlugOptions(): SlugOptions
     {
-        $separator = '%+%'; 
-        $idHash = $this->id ? Str::slug(hash('md5', $this->id)) : ''; // create slug from id
+        $idHash = hash('md5', $this->order_id.$this->food_id.$this->id);
         return SlugOptions::create()
-            ->generateSlugsFrom($idHash)
             ->saveSlugsTo('slug')
-            ->usingSeparator($separator);
+            ->usingSeparator($idHash);
     }
 }

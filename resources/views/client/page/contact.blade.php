@@ -39,7 +39,7 @@
 						</ul>
 					</div>
 					<div class="contact_form_container">
-						<form action="{{route('sendContactRequest')}}" class="contact_form" id="contact_form" method="POST">
+						<form action="{{route('client.contact.store')}}" class="contact_form" id="contact_form" method="POST">
 							@csrf
 							<div class="row">
 								<div class="col-md-6 input_container">

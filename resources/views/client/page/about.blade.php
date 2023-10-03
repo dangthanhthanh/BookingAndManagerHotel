@@ -173,43 +173,27 @@
 		<div class="container">
 			<div class="row">
 				<div class="col">
-					<div class="testimonials_slider_container">
-
+					<div class="testimonials_slider_container" style="height: 100%;">
+						<style>
+							.testimonial_image{
+								background-size: cover;
+								background-repeat: no-repeat;
+							}
+						</style>
 						<!-- Testimonials Slider -->
-						<div class="owl-carousel owl-theme test_slider">
-							
+						<div class="owl-carousel owl-theme test_slider" style="height: 100%;">
 							<!-- Slide -->
-							<div  class="test_slider_item text-center">
-								<div class="rating rating_5 d-flex flex-row align-items-start justify-content-center"><i></i><i></i><i></i><i></i><i></i></div>
-								<div class="testimonial_title"><a href="#">Perfect Stay</a></div>
-								<div class="testimonial_text">
-									<p>Etiam nec odio vestibulum est mattis effic iturut magna. Pellentesque sit amet tellus blandit. Etiam nec odio vestibulum est mattis effic.</p>
+							@foreach ($reviews as $item)
+								<div  class="test_slider_item text-center" style="height: 100%;">
+									<div class="rating rating_{{$item->rate}} d-flex flex-row align-items-start justify-content-center"><i></i><i></i><i></i><i></i><i></i></div>
+									<div class="testimonial_title"><a href="#">{{$item->title}}</a></div>
+									<div class="testimonial_text">
+										<p>{{Str::limit($item->description,200)}}</p>
+									</div>
+									<div class="testimonial_image mb-0" style="background-image: url('{{$item->customer->avatar->url}}');"></div>
+									<div class="testimonial_author mb-0"><a href="#">{{$item->customer->user_name}}</a></div>
 								</div>
-								<div class="testimonial_image"><img src="{{asset('client/images/user_1.jpg')}}" alt=""></div>
-								<div class="testimonial_author"><a href="#">Samantha Smith</a>, Greece</div>
-							</div>
-
-							<!-- Slide -->
-							<div  class="test_slider_item text-center">
-								<div class="rating rating_5 d-flex flex-row align-items-start justify-content-center"><i></i><i></i><i></i><i></i><i></i></div>
-								<div class="testimonial_title"><a href="#">Nice place</a></div>
-								<div class="testimonial_text">
-									<p>Etiam nec odio vestibulum est mattis effic iturut magna. Pellentesque sit amet tellus blandit. Etiam nec odio vestibulum est mattis effic.</p>
-								</div>
-								<div class="testimonial_image"><img src="{{asset('client/images/user_2.jpg')}}" alt=""></div>
-								<div class="testimonial_author"><a href="#">Michael Doe</a>, Italy</div>
-							</div>
-
-							<!-- Slide -->
-							<div  class="test_slider_item text-center">
-								<div class="rating rating_5 d-flex flex-row align-items-start justify-content-center"><i></i><i></i><i></i><i></i><i></i></div>
-								<div class="testimonial_title"><a href="#">We loved it</a></div>
-								<div class="testimonial_text">
-									<p>Etiam nec odio vestibulum est mattis effic iturut magna. Pellentesque sit amet tellus blandit. Etiam nec odio vestibulum est mattis effic.</p>
-								</div>
-								<div class="testimonial_image"><img src="{{asset('client/images/user_3.jpg')}}" alt=""></div>
-								<div class="testimonial_author"><a href="#">Luis Garcia</a>, Spain</div>
-							</div>
+							@endforeach
 						</div>
 					</div>
 				</div>

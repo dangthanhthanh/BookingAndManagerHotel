@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
-            $table->string('slug', 255)->index();
             $table->string('name', 255)->unique();
+            $table->string('slug', 255)->index();
             $table->unsignedBigInteger('image_id');
             $table->unsignedBigInteger('category_id');
             $table->text('short_description');

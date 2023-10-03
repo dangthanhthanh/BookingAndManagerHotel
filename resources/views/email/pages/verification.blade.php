@@ -1,7 +1,7 @@
 @extends("emails.layouts.email")
 @section("title",'Verify email')
 @section("content")
-   <p> Hello, {{$name}}! </p>
+   <p> Hello! </p>
 
    <p>  Click the button below to verify your email address: </p>
 
@@ -12,5 +12,5 @@
 @endsection
 @section("footer")
 <p>  Contact us at Bookinghotel@example.com </p>
-<p> Thanks, {{$name}}</p>
+<p> Thanks</p>
 @endsection

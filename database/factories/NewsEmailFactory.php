@@ -19,7 +19,7 @@ class NewsEmailFactory extends Factory
         $faker = \Faker\Factory::create();
         return [
             'email' => $faker->unique()->safeEmail,
-            'hash_token' => $faker->optional()->md5,
+            'email_verified_token' => $faker->optional()->md5,
             'email_verified_at' => $faker->optional()->dateTimeThisYear,
         ];
     }

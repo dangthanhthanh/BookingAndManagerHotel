@@ -2,8 +2,7 @@
   use Carbon\Carbon;
   $totalBalance = 0;
   $totalBooking = 0;
-  $CheckIn = Carbon::now();
-  $CheckOut = Carbon::now()->addDays(1);
+  $totalBookingItem = 0;
 @endphp
 @extends("pos.layout.pos")
 @section('button_nav','')
@@ -83,7 +82,7 @@
     @endif
     <div class="row"><h2 style="display: flex; justify-content: center; padding:20px; background:aquamarine;"><strong>Order Payment</strong></h2></div>
     <h5 class="card-title">Order Room
-      <a href="{{route('pos.room.index')}}" class="btn btn-outline-info"><i class="ri-add-circle-line" aria-hidden="true"></i></a>
+      <a href="{{route('pos.room.index')}}" class="btn btn-outline-info print-not-show"><i class="ri-add-circle-line" aria-hidden="true"></i></a>
     </h5>
     @empty(!$bookingForRoom)
       @php
@@ -123,7 +122,7 @@
                   <h6 class="btn btn-outline"><strong>Total</strong></h6>
                 </div>
               </th>
-              <th scope="col">
+              <th scope="col" class="print-not-show">
                 <div class="btn-group">
                   <h6 class="btn btn-outline"><strong>Edit</strong></h6>
                 </div>
@@ -133,8 +132,7 @@
         <tbody>
           @foreach ($bookingForRoom as $key => $item)
             @php
-              $days_difference = $CheckIn->diffInDays($CheckOut);
-              $totalBookingItem = $days_difference * $item['productCost'];
+              $totalBookingItem = $item['scort'] * $item['productCost'];
               $totalBooking += $totalBookingItem;
             @endphp
             <tr>
@@ -155,12 +153,12 @@
               </td>
               <td>
                 <div class="btn-group">
-                    <h6 class="btn btn-outline"><strong><input type="datetime-local" name="check_in_room" class="check_in form-control datepicker" value = "{{$CheckIn}}"  required="required"></strong></h6>
+                    <h6 class="btn btn-outline"><strong>{{$item['checkIn']}}</strong></h6>
                 </div>
               </td>
               <td>
                 <div class="btn-group">
-                    <h6 class="btn btn-outline"><strong><input type="datetime-local" name="check_out_room" class="check_out form-control datepicker" value = "{{$CheckOut}}" required="required"></strong></h6>
+                    <h6 class="btn btn-outline"><strong>{{$item['checkOut']}}</strong></h6>
                 </div>
               </td>
               <td>
@@ -168,15 +166,16 @@
                     <h6 class="btn btn-outline"><strong>{{$totalBookingItem}}</strong></h6>
                 </div>
               </td>
-              <td>
+              <td class="print-not-show">
                 <a href="{{route('pos.room.index')}}" class="btn btn-outline-danger"><i class="ri-ball-pen-fill" aria-hidden="true"></i></a>
               </td>
             </tr>
             @endforeach
           </tbody>
-        <tfoot>
+        <tfoot class="print-not-show">
           <tr>
-              <th colspan="5">Total:_</th>
+              <th colspan="4">Total:_</th>
+              <td class="print-not-show"></td>
               <td scope="col"><strong>{{$totalBooking}}</strong></td>
               <td scope="col"><strong>_vnd</strong></td>
           </tr>
@@ -185,7 +184,7 @@
     @endempty
       <!-- End Default Table Example -->
       <h5 class="card-title">Order Food
-        <a href="{{route('pos.food.index')}}" class="btn btn-outline-info"><i class="ri-add-circle-line" aria-hidden="true"></i></a>
+        <a href="{{route('pos.food.index')}}" class="btn btn-outline-info print-not-show"><i class="ri-add-circle-line" aria-hidden="true"></i></a>
       </h5>
     @empty(!$bookingForFood)
       @php
@@ -227,7 +226,7 @@
                 </div>
               </th>
               <th scope="col">
-                <div class="btn-group">
+                <div class="btn-group print-not-show">
                   <h6 class="btn btn-outline"><strong>Edit</strong></h6>
                 </div>
               </th>
@@ -262,7 +261,7 @@
               </td>
               <td>
                 <div class="btn-group">
-                    <h6 class="btn btn-outline"><strong><input type="datetime-local" name="check_in_food" class="check_in form-control datepicker" value = "{{$CheckIn}}" required="required"></strong></h6>
+                    <h6 class="btn btn-outline"><strong>{{$item['checkIn']}}</strong></h6>
                 </div>
               </td>
               <td>
@@ -270,15 +269,16 @@
                     <h6 class="btn btn-outline"><strong>{{$totalBookingItem}}</strong></h6>
                 </div>
               </td>
-              <td>
+              <td class="print-not-show">
                 <a href="{{route('pos.food.index')}}" class="btn btn-outline-danger"><i class="ri-ball-pen-fill" aria-hidden="true"></i></a>
               </td>
             </tr>
             @endforeach
         </tbody>
-        <tfoot>
+        <tfoot class="print-not-show">
           <tr>
-              <th colspan="5">Total:_</th>
+              <th colspan="4">Total:_</th>
+              <td class="print-not-show"></td>
               <td scope="col"><strong>{{$totalBooking}}</strong></td>
               <td scope="col"><strong>_vnd</strong></td>
           </tr>
@@ -288,7 +288,7 @@
     <!-- End Default Table Example -->
     <div class="d-flex">
       <h5 class="card-title">Order Service
-        <a href="{{route('pos.service.index')}}" class="btn btn-outline-info"><i class="ri-add-circle-line" aria-hidden="true"></i></a>
+        <a href="{{route('pos.service.index')}}" class="btn btn-outline-info print-not-show"><i class="ri-add-circle-line" aria-hidden="true"></i></a>
       </h5>
     </div>
     @empty(!$bookingForService)
@@ -330,7 +330,7 @@
                   <h6 class="btn btn-outline"><strong>Total</strong></h6>
                 </div>
               </th>
-              <th scope="col">
+              <th scope="col" class="print-not-show">
                 <div class="btn-group">
                   <h6 class="btn btn-outline"><strong>Edit</strong></h6>
                 </div>
@@ -366,7 +366,7 @@
               </td>
               <td>
                 <div class="btn-group">
-                    <h6 class="btn btn-outline"><strong><input type="datetime-local" name="check_in_service"  value = "{{$CheckIn}}" class="check_in form-control datepicker booking_in" required="required"></strong></h6>
+                    <h6 class="btn btn-outline"><strong>{{$item['checkIn']}}</strong></h6>
                 </div>
               </td>
               <td>
@@ -374,19 +374,17 @@
                     <h6 class="btn btn-outline"><strong>{{$totalBookingItem}}</strong></h6>
                 </div>
               </td>
-              <td>
+              <td class="print-not-show">
                 <a href="{{route('pos.service.index')}}" class="btn btn-outline-danger"><i class="ri-ball-pen-fill" aria-hidden="true"></i></a>
               </td>
             </tr>
             @endforeach
         </tbody>
-        <tfoot>
+        <tfoot class="print-not-show">
           <tr>
-              <th colspan="5">Total:_</th>
+              <th colspan="4">Total:_</th>
+              <td class="print-not-show"></td>
               <td scope="col"><strong>{{$totalBooking}}</strong></td>
-              @php
-                // $totalBalance += $totalBooking;
-              @endphp
               <td scope="col"><strong>_vnd</strong></td>
           </tr>
         </tfoot>
@@ -396,7 +394,7 @@
     @php
     $totalBalance += $totalBooking;
     @endphp
-  <div class="row"><h4 style="display: flex; justify-content: center; padding:20px; background:aquamarine;"><strong>Total_Balance_: {{$totalBalance}}</strong></h4></div>
+  <div class="row"><h4 style="display: flex; justify-content: center; padding:20px; background:aquamarine;"><strong>Total_Balance_: {{ number_format($totalBalance, 0, ',', '.') }} _vnd</strong></h4></div>
 </div>
   <div class="row"><h6 style="display: flex; justify-content: center; padding:20px; background:aquamarine;"><strong><button class="btn btn-outline-info" id="printBillButton">Print Bill</button></strong></h6></div>
   @if (empty($customer['data']))
@@ -422,16 +420,19 @@
   $(document).ready(function() {
     function printBill() {
         // Get the current date and time
+        $('.print-not-show').hide();
+
         const currentDate = new Date();
         const dateTimeString = currentDate.toLocaleString();
         
-        const paymentStatus = "Chưa thanh toán"; // Replace with your payment status logic
-        const hotelName = "Tên khách sạn"; // Replace with your hotel name
-        const customerName = "Tên khách hàng"; // Replace with your customer name
-        const cashierName = "Tên thu ngân"; // Replace with your cashier name
+        const paymentStatus = "{{'payment_status'}}"; // Replace with your payment status logic
+        const hotelName = "{{'hotel_name'}}"; // Replace with your hotel name
+        const customerName = "{{'customer_name'}}"; // Replace with your customer name
+        const cashierName = "{{'cashier_name'}}"; // Replace with your cashier name
         
         // Create the header HTML
         const headerHtml = `
+            <div class='row'><h3 class='text-center'><strong>Booking Hotel</strong></h3></div>
             <table class="table table-striped table-hover" id="order-table-list">
               <tbody>
                 <tr>
@@ -497,12 +498,7 @@
               </tbody>
             </table>
         `;
-
-        // Get the HTML content of the bill table
         const billContent = $("#bill_for_payment").html();
-        
-        // Combine the header and bill content
-        
         const printContent = headerHtml + billContent; 
         const originalContent = $("body").html();
         $("body").html(printContent);
@@ -514,5 +510,7 @@
         printBill();
       });
     });
+
+
 </script>
 @endsection

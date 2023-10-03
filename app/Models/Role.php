@@ -28,14 +28,11 @@ class Role extends Model
     {
         return $this->hasMany(RoleList::class, 'role_id', 'id');
     }
-    // Define the slug options for the 'slug' column
     public function getSlugOptions(): SlugOptions
     {
-        $separator = '%+%'; 
-
+        $idHash = hash('md5', $this->name.$this->id);
         return SlugOptions::create()
-            ->generateSlugsFrom('name')
             ->saveSlugsTo('slug')
-            ->usingSeparator($separator);
+            ->usingSeparator($idHash);
     }
 }

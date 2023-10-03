@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Category;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Core\RoleController as CoreRoleController;
 
-class RoleController extends CategoryController
+class RoleController extends CoreRoleController
 {
-    public function __construct()
-    {
-        parent::__construct('role');
-    }
     public function index()
     {
-        $datas = $this->getModel()->get();
+        $datas = $this->getAlls()->get();
         return view("admin.page.category.role.index", compact('datas'));
     }
 }

@@ -1,5 +1,7 @@
 @php
     $buttonNavContent = "<i class='bi bi-list toggle-sidebar-btn'></i>";
+    $checkInDate = $checkDate['check_in']->format('d/m/y H:i');
+    $checkOutDate = $checkDate['check_out']->format('d/m/y H:i');
 @endphp
 @extends("pos.layout.pos")
 @section("sidebar")
@@ -13,6 +15,7 @@
     <div class="row" style="margin-bottom: 20px;">
         <h3><strong>Category</strong></h3>
         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+            <a type="button" href="{{route('pos.room.index')}}" class="btn btn-outline-primary p-2">All</a>
             @foreach ($category as $item)
                 <a type="button" href="{{route('pos.room.index',['category'=>$item->slug])}}" class="btn btn-outline-primary p-2">{{$item->name}}</a>
             @endforeach
@@ -21,7 +24,7 @@
     <div class="row">
         <h3><strong>Room</strong></h3>
         @foreach ($datas as $key => $item)
-            <div class="col-lg-4 col-md-3 col-sm-4" id="product_{{$item->id}}">
+            <div class="col-lg-3 col-xl-3 col-md-4 col-sm-12" id="product_{{$item->id}}">
                 <div class="card">
                     <style>
                         .div-img{
@@ -33,7 +36,10 @@
                     </style>
                     <div class="card-img-top div-img" style="background-image: url('{{$item->image_url}}')"></div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ $item->name}}</h5>
+                        <div class="d-flex justify-content-between">
+                            <h5 class="card-title">{{ $item->name}}</h5>
+                            <h6 class="card-title">{{number_format($item->cost)}}_vnd</h6>
+                        </div>
                         <div class="row">
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#basicModal_{{$item->id}}">
@@ -44,18 +50,18 @@
                             {{-- modal --}}
                             <div class="modal fade" id="basicModal_{{$item->id}}" tabindex="-1" style="display: none;" aria-hidden="true">
                                 <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title">{{$item->name}}</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title">{{$item->name}}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                        {!!$item->description!!}
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                    {!!$item->description!!}
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
                                 </div>
                             </div>
                             {{-- end modal --}}
@@ -69,5 +75,5 @@
 @endsection
 
 @section("javacript")
-    @include("pos.component.css_js.pos_js", ['table' => 'room'])
+    @include("pos.component.css_js.pos_js.room")
 @endsection

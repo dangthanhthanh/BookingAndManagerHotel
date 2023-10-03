@@ -50,13 +50,10 @@ class BookingRequest extends Model
     }
 
     public function getSlugOptions(): SlugOptions
-
     {
-        $separator = '%+%'; 
-        $idHash = Str::slug(hash('md5', $this->id));
+        $idHash = hash('md5', $this->customer_id.$this->room_category_id.$this->id);
         return SlugOptions::create()
-            ->generateSlugsFrom($idHash)
-            ->saveSlugsTo('slug')
-            ->usingSeparator($separator);
+        ->saveSlugsTo('slug')
+        ->usingSeparator($idHash);
     }
 }

@@ -35,6 +35,7 @@
                                             <th scope="col">Thumbnail</th>
                                             <th scope="col">Cost</th>
                                             <th scope="col">Short Description</th>
+                                            <th scope="col" style="min-width: 150px;">Active @include("admin.component.sort_by",['sortBy'=>'active'])</th>
                                             <th scope="col">Handle</th>
                                         </tr>
                                     </thead>
@@ -48,6 +49,14 @@
                                                 </td>
                                                 <td>{{number_format($item->cost, 0, ',', '.') . ' đ'}}</td>
                                                 <td><textarea class="form-control" style="max-width: 400px; max-height: 200px; min-height: 100px;" disabled>{{$item->short_description}}</textarea></td>
+                                                <td>
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input toggle-checkbox" type="checkbox" style="width: 70px;height: 20px;"
+                                                        id="flexSwitchCheckChecked"
+                                                        data-url="{{ route('category.room.setstatus', ['slug'=>$item->slug])}}"
+                                                        @checked($item->active)>
+                                                    </div>
+                                                </td>
                                                 <td class="text-center">
                                                     <form method="post" action="{{ route('category.room.delete', $item->slug) }}">
                                                         <a class="btn btn-primary" href="{{ route('category.room.description', $item->slug) }}"><i class="bi bi-file-play-fill"></i></a>
@@ -76,4 +85,7 @@
         </div>
     </div>
 </section>
+@endsection
+@section("javacript")
+  @include("admin.component.css_js.js_active_form")
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Gallery;
 use App\Models\Role;
 use App\Models\RoleList;
 use App\Providers\RouteServiceProvider;
@@ -72,7 +73,7 @@ class RegisterController extends Controller
             'user_name' => $data['user_name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
-            'avatar_id' => 1,
+            'avatar_id' => Gallery::first()->id,
             'password' => Hash::make($data['password']),
         ]);
     }

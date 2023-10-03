@@ -33,6 +33,7 @@
       }
         // Check messenger
     var messenger = "{{ $messenger ?? '' }}";
+    console.log(messenger);
     switch (messenger) {
         case '0':
             showSweetAlert('Thong bao!', 'thao tac that bai', 'error');
@@ -45,6 +46,9 @@
         break;
         case '01':
             showSweetAlert('Thong bao!', 'thanh toan thanh cong', 'success');
+        break;
+        case '03':
+            showSweetAlert('Thong bao!', 'phong khong kha dung', 'error');
         break;
         default:
         // Handle other cases or do nothing

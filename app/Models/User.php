@@ -60,7 +60,7 @@ class User extends Authenticatable
     ];
     public function avatar()
     {
-        return $this->belongsTo(Image::class, 'avatar_id');
+        return $this->hasOne(Image::class, 'id');
     }
 
     public function roleLists()
@@ -83,6 +83,10 @@ class User extends Authenticatable
         return $this->roles->contains('name', 'cashier');
     }
 
+    public function isGuest()
+    {
+        return $this->user_name === 'default guest';
+    }
     public function isCustomer()
     {
         return $this->roles->isEmpty();;
@@ -98,12 +102,14 @@ class User extends Authenticatable
         return $this->hasManyThrough(Payment::class, Order::class, 'customer_id', 'order_id');
     }
 
-    //slugable
+    public function orders(){
+        return $this->hasMany(Order::class, 'customer_id');
+    }
     public function getSlugOptions(): SlugOptions
     {
-        $hashUserId = md5($this->id.$this->user_name ?? 'none user name'); 
+        $idHash = hash('md5', $this->user_name.$this->id);
         return SlugOptions::create()
             ->saveSlugsTo('slug')
-            ->usingSeparator($hashUserId);
+            ->usingSeparator($idHash);
     }
 }

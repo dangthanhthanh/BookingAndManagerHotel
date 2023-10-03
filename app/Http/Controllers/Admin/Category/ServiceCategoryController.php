@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Category;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Core\ServiceCategoryController as CoreServiceCategoryController;
 
-class ServiceCategoryController extends CategoryController
+class ServiceCategoryController extends CoreServiceCategoryController
 {
-    public function __construct()
-    {
-        parent::__construct('service_category');
-    }
     public function index()
     {
-        $datas = $this->getModel()->get();
+        $datas = $this->getAlls()->get();
         return view("admin.page.category.service.index", compact('datas'));
     }
 }

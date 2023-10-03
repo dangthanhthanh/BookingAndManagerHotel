@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Category;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Core\RoomStatusController as CoreRoomStatusController;
 
-class RoomStatusController extends CategoryController
+class RoomStatusController extends CoreRoomStatusController
 {
-    public function __construct()
-    {
-        parent::__construct('room_status');
-    }
     public function index()
     {
-        $datas = $this->getModel()->get();
+        $datas = $this->getAlls()->get();
         return view("admin.page.category.roomStatus.index", compact('datas'));
     }
 }

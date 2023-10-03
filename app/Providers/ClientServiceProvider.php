@@ -21,14 +21,14 @@ class ClientServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $arrayRoomTypeView = [
-            "client.component.bookingform",
-            "client.page.booking",
-            'client.page.bookingoneroom',
-        ];
-        View::composer($arrayRoomTypeView, function ($view) {
-            $roomCategory = RoomCategory::orderBy('id', 'desc')->select('id','name')->get();
-            $view->with('roomCategory', $roomCategory);
-        });
+        // $arrayRoomTypeView = [
+        //     "client.component.bookingform",
+        //     "client.page.booking",
+        //     'client.page.bookingoneroom',
+        // ];
+        // View::composer($arrayRoomTypeView, function ($view) {
+        //     $roomCategory = RoomCategory::orderBy('id', 'desc')->select('id','name')->get();
+        //     $view->with('roomCategory', $roomCategory);
+        // });
     }
 }

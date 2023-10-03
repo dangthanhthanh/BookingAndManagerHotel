@@ -35,15 +35,11 @@ class Review extends Model
     {
         return $this->belongsTo(User::class, 'customer_id');
     }
-
-    // Define the slug options for the 'slug' column
     public function getSlugOptions(): SlugOptions
     {
-        $separator = '%+%'; 
-
         return SlugOptions::create()
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug')
-            ->usingSeparator($separator);
+            ->usingSeparator('-');
     }
 }

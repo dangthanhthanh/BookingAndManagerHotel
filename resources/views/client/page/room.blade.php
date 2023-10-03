@@ -28,15 +28,15 @@
 			<!-- Blog Posts -->
 			<div class="col-lg-9">
 				<div class="blog_posts">
-					@foreach ($rooms as $itemt)
+					@foreach ($rooms as $item)
 					<!-- Blog Post -->
 						<div class="blog_post">
 							<div class="blog_post_image">
-								<img src="{{$itemt->image->url}}" alt="">
-								<div class="blog_post_date"><a href="#">{{$itemt->created_at->format('M d, y')}}</a></div>
+								<img src="{{$item->image->url}}" alt="">
+								<div class="blog_post_date"><a href="#">{{$item->created_at->format('M d, y')}}</a></div>
 							</div>
 							<div class="blog_post_content">
-								<div class="blog_post_title"><a href="#">{{$itemt->title}}</a></div>
+								<div class="blog_post_title"><a href="#">{{$item->name}}</a></div>
 								<div class="blog_post_info">
 									<ul class="d-flex flex-row align-items-start justify-content-start flex-wrap">
 										<li class="d-flex flex-row align-items-center justify-content-start">
@@ -62,9 +62,12 @@
 									</ul>
 								</div>
 								<div class="blog_post_text">
-									<p>{!!$itemt->short_description!!}</p>
+									<p>{!!$item->short_description!!}</p>
 								</div>
-								<div class="button blog_post_button"><a href="{{route('booking',['room_type'=>$itemt->id])}}">Read More</a></div>
+								<div class="d-flex">
+									<div class="button blog_post_button"><a href="{{route('client.room.detail',$item->slug)}}">Read More</a></div>
+									<div class="button blog_post_button"><a href="add to cart">Add To Cart</a></div>
+								</div>
 							</div>
 						</div>
 					@endforeach
@@ -84,22 +87,19 @@
 					
 					<!-- Search -->
 					<div class="sidebar_search">
-						<form action="#" class="sidebar_search_form" id="sidebar_saerch_form">
-							<input type="text" class="sidebar_search_input" placeholder="Keyword" required="required">
+						<form action="{{route("client.room.index")}}" class="sidebar_search_form" id="sidebar_saerch_form">
+							<input type="text" class="sidebar_search_input" placeholder="Keyword" name="keyword" required="required">
 							<button class="sidebar_search_button">Search</button>
 						</form>
 					</div>
-
 					<!-- Recent Posts -->
 					<div class="recent_posts">
-						<div class="sidebar_title"><h4>Recent Posts</h4></div>
+						<div class="sidebar_title"><h4>Recent Rooms</h4></div>
 						<div class="sidebar_list">
 							<ul>
-								<li><a href="#">Featured Product</a></li>
-								<li><a href="#">Standard Post</a></li>
-								<li><a href="#">Gallery Post</a></li>
-								<li><a href="#">Video Post</a></li>
-								<li><a href="#">Audio Post</a></li>
+								@foreach ($category as $item)
+									<li><a href="{{route("client.room.index",['category'=>$item->slug])}}">{{$item->name}}</a></li>
+								@endforeach
 							</ul>
 						</div>
 					</div>
@@ -109,9 +109,9 @@
 						<div class="sidebar_title"><h4>Categories</h4></div>
 						<div class="sidebar_list">
 							<ul>
-								<li><a href="#">News</a></li>
-								<li><a href="#">Hotel</a></li>
-								<li><a href="#">Vacation</a></li>
+								@foreach ($category as $item)
+									<li><a href="{{route("client.room.index",['category'=>$item->slug])}}">{{$item->name}}</a></li>
+								@endforeach
 							</ul>
 						</div>
 					</div>
@@ -121,7 +121,7 @@
 						<div class="sidebar_title"><h4>Tags</h4></div>
 						<div class="tags_container">
 							<ul class="d-flex flex-row align-items-start justify-content-start flex-wrap">
-								<li><a href="#">news</a></li>
+								<li><a href="{{route("client.room.index",['keyword'=>'news'])}}">news</a></li>
 								<li><a href="#">hotel</a></li>
 								<li><a href="#">vacation</a></li>
 								<li><a href="#">reservation</a></li>
@@ -153,5 +153,5 @@
 </div>
 @endsection
 @section('js')
-<script src="{{asset('client/js/blog.js')}}"></script>
+ <script src="{{asset('client/js/blog.js')}}"></script>
 @endsection

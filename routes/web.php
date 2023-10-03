@@ -16,7 +16,6 @@ use App\Http\Controllers\Admin\Category\ServiceCategoryController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GalleryController;
-use App\Http\Controllers\Admin\NewsEmailController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\Product\BlogController;
@@ -24,15 +23,18 @@ use App\Http\Controllers\Admin\Product\FoodController;
 use App\Http\Controllers\Admin\Product\RoomController;
 use App\Http\Controllers\Admin\Product\ServiceController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Admin\Category\RoomCategoryController;
+// use App\Http\Controllers\Admin\Category\RoomCategoryController;
 use App\Http\Controllers\Admin\NotificationController;
-use App\Http\Controllers\Admin\RequestController;
+use App\Http\Controllers\Admin\Product\RoomCategoryController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Client\AboutController;
 use App\Http\Controllers\Client\AuthController;
 use App\Http\Controllers\Client\BlogController as ClientBlogController;
+use App\Http\Controllers\Client\BookingRoomController as ClientBookingRoomController;
+use App\Http\Controllers\Client\ContactController as ClientContactController;
 use App\Http\Controllers\Client\FoodController as ClientFoodController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\NewsletterEmailController;
 use App\Http\Controllers\Client\PaymentController as ClientPaymentController;
 use App\Http\Controllers\Client\RoomController as ClientRoomController;
 use App\Http\Controllers\Client\ServiceController as ClientServiceController;
@@ -42,7 +44,6 @@ use App\Http\Controllers\Pos\PaymentController as PosPaymentController;
 use App\Http\Controllers\Pos\RoomController as PosRoomController;
 use App\Http\Controllers\Pos\ServiceController as PosServiceController;
 use App\Http\Controllers\UploadImageForDescriptionController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -58,6 +59,8 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes(['verify' => true]);
 // google provider login
+Route::get('register/verificated', [NewsletterEmailController::class,'verificated'])->name("client.register.verification");
+
 Route::prefix('/login')->group(function () {
     Route::get('/google', [LoginController::class, 'redirectToGoogle'])->name("login.google");
     Route::get('/google/callback', [LoginController::class, 'handleGoogleCallback']);
@@ -303,6 +306,7 @@ Route::prefix('/manager')->group(function () {
             Route::get('/add', [RoomCategoryController::class, 'add'])->name('category.room.add');
             Route::get('/description/{slug}', [RoomCategoryController::class, 'description'])->name('category.room.description');
             //handle
+            Route::post('/setstatus/{slug}', [RoomCategoryController::class, 'setstatus'])->name('category.room.setstatus');
             Route::post('store/', [RoomCategoryController::class, 'store'])->name('category.room.store');
             Route::post('/{slug}', [RoomCategoryController::class, 'update'])->name('category.room.update');
             Route::post('/delete/{slug}', [RoomCategoryController::class, 'delete'])->name('category.room.delete');
@@ -322,6 +326,7 @@ Route::prefix('/pos')->group(function () {
 
     Route::prefix('/payment')->group(function () {
         Route::get('/', [PosPaymentController::class,'index'])->name("pos.payment.index");
+        Route::get('/server/delete', [PosPaymentController::class,'deletedAllServer'])->name("pos.server.delete");
         Route::post('/get/customer',[PosPaymentController::class,'getCustomer'])->name('pos.payment.get.customer');
         Route::post('/create/customer',[PosPaymentController::class,'registerCustomer'])->name('pos.payment.create.customer');
         Route::post('/update/customer/{slug}',[PosPaymentController::class,'updateCustomer'])->name('pos.payment.update.customer');
@@ -329,29 +334,74 @@ Route::prefix('/pos')->group(function () {
         Route::post('/processLocalStorage',[PosPaymentController::class,'processLocalStorage'])->name('pos.payment.processLocalStorage');
 
         Route::post('/cash',[PosPaymentController::class,'cashPayment'])->name('pos.payment.cashPayment');
-        Route::post('/cash/handle',[PosPaymentController::class,'cashHandlePayment'])->name('pos.payment.cashHandle.create');
+        Route::post('/cash/handle/{slug}',[PosPaymentController::class,'cashHandelPayment'])->name('pos.payment.cashHandle.create');
 
-        Route::post('/Vnpay',[PosPaymentController::class,'vnpayPayment'])->name('pos.payment.vnpayPayment');
+        // Route::post('/Vnpay',[PosPaymentController::class,'vnpayPayment'])->name('pos.payment.vnpayPayment');
     });
 });
 
 Route::prefix('/client')->group(function () {
-    Route::get('/room', [ClientRoomController::class,'index'])->name("client.room.index");// <=> RoomCategory
-    Route::get('/service', [ClientServiceController::class,'index'])->name("client.service.index");
-    Route::get('/food', [ClientFoodController::class,'index'])->name("client.food.index");
-    Route::get('/blog', [ClientBlogController::class,'index'])->name("client.blog.index");
+
+    // khach thao tac tren loai phong chu khong thao tac truc tiep tren phong cua minh,
+    // giam xung dot khi dat phong (khi nao khach dong y voi gia demo cho loai phong thi xet id cua khach cho phong do ,tao don hang,... tra ve ket qua thuc te thong qua mail va web app)
+    // tang kha nang phu hop
+    // kich thich nhu cau can tu van cua khac hang 
+
+    Route::prefix('/room')->group(function () {
+        Route::get('/post/{keyword?}', [ClientRoomController::class,'index'])->name("client.room.index"); //khoi chay cho category
+        Route::get('/detail/{slug}', [ClientRoomController::class,'detail'])->name("client.room.detail");
+    });
+
+    Route::prefix('/service')->group(function () {
+        Route::get('/post/{category?}/{keyword?}', [ClientServiceController::class,'index'])->name("client.service.index");
+        Route::get('/detail/{slug}', [ClientServiceController::class,'detail'])->name("client.service.detail");
+    });
+
+
+    Route::prefix('/food')->group(function () {
+        Route::get('/post/{category?}/{keyword?}', [ClientFoodController::class,'index'])->name("client.food.index");
+        Route::get('/detail/{slug}', [ClientFoodController::class,'detail'])->name("client.food.detail");
+    });
+
+    Route::prefix('/blog')->group(function () {
+        Route::get('/post/{category?}/{keyword?}', [ClientBlogController::class,'index'])->name("client.blog.index");
+        Route::get('/detail/{slug}', [ClientBlogController::class,'detail'])->name("client.blog.detail");
+    });
+
     Route::get('/about', [AboutController::class,'index'])->name("client.about.index");
-    Route::get('/contact', [ContactController::class,'index'])->name("client.contact.index");
 
-    Route::get('/booking', [ClientPaymentController::class,'index'])->name("client.booking.index");
-    Route::get('/account', [AuthController::class,'index'])->name("client.account.index");
+    Route::prefix('/contact')->group(function () {
+        Route::get('/', [ClientContactController::class,'index'])->name("client.contact.index");
+        Route::post('/store', [ClientContactController::class,'create'])->name("client.contact.store");
+        Route::get('/verificated', [ClientContactController::class,'verificated'])->name("client.contact.verification");
+    });
+
+    Route::prefix('/newsemail')->group(function () {
+        Route::post('/store', [NewsletterEmailController::class,'create'])->name("client.newsemail.store");
+        Route::get('/verificated', [NewsletterEmailController::class,'verificated'])->name("client.newsemail.verification");
+    });
+
+    // phi luu tren o local song roi moi gui di yeu cau khi nao yeu cau duoc xac nhan thi ..
+
+    Route::prefix('/booking/room')->group(function () {
+        Route::get('/form', [ClientBookingRoomController::class,'index'])->name("client.booking.room.index");
+        Route::post('/request/create', [ClientBookingRoomController::class,'createRequest'])->name("client.booking.room.create.request");
+        Route::post('/order/create', [ClientBookingRoomController::class,'createOrder'])->name("client.booking.room.create.order");
+    });
+
+    Route::prefix('/payment')->group(function () {
+        Route::get('/checkout', [ClientPaymentController::class,'index'])->name("client.payment.checkout.index");
+        Route::post('/vnpay', [ClientPaymentController::class,'vnpay'])->name("client.payment.vnpay");
+        Route::post('/destroy', [ClientPaymentController::class,'destroy_order'])->name("client.payment.destroy");
+    });
 
 
+    
+    
+    // Route::get('/account/booking', [ClientPaymentController::class,'index'])->name("auth.account.cart");
+    Route::get('/account', [AuthController::class,'index'])->name("auth.account.index");
+    Route::post('/account/update', [AuthController::class,'update'])->name("auth.account.update");
+    Route::get('/account/booking', [AuthController::class,'showCart'])->name("auth.account.cart");
 });
 
 Route::get('/', [HomeController::class,'index'])->name("home");
-
-
-Route::post('/test', function(Request $request){
-    dd($request->all());
-})->name("test");

@@ -12,4 +12,4 @@
         <img height="100px" style="border-radius: 5px;" src="{{ $buttonImage }}" alt="">
         <h2><strong>{{ $buttonText }}</strong></h2>
     </button>
-</form>
+</form> 

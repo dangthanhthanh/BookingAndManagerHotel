@@ -17,7 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('service_id');
             $table->dateTime('check_in');
-            $table->unsignedBigInteger('cost')->nullable();
+            $table->unsignedBigInteger('cost');
+            $table->float('ratio')->default(1);
             $table->unsignedInteger('qty')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();

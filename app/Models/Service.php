@@ -44,11 +44,9 @@ class Service extends Model
     // Define Slug configuration
     public function getSlugOptions(): SlugOptions
     {
-        $separator = '%+%'; // Phân tách trong slug
-
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug')
-            ->usingSeparator($separator);
+            ->usingSeparator('-');
     }
 }

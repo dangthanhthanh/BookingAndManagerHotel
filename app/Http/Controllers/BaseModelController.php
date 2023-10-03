@@ -16,7 +16,7 @@ class BaseModelController extends Controller
     protected $modelFactory;
     protected $adminRepository;
     protected $paginate = 10;
-    public function __construct(string $table)
+    public function __construct(string $table = '')
     {
         $this->table = $table;
         $this->modelFactory = app(ModelFactoryInterface::class);

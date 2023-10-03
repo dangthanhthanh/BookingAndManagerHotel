@@ -68,6 +68,7 @@ class AdminServiceProvider extends ServiceProvider
                 'views' => [
                     "admin.page.product.blog.add",
                     "admin.page.product.blog.edit",
+                    "client.page.blog",
                 ],
                 'variableName' => 'category'
             ],
@@ -78,6 +79,8 @@ class AdminServiceProvider extends ServiceProvider
                     "admin.page.product.room.edit",
                     "pos.page.room.index",
                     "client.component.bookingform",
+                    "client.page.room",
+                    "client.page.booking_room.counselors",
                 ],
                 'variableName' => 'category'
             ],
@@ -87,6 +90,7 @@ class AdminServiceProvider extends ServiceProvider
                     "admin.page.product.service.add",
                     "admin.page.product.service.edit",
                     "pos.page.service.index",
+                    "client.page.service",
                 ],
                 'variableName' => 'category'
             ],
@@ -96,6 +100,7 @@ class AdminServiceProvider extends ServiceProvider
                     "admin.page.product.food.add",
                     "admin.page.product.food.edit",
                     "pos.page.food.index",
+                    "client.page.food",
                 ],
                 'variableName' => 'category'
             ],

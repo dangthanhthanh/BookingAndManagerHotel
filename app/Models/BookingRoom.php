@@ -13,9 +13,9 @@ class BookingRoom extends Model
     use HasFactory, HasSlug;
 
     protected $table = 'booking_rooms';// Set the table name for the model
-    protected $primaryKey = 'id'; // Set the primary key column of the table
     public $timestamps = true;
     protected $fillable = [// Define the columns that can be mass-assigned
+        'id',
         'slug',
         'order_id',
         'room_id',
@@ -24,6 +24,7 @@ class BookingRoom extends Model
         'check_out',
         'number_per',
         'cost',
+        'ratio',
         'cus_request',
         'note',
     ];
@@ -39,21 +40,19 @@ class BookingRoom extends Model
 
     public function room()
     {
-        return $this->belongsTo(Room::class, 'room_id');
+        return $this->hasOne(Room::class, 'id', 'room_id');
     }
 
     public function status()
     {
-        return $this->belongsTo(RoomStatus::class, 'room_status_id');
+        return $this->hasOne(RoomStatus::class, 'id', 'room_status_id');
     }
     
     public function getSlugOptions(): SlugOptions
     {
-        $separator = '%+%'; 
-        $idHash = $this->id ? Str::slug(hash('md5', $this->id)) : ''; // create slug from id
+        $idHash = hash('md5', $this->order_id.$this->room_id.$this->id);
         return SlugOptions::create()
-            ->generateSlugsFrom($idHash)
-            ->saveSlugsTo('slug')
-            ->usingSeparator($separator);
+        ->saveSlugsTo('slug')
+        ->usingSeparator($idHash);
     }
 }

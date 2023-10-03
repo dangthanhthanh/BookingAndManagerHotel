@@ -23,9 +23,9 @@ class SendReplyCustomerContactMail implements ShouldQueue
      */
     public function __construct(string $mail, string $content)
     {
-        $this -> view = "pages.mail.contact";
+        $this -> view = "email.pages.replyMail";
         $this -> mail = $mail;
-        $this -> subject = 'Reply For Customer Contact';
+        $this -> subject = 'Booking Hotel Reply';
         $this -> content = $content;
     }
 

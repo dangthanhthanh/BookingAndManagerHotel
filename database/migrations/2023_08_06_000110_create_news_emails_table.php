@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('news_emails', function (Blueprint $table) {
             $table->id();
-            $table->string('slug')->unique()->index();
             $table->string('email', 255);
-            $table->string('hash_token', 255)->nullable();
+            $table->string('email_verified_token', 255)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });

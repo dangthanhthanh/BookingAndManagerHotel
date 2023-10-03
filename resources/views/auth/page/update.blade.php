@@ -1,16 +1,16 @@
-@extends("auth.layouts.auth")
+@extends("auth.layout.auth")
 @section("css")
-    @include("client.public.cssform")
+    @include("client.component.css_js.cssform")
 @endsection
 @section("home_title","Your Account")
 @section("form")
-<form method="POST" action="{{ route('update.account') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('auth.account.update') }}" enctype="multipart/form-data">
     @csrf
     <h1>My Account</h1>
     <div class="icon">
         <label for="image" id="image_label">
             <div id="icon-image" style="background-image: url(
-                {{isset(Auth::user()->avatar->url) ? Auth::user()->avatar->url : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1ddCMriMIjvUIjSiU5nny1rwn_M82KZcePw&usqp=CAU'}}
+                {{$user->avatar->url}}
             )">
             </div>
         </label>
@@ -38,11 +38,6 @@
             @error('address')
                 <span class="text-danger">{{ $message }}</span><br>
             @enderror
-            <label for="cccd"><strong>ID_Card</strong><span class="text-danger">(*)</span></label>
-            <input type="text" placeholder="ID card" name="cccd" value="{{ (Auth::user()->cccd) }}"/>
-            @error('cccd')
-                <span class="text-danger">{{ $message }}</span><br>
-            @enderror
             <label for="gender"><strong>Gender</strong><span class="text-danger">(*)</span></label>
             <select name="gender">
                 <option value="Male" {{ (Auth::user()->gender === "Male")? 'selected':"" }}>Male</option>
@@ -52,11 +47,6 @@
             @error('gender')
                 <span class="text-danger">{{ $message }}</span><br>
             @enderror
-            <label for="old_password"><strong>Old Password</strong><span class="text-danger">(*)</span></label>
-            <input type="password" placeholder="Enter old Password" name="old_password" autofocus/>
-            @error('old_password')
-                <span class="text-danger">{{ $message }}</span><br>
-            @enderror 
             <label for="password"><strong>New Password</strong><span class="text-danger">(*)</span></label>
             <input type="password" placeholder="Enter Password" name="password" autofocus/>
             @error('password')
@@ -67,6 +57,11 @@
             @error('confirm_password')
                 <span class="text-danger">{{ $message }}</span><br>
             @enderror
+            <label for="old_password"><strong>Old Password</strong><span class="text-danger">(*)</span></label>
+            <input type="password" placeholder="Enter old Password" name="old_password" autofocus/>
+            @error('old_password')
+                <span class="text-danger">{{ $message }}</span><br>
+            @enderror 
         </div>
         <button type="submit" onclick="Swal.showLoading()"><strong>Update</strong></button>
     </div>

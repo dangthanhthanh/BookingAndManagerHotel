@@ -12,14 +12,10 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes, HasSlug;
     protected $table = 'orders'; //table_name
-
-    protected $primaryKey = 'id'; // Set the primary key column of the table
-
-    protected $keyType = 'string';// Define the columns that can be mass-assigned
-
     public $timestamps = true;
     
     protected $fillable = [ // Define the columns that can be mass-assigned
+        'id',
         'slug',
         'customer_id',
     ];
@@ -35,13 +31,26 @@ class Order extends Model
     public function bookingService(){
         return $this->hasMany(BookingService::class, 'order_id');
     }
-
+    public function customer(){
+        return $this->belongsTo(User::class, 'customer_id');
+    }
+    public function payments(){
+        return $this->hasMany(Payment::class, 'order_id');
+    }
+    public function payment(){
+        return $this->payments()->orderByDesc('created_at')->first();
+    }
+    public function status() : string
+    {
+        $lastPayment = $this->payment();
+        return $lastPayment ? $lastPayment->status->name : 'unpaid';
+    }
     // Define Slug configuration
     public function getSlugOptions(): SlugOptions
     {
-        $hash = md5($this->customer_id.$this->id.'order'); 
+        $idHash = hash('md5', $this->email.$this->id);
         return SlugOptions::create()
             ->saveSlugsTo('slug')
-            ->usingSeparator($hash);
+            ->usingSeparator($idHash);
     }
 }

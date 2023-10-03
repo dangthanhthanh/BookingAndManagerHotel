@@ -1,0 +1,71 @@
+repository:
+
+roomrepository(
+    getalls
+    getBySlug 
+    created 
+    update 
+    deleted 
+    forceDelete 
+    restore 
+    setStatus 
+    #CheckStatus
+    )
+
+roomcategory(
+    getAlls 
+    getAllRoomByCategory 
+    getBySlug 
+    created 
+    update 
+    deleted 
+    forceDelete 
+    restore 
+    setStatus)
+
+bookingroom(
+    getalls 
+    getBySlug 
+    created 
+    deleted)
+
+Roomstatus(
+    getalls 
+    getAllRoomByStatus 
+    created 
+    forceDelete)
+
+
+food(getalls getBySlug created update deleted forceDelete restore setStatus)
+foodcategory(getalls getBySlug created update deleted forceDelete restore setStatus)
+bookingfood(getalls getBySlug created update deleted forceDelete restore setStatus)
+
+service(getalls getBySlug created update deleted forceDelete restore setStatus)
+servicecategory(getalls getBySlug created update deleted forceDelete restore setStatus)
+bookingservice(getalls getBySlug created update deleted forceDelete restore setStatus)
+
+bookingrequest(getalls getBySlug created update deleted forceDelete restore setStatus)
+
+blog(getalls getBySlug created update deleted forceDelete restore setStatus)
+blogcategory(getalls getBySlug created update deleted forceDelete restore setStatus)
+
+contact(getalls getBySlug created update deleted forceDelete restore setStatus)
+Statuscontact(getalls getBySlug created update deleted forceDelete restore setStatus)
+
+payment(getalls getBySlug created update deleted forceDelete restore setStatus)
+paymentmethod(getalls getBySlug created update deleted forceDelete restore setStatus)
+paymentStatus(getalls getBySlug created update deleted forceDelete restore setStatus)
+
+user(getalls getBySlug created update deleted forceDelete restore setStatus)
+roleuser(getalls getBySlug created update deleted forceDelete restore setStatus)
+rolelistuser(getalls getBySlug created update deleted forceDelete restore setStatus)
+
+order(getalls getBySlug created update deleted forceDelete restore setStatus)
+
+review(getalls getBySlug created update deleted forceDelete restore setStatus)
+
+newEmail(getalls getBySlug created update deleted forceDelete restore setStatus)
+
+image(getalls getBySlug created update deleted forceDelete restore setStatus)
+
+#hotel(getalls getBySlug created update deleted forceDelete restore setStatus)

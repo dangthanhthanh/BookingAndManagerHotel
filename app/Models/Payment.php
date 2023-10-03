@@ -41,9 +41,9 @@ class Payment extends Model
     // Define Slug configuration
     public function getSlugOptions(): SlugOptions
     {
-        $hash = md5('payment'.$this->id.$this->payment_method_id.$this->payment_status_id); 
+        $idHash = hash('md5', $this->payment_method_id.$this->payment_status_id.$this->id);
         return SlugOptions::create()
             ->saveSlugsTo('slug')
-            ->usingSeparator($hash);
+            ->usingSeparator($idHash);
     }
 }

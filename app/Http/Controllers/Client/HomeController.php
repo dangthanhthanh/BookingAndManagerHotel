@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseModelController;
 use App\Models\Blog;
 use App\Models\Gallery;
 use App\Models\Review;
 use App\Models\RoomCategory;
 
-class HomeController extends Controller
+class HomeController extends ClientController
 {
     public function __construct() {
-        // $this->middleware("redirect.notAdmin");
+        // parent::__construct();
     }
     public function index(){
-        $rooms= RoomCategory::orderBy('id','desc')->get();
-        $reviews= Review::orderBy('rate','desc')->limit(5)->get();
-        $blogs= Blog::orderBy('created_at','desc')->limit(10)->get();
-        $gallerys= Gallery::orderBy('id','desc')->limit(10)->get();
-        return view("home",compact("gallerys","rooms","reviews","blogs",'gallerys'));
+        $roomCategorys= $this->getModelWithBaseModelController('room_category')->getModel()->orderByDesc('id')->where('active',true)->get();
+        $reviews= $this->getModelWithBaseModelController('review')->getModel()->orderByDesc('rate')->where('rate','>=',3)->where('active',true)->limit(20)->get();
+        $blogs= $this->getModelWithBaseModelController('blog')->getModel()->orderByDesc('created_at')->where('active',true)->limit(10)->get();
+        $gallerys= $this->getModelWithBaseModelController('gallery')->getModel()->orderByDesc('id')->limit(20)->get();
+        return view("home",compact("gallerys","roomCategorys","reviews","blogs",'gallerys'));
     }
 }

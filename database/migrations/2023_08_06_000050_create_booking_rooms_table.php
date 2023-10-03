@@ -16,11 +16,12 @@ return new class extends Migration
             $table->string('slug', 255)->unique()->index();
             $table->unsignedBigInteger('order_id')->nullable();
             $table->unsignedBigInteger('room_id');
-            $table->unsignedBigInteger('room_status_id');
+            $table->unsignedBigInteger('room_status_id')->default(1);
             $table->dateTime('check_in');
             $table->dateTime('check_out');
             $table->unsignedInteger('number_per')->default(1);
-            $table->unsignedBigInteger('cost')->nullable();
+            $table->unsignedBigInteger('cost');
+            $table->float('ratio')->default(1);
             $table->text('cus_request')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();

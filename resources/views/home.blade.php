@@ -170,19 +170,25 @@
 		<div class="row">
 			<div class="col">
 				<div class="testimonials_slider_container" style="height: 100%;">
+					<style>
+						.testimonial_image{
+							background-size: cover;
+							background-repeat: no-repeat;
+						}
+					</style>
 					<!-- Testimonials Slider -->
 					<div class="owl-carousel owl-theme test_slider" style="height: 100%;">
 						@foreach ($reviews as $item)
 						<!-- Slide -->
-						<div  class="test_slider_item text-center" style="height: 100%;">
-							<div class="rating rating_{{$item->rate}} d-flex flex-row align-items-start justify-content-center"><i></i><i></i><i></i><i></i><i></i></div>
-							<div class="testimonial_title"><a href="#">{{$item->title}}</a></div>
-							<div class="testimonial_text">
-								<p>{{$item->review}}</p>
+							<div  class="test_slider_item text-center" style="height: 100%;">
+								<div class="rating rating_{{$item->rate}} d-flex flex-row align-items-start justify-content-center"><i></i><i></i><i></i><i></i><i></i></div>
+								<div class="testimonial_title"><a href="#">{{$item->title}}</a></div>
+								<div class="testimonial_text">
+									<p>{{$item->review}}</p>
+								</div>
+								<div class="testimonial_image mb-0" style="background-image: url('{{$item->customer->avatar->url}}');"></div>
+								<div class="testimonial_author mb-0"><a href="#">{{$item->customer->user_name}}</a></div>
 							</div>
-							<div class="testimonial_image"><img src="{{$item->customer->avatar->url}}" alt=""></div>
-							<div class="testimonial_author"><a href="#">{{$item->customer->user_name}}</a>, Greece</div>
-						</div>
 						@endforeach
 					</div>
 				</div>
@@ -194,24 +200,24 @@
 <div class="booking">
 	<div class="container">
 		<div class="row">
-			@foreach ($rooms as $item)
-				<div class="col">
-					<div class="booking_title text-center"><h2>Book a room</h2></div>
-					<div class="booking_text text-center">
-						<p>{{$item->short_description}}</p>
-					</div>
-					<div class="booking_slider_container">
-						<div class="owl-carousel owl-theme booking_slider">
+			<div class="col">
+				<div class="booking_title text-center"><h2>Book a room</h2></div>
+				<div class="booking_text text-center">
+					<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugiat facere tenetur sequi iusto doloribus eveniet aliquam nihil, explicabo id consequuntur omnis voluptatibus enim praesentium nulla hic officiis illo voluptas non?</p>
+				</div>
+				<div class="booking_slider_container">
+					<div class="owl-carousel owl-theme booking_slider">
+							@foreach ($roomCategorys as $item)
 							<div class="booking_item">
 								<div class="background_image" style='background-image:url("{{$item->image->url}}")'></div>
 								<div class="booking_overlay trans_200"></div>
-								<div class="booking_price">{{$item->cost}}.vnd/Night</div>
+								<div class="booking_price">{{number_format($item->cost)}}</div>
 								<div class="booking_link"><a href="booking a room type">{{$item->name}}</a></div>
 							</div>
+							@endforeach
 						</div>
 					</div>
-				</div>
-			@endforeach
+			</div>
 		</div>
 	</div>
 </div>
@@ -223,8 +229,8 @@
 			<div class="blog_slide">
 				<div class="background_image" style='background-image:url("{{$item->image->url}}")'></div>
 				<div class="blog_content">
-					<div class="blog_date"><a href="{{route('blog.detail',$item->id)}}">{{$item->created_at->format('M d, Y')}}</a></div>
-					<div class="blog_title"><a href="{{route('blog.detail',$item->id)}}">{{$item->title}}</a></div>
+					<div class="blog_date"><a href="{{route('client.blog.detail',$item->slug)}}">{{$item->created_at->format('M d, Y')}}</a></div>
+					<div class="blog_title"><a href="{{route('client.blog.detail',$item->slug)}}">{{$item->name}}</a></div>
 				</div>
 			</div>
 			@endforeach

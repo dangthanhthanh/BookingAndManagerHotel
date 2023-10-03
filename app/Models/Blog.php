@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -7,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-
 class Blog extends Model
 {
     use HasFactory, SoftDeletes, HasSlug;
@@ -23,8 +21,8 @@ class Blog extends Model
 
     
     protected $fillable = [ // Define the columns that can be mass-assigned
-        'slug',
         'name',
+        'slug',
         'image_id',
         'category_id',
         'short_description',
@@ -41,7 +39,7 @@ class Blog extends Model
     // configuration definition
     public function image()
     {
-        return $this->belongsTo(Image::class, 'image_id');
+        return $this->hasOne(Image::class, 'id', 'image_id');
     }
 
     public function category()
@@ -52,9 +50,9 @@ class Blog extends Model
     // Define Slug configuration
     public function getSlugOptions(): SlugOptions
     {
-        $hashUserId = md5($this->id.$this->name ?? 'none user name'); 
         return SlugOptions::create()
-            ->saveSlugsTo('slug')
-            ->usingSeparator($hashUserId);
+        ->generateSlugsFrom('name')
+        ->saveSlugsTo('slug')
+        ->usingSeparator('-');
     }
 }

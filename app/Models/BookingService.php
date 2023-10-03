@@ -21,6 +21,7 @@ class BookingService extends Model
         'service_id',
         'check_in',
         'cost',
+        'ratio',
         'qty',
         'note',
     ];
@@ -41,13 +42,10 @@ class BookingService extends Model
     
     // Define the slug options for the 'slug' column
     public function getSlugOptions(): SlugOptions
-
     {
-        $separator = '%+%'; 
-        $idHash = $this->id ? Str::slug(hash('md5', $this->id)) : ''; // create slug from id
+        $idHash = hash('md5', $this->order_id.$this->service_id.$this->id);
         return SlugOptions::create()
-            ->generateSlugsFrom($idHash)
-            ->saveSlugsTo('slug')
-            ->usingSeparator($separator);
+        ->saveSlugsTo('slug')
+        ->usingSeparator($idHash);
     }
 }

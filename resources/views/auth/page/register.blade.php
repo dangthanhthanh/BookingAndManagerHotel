@@ -1,6 +1,6 @@
-@extends("auth.layouts.auth")
+@extends("auth.layout.auth")
 @section("css")
-    @include("client.public.cssform")
+    @include("client.component.css_js.cssform")
 @endsection
 @section("home_title","Wellcome")
 @section("form")

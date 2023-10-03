@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('room_category_id');
             $table->unsignedInteger('num_person');
             $table->unsignedInteger('num_child')->nullable();
-            $table->unsignedBigInteger('status_id');//1 <=> not contacted yet 
+            $table->unsignedBigInteger('status_id')->default(1);//1 <=> not contacted yet 
             $table->string('status_history')->nullable();//1 <=> not contacted yet 
             $table->text('note')->nullable();
             $table->text('request')->nullable();

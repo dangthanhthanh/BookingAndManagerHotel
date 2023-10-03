@@ -27,11 +27,9 @@ class BlogCategory extends Model
     }
     public function getSlugOptions(): SlugOptions
     {
-        $separator = '%+%'; 
-
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug')
-            ->usingSeparator($separator);
+            ->usingSeparator('-');
     }
 }

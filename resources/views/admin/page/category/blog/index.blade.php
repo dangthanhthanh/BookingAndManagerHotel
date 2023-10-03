@@ -43,7 +43,6 @@
                                             <button class="btn btn-outline-danger m-2"><i class="ri-delete-bin-6-line"></i></button>
                                         </form>
                                         <form action="{{route('blog.index')}}" method="get">
-                                            @csrf
                                             <input type="hidden" name="category" value="{{$item->slug}}">
                                             <button class="btn btn-outline-primary m-2" title="view post data"><i class="ri-eye-line mx-2"></i>{{$item->blog->count()}}</button>
                                         </form>

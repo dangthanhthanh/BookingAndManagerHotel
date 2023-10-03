@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Category;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Core\PaymentMethodController as CorePaymentMethodController;
 
-class PaymentMethodController extends CategoryController
+class PaymentMethodController extends CorePaymentMethodController
 {
-    public function __construct()
-    {
-        parent::__construct('payment_method');
-    }
     public function index()
     {
-        $datas = $this->getModel()->get();
+        $datas = $this->getAlls()->get();
         return view("admin.page.category.paymentMethod.index", compact('datas'));
     }
 }

@@ -29,15 +29,15 @@
 			<!-- Blog Posts -->
 			<div class="col-lg-9">
 				<div class="blog_posts">
-					@foreach ($blogs as $itemt)
+					@foreach ($blogs as $item)
 					<!-- Blog Post -->
 						<div class="blog_post">
 							<div class="blog_post_image">
-								<img src="{{$itemt->image->url}}" alt="">
-								<div class="blog_post_date"><a href="#">{{$itemt->created_at->format('M d, y')}}</a></div>
+								<img src="{{$item->image->url}}" alt="">
+								<div class="blog_post_date"><a href="#">{{$item->created_at->format('M d, y')}}</a></div>
 							</div>
 							<div class="blog_post_content">
-								<div class="blog_post_title"><a href="{{route('blog.detail',$itemt->id)}}">{{$itemt->title}}</a></div>
+								<div class="blog_post_title"><a href="{{route('client.blog.detail',$item->slug)}}">{{$item->name}}</a></div>
 								<div class="blog_post_info">
 									<ul class="d-flex flex-row align-items-start justify-content-start flex-wrap">
 										<li class="d-flex flex-row align-items-center justify-content-start">
@@ -63,9 +63,9 @@
 									</ul>
 								</div>
 								<div class="blog_post_text">
-									<p>{{$itemt->short_description}}</p>
+									<p>{{$item->short_description}}</p>
 								</div>
-								<div class="button blog_post_button"><a href="{{route('blog.detail',$itemt->id)}}">Read More</a></div>
+								<div class="button blog_post_button"><a href="{{route('client.blog.detail',$item->slug)}}">Read More</a></div>
 							</div>
 						</div>
 					@endforeach
@@ -86,8 +86,7 @@
 					
 					<!-- Search -->
 					<div class="sidebar_search">
-						<form action="{{route('blog')}}" class="sidebar_search_form" id="sidebar_saerch_form" method="GET">
-							@csrf
+						<form action="{{route('client.blog.index')}}" class="sidebar_search_form" id="sidebar_saerch_form" method="GET">
 							<input type="text" class="sidebar_search_input" name="keyword" placeholder="Keyword" required="required">
 							<button type="submit" class="sidebar_search_button">Search</button>
 						</form>
@@ -112,8 +111,8 @@
 						<div class="sidebar_title"><h4>Categories</h4></div>
 						<div class="sidebar_list">
 							<ul>
-								@foreach ($blogCategory as $item)
-									<li><a href="{{route('blog',['category_id'=>$item->id])}}">{{$item->name}}</a></li>
+								@foreach ($category as $item)
+									<li><a href="{{route('client.blog.index',['category'=>$item->slug])}}">{{$item->name}}</a></li>
 								@endforeach
 							</ul>
 						</div>
@@ -144,7 +143,7 @@
 						<div class="special_offer_container text-center">
 							<div class="special_offer_title">Special Offer</div>
 							<div class="special_offer_subtitle">Family Room</div>
-							<div class="button special_offer_button"><a href="{{route('booking')}}">Book now</a></div>
+							<div class="button special_offer_button"><a href="{{route('client.booking.index')}}">Book now</a></div>
 						</div>
 					</div>
 

@@ -6,8 +6,8 @@
             <li class="{{ request()->route()->getName() === 'home'? 'active': '' }}">
                <a class="nav-link" href="{{route("home")}}">Home</a>
             </li>
-            <li class="{{ request()->route()->getName() === 'booking'? 'active': '' }}">
-               <a class="nav-link" href="">Room</a>
+            <li class="{{ request()->route()->getName() === 'client.room.index'? 'active': '' }}">
+               <a class="nav-link" href="{{route("client.service.index")}}">Room</a>
             </li>
             <li class="{{ request()->route()->getName() === 'client.service.index'? 'active': '' }}">
                <a class="nav-link" href="{{route("client.service.index")}}">Service</a>
@@ -25,11 +25,16 @@
                <a class="nav-link" href="{{route("client.contact.index")}}">Contact</a>
             </li>
            @auth
-              <li class="{{ request()->route()->getName() === 'my.account'? 'active': '' }}">
-                 <a class="nav-link" href="{{route("my.account")}}">
+              <li class="{{ request()->route()->getName() === 'auth.account.index'? 'active': '' }}">
+                 <a class="nav-link" href="{{route("auth.account.index")}}">
                     Account
                  </a>
               </li>
+              <li class="{{ request()->route()->getName() === 'auth.account.cart'? 'active': '' }}">
+               <a class="nav-link" href="{{route("auth.account.cart")}}">
+                  Cart
+               </a>
+            </li>
               <li class="{{ request()->route()->getName() === 'logout'? 'active': '' }}">
                  <a class="nav-link" href="#" onclick="event.preventDefault(); Swal.showLoading(); document.getElementById('logout-form').submit();">Logout</a>
                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -47,9 +52,5 @@
            @endguest
          </ul>
       </nav>
-   </div>
-   <div class="menu_extra">
-      <div class="book_button"><a href="" onclick="Swal.showLoading()">Book For Group</a></div>
-      <div class="book_button"><a href="" onclick="Swal.showLoading()">Book A Room</a></div>
    </div>
 </div>

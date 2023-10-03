@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Category;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Core\FoodCategoryController as CoreFoodCategoryController;
 
-class FoodCategoryController extends CategoryController
+class FoodCategoryController extends CoreFoodCategoryController
 {
-    public function __construct()
-    {
-        parent::__construct('food_category');
-    }
     public function index()
     {
-        $datas = $this->getModel()->get();
+        $datas = $this->getAlls()->get();
         return view("admin.page.category.food.index", compact('datas'));
     }
 }

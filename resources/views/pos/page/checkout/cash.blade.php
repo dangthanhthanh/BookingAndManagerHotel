@@ -1,12 +1,14 @@
 @php
   use Carbon\Carbon;
+  $customer = $order->customer;
 @endphp
 @extends("pos.layout.pos")
 @section('button_nav','')
 @section("class",'toggle-sidebar')
 @section("content")
   <div class="row">
-    <form id="form_request" role="form" method="POST" action="{{route('pos.payment.cashHandle.create')}}">
+    <form id="form_request" role="form" method="POST" action="{{route('pos.payment.cashHandle.create',$order->slug)}}">
+      @method("POST")
       @csrf
       <div id="cash_payment_table" class="card-body" style="margin-top: 20px;">
         <div class="row">
@@ -14,7 +16,7 @@
             <img height="100px" width="" style="border-radius: 5px;" src="https://www.pngitem.com/pimgs/m/466-4661926_cash-payment-icon-money-icon-hd-png-download.png" alt="">
             <span class="mx-5" >
               <h2><strong>Cash Payment</strong></h2><br>
-              <h4><strong>With Total Balance: <span style="font-size: 40px;">{{$totalBalanceInOrderRequest}}</span> _vnd</strong></h4>
+              <h4><strong>With Total Balance: <span style="font-size: 40px;">{{ number_format($totalBalance) }}</span> _vnd</strong></h4>
             </span>
           </div>
         </div>
@@ -30,7 +32,7 @@
             </tr>
             <tr>
                 <th scope="col">Status Payment</th>
-                <td colspan="2"><strong>{{$order->payment->status ?? "Pending"}}</strong></td>
+                <td colspan="2"><strong>{{$order->status() === 'Paid' ? 'Paid' : 'Unpaid'}}</strong></td>
             </tr>
             <tr>
                 <th scope="col">Customer Name</th>
@@ -44,7 +46,7 @@
             @endauth
             <tr>
               <th scope="col">ToTal</th>
-              <td id="total_cost_for_payment">{{$totalBalanceInOrderRequest}}</td>
+              <td id="total_cost_for_payment">{{$totalBalance}}</td>
               <td>_vnd</td>
             </tr>
             <tr>
@@ -62,9 +64,10 @@
             <tr>
               <td colspan="3">
                 <div class="row">
-                    <input type="hidden" name="order" value="{{$order->slug}}">
                   <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                    <button type="submit" name="status" value="success" class="btn btn-outline-info py-3">Success</button>
+                    @if(!($order->status() === 'Paid'))
+                      <button type="submit" class="btn btn-outline-info py-3">Success</button>
+                    @endif
                     <a href="#printBill" id="printBillButton" class="btn btn-outline-info py-3" @disabled(true)>Prinf Bill</a>
                   </div>
                 </div>

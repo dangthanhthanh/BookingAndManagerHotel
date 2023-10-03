@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Events\NewRegister;
 use App\Events\ReplyTheMessageForCustommerContact;
 use App\Events\ResetPassword;
 use App\Events\SendNotificationMail;
@@ -20,9 +21,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
+        // Registered::class => [
+        //     SendEmailVerificationNotification::class,
+        // ],
+        // NewRegister::class => [
+        //     ::class
+        // ],
         ResetPassword::class => [
             \App\Listeners\ResetPassword::class
         ],

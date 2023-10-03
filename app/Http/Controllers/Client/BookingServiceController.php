@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-class BookingServiceController extends Controller
+class BookingServiceController extends ClientController
 {
-    //
+    public function __construct() {
+        parent::__construct('customer');
+    }
 }

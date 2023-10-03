@@ -1,5 +1,6 @@
 @php
     $buttonNavContent = "<i class='bi bi-list toggle-sidebar-btn'></i>";
+    $checkInDate = $checkDate['check_in']->format('d/m/y H:i');
 @endphp
 @extends("pos.layout.pos")
 @section("sidebar")
@@ -13,15 +14,16 @@
     <div class="row" style="margin-bottom: 20px;">
         <h3><strong>Category</strong></h3>
         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+            <a href="{{route('pos.food.index')}}" class="btn btn-outline-primary p-2">All</a>
             @foreach ($category as $item)
-                <a type="button" href="{{route('pos.food.index',['category'=>$item->slug])}}" class="btn btn-outline-primary p-2">{{$item->name}}</a>
+                <a href="{{ route('pos.food.index', array_merge(request()->query(), ['category' => $item->slug] )) }}" class="btn btn-outline-primary p-1">{{$item->name}}</a>
             @endforeach
         </div>
     </div>
     <div class="row">
-        <h3><strong>food</strong></h3>
+        <h3><strong>Food</strong></h3>
         @foreach ($datas as $key => $item)
-            <div class="col-lg-4 col-md-3 col-sm-4" id="product_{{$item->id}}">
+            <div class="col-lg-3 col-xl-3 col-md-4 col-sm-12" id="product_{{$item->id}}">
                 <div class="card">
                     <style>
                         .div-img{
@@ -33,7 +35,10 @@
                     </style>
                     <div class="card-img-top div-img" style="background-image: url('{{$item->image_url}}')"></div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ $item->name}}</h5>
+                        <div class="d-flex justify-content-between">
+                            <h5 class="card-title">{{ $item->name}}</h5>
+                            <h6 class="card-title">{{number_format($item->cost)}}_vnd</h6>
+                        </div>
                         <div class="row">
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#basicModal_{{$item->id}}">
@@ -69,5 +74,5 @@
 @endsection
 
 @section("javacript")
-    @include("pos.component.css_js.pos_js", ['table' => 'food'])
+    @include("pos.component.css_js.pos_js.food")
 @endsection

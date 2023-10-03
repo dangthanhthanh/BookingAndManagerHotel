@@ -2,7 +2,7 @@
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{asset('client/styles/booking.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('client/styles/booking_responsive.css')}}">
-@include("client.public.cssform")
+{{-- @include("client.public.cssform") --}}
 @endsection
 @section("content")
 
@@ -13,7 +13,7 @@
 			<div class="row">
 				<div class="col">
 					<div class="home_content text-center">
-						<div class="home_title">services</div>
+						<div class="home_title">Services</div>
 						@include("client.component.bookingform")
 					</div>
 				</div>
@@ -39,8 +39,11 @@
 										{!!$item->short_description!!}
 									</div>
 								</div>
-								<div class="booking_price">{{$item->price}}.vnd/per</div>
-								<div class="booking_link"><a href="{{route('booking',['room_type'=>$item->id])}}">{{$item->name}}</a></div>
+								<div class="booking_price">{{number_format($item->cost)}}</div>
+								<div class="booking_link d-flex">
+									<a style="width: 50%;" href="{{route('client.service.detail',$item->slug)}}">Read More</a>
+									<a style="width: 50%;" href="add_to_cart">Add to Cart</a>
+								</div>
 							</div>
 						@endforeach
 						<!-- Slide -->

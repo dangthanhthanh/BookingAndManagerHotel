@@ -42,7 +42,7 @@
             <div class="col-lg-3">
                <div class="footer_title">Newsletter</div>
                <div class="newsletter_container">
-                  <form action="" class="newsletter_form" id="newsletter_form" method="POST">
+                  <form action="{{route('client.newsemail.store')}}" class="newsletter_form" id="newsletter_form" method="POST">
                      @csrf
                      <input type="email" class="newsletter_input" name="email" placeholder="Your email address" autocomplete="email">
                      @error('email')

@@ -21,6 +21,7 @@ class ReviewFactory extends Factory
             'customer_id' => $faker->numberBetween(1, 50),
             'rate' => $faker->numberBetween(1, 5),
             'title' => $faker->sentence,
+            'active' => random_int(0,1),
             'description' => $faker->paragraph(3,true),
         ];
     }

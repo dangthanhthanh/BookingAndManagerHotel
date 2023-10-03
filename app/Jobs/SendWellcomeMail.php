@@ -24,7 +24,7 @@ class SendWellcomeMail implements ShouldQueue
      */
     public function __construct(string $mail, string $content)
     {
-        $this -> view = "pages.mail.wellcome";
+        $this -> view = "email.pages.wellcome";
         $this -> mail = $mail;
         $this -> subject = 'Wellcome To Booking Hotel';
         $this -> content = $content;

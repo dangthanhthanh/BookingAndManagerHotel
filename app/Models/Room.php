@@ -23,7 +23,7 @@ class Room extends Model
         'bed',
         'capacity',
         'description',
-        'active',
+        'active'
     ];
 
     protected $casts = [ // convert data type
@@ -32,7 +32,6 @@ class Room extends Model
 
     protected $dates = ['deleted_at']; // date
 
-    // configuration definition
     public function image()
     {
         return $this->belongsTo(Image::class, 'image_id');
@@ -42,15 +41,33 @@ class Room extends Model
     {
         return $this->belongsTo(BlogCategory::class, 'category_id');
     }
+
+    public function booking(){
+        return $this->hasMany(BookingRoom::class);
+    }
+
+    public function isAvailable($start, $end)
+    {   
+        $bookingOverlap = $this->booking()
+            ->where(function ($query) use ($start,$end){
+                $query->where(function ($query) use ($start, $end) {
+                    $query->whereBetween('check_in', [$start, $end])
+                    ->orWhereBetween('check_out', [$start, $end]);
+                })
+                ->orWhere(function ($query) use ($start, $end) {
+                    $query->where('check_in', '<=', $start)
+                    ->where('check_out', '>=', $end);
+                });
+            })
+            ->exists();
+        return !$bookingOverlap;
+    }
     
-    // Define Slug configuration
     public function getSlugOptions(): SlugOptions
     {
-        $separator = '%+%'; // Phân tách trong slug
-
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug')
-            ->usingSeparator($separator);
+            ->usingSeparator('-');
     }
 }

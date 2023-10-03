@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
 class AboutController extends ClientController
 {
+    public function __construct() {
+        parent::__construct('review');
+    }
     public function index(){
-        return view("client.page.about");
+        $reviews = $this->getModel()->orderByDesc('rate')->where('rate','>=',3)->where('active',true)->limit(20)->get();
+        return view("client.page.about",compact('reviews'));
     }
 }
