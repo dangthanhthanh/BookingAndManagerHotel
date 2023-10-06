@@ -6,5 +6,5 @@ use App\Http\Controllers\Core\NewsEmailController;
 
 class NewsletterEmailController extends NewsEmailController
 {
-    //
+    //use NewsEmailController
 }

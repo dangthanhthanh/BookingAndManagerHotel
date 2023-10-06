@@ -11,13 +11,16 @@ use App\Jobs\SendVerificationMail;
 class ContactController extends Controller
 {
     private $repository;
-    public function __construct(ContactInterface $repository) {
+    public function __construct(ContactInterface $repository)
+    {
         $this -> repository = $repository;
     }
-    protected function getAlls(){
+    protected function getAlls()
+    {
         return $this->repository->getAlls();
     }
-    protected function getById(string $id){
+    protected function getById(string $id)
+    {
         return $this->repository->getById($id);
     }
     protected function createContact(Request $request)
@@ -32,7 +35,8 @@ class ContactController extends Controller
         $contact = $this->getById($id);
         dd($contact);
     }
-    public function verificated(Request $request) {
+    public function verificated(Request $request)
+    {
         $this->validateVerificatedRequest($request);
         $contact = $this->getById($request->id);
         if($contact -> email_verified_token === $request->_token){
@@ -41,16 +45,19 @@ class ContactController extends Controller
         }
         return abort(404);
     }
-    private function updateContactVerification($contact) {
+    private function updateContactVerification($contact)
+    {
         $contact->email_verified_at = now();
         $contact->email_verified_token = '';
         $contact->save();
     }
-    public function delete(string $slug){
+    public function delete(string $slug)
+    {
         $this->repository->delete($slug);
         return redirect()->back();
     }
-    private function validateCreateRequest($request){
+    private function validateCreateRequest($request)
+    {
         return $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
@@ -59,13 +66,15 @@ class ContactController extends Controller
             '_token' => 'required|string'
         ]);
     }
-    private function validateVerificatedRequest($request){
+    private function validateVerificatedRequest($request)
+    {
         return $request->validate([
             'id' => "required|string",
             '_token' => "required|string",
         ]);
     }
-    protected function sendVerificationMail($contact) {
+    protected function sendVerificationMail($contact)
+    {
         SendVerificationMail::dispatch(
             $contact->email,
             $table = 'contact',
@@ -74,7 +83,8 @@ class ContactController extends Controller
             $contact->name
         );
     }
-    protected function sendToCustomer(string $mail, string $content){
+    protected function sendToCustomer(string $mail, string $content)
+    {
         SendReplyCustomerContactMail::dispatch(
             $mail,
             $content

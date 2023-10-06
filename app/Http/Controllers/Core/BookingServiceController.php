@@ -9,13 +9,16 @@ use Illuminate\Support\Facades\DB;
 class BookingServiceController extends Controller
 {
     private $repository;
-    public function __construct(BookingServiceInterface $repository) {
+    public function __construct(BookingServiceInterface $repository)
+    {
         $this->repository = $repository;
     } 
-    protected function getAlls(){
+    protected function getAlls()
+    {
         return $this->repository->getAlls();
     }
-    protected function getBySlug($slug){
+    protected function getBySlug($slug)
+    {
         return $this->repository->getBySlug($slug);
     }
     public function create(string $orderId, string $serviceId, $checkIn, $qty, $cost, $ratio, $note = null)
@@ -34,15 +37,18 @@ class BookingServiceController extends Controller
         }
         return DB::rollBack();
     }
-    public function delete(string $slug){
+    public function delete(string $slug)
+    {
         $this->repository->delete($slug);
         return redirect()->back();
     }
     // check service is active in date
-    private function isAvailable(string $serviceId, $checkIn)
+    private function isAvailable(string $foodId, $checkIn)
     {
-        // $this->repository->getById($serviceId);
-        // $checkin
+        // if($this->repository->getById($foodId)->active){
+        //     return true;
+        // }
+        // return false;
         return true;
     }
 }

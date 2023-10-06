@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Contracts\OrderInterface;
 use App\Models\Order;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EloquentOrderRepository implements OrderInterface {
     protected $model;
@@ -16,7 +15,6 @@ class EloquentOrderRepository implements OrderInterface {
     public function getAlls() {
         return $this->model;
     }
-
     public function getBySlug(string $slug) {
         return $this->model->where('slug', $slug)->firstOrFail();
     }

@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class HotelController extends Controller
 {
-    chua song
     private $repository;
     public function __construct(HotelInterface $repository) {
         $this -> repository = $repository;
@@ -64,9 +63,4 @@ class HotelController extends Controller
             'image' => ['nullable', 'mimes:jpeg,png'],
         ]);
     }
-    // protected function uploadImage($image)
-    // {
-    //     $baseModelController = new BaseModelController();
-    //     return $baseModelController->uploadImage($image);
-    // }
 }

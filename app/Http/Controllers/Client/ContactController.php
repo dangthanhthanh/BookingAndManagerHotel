@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Core\ContactController as CoreContactController;
-use App\Jobs\SendVerificationMail;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 
 class ContactController extends CoreContactController

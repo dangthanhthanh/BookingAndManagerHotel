@@ -3,28 +3,30 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Events\SendNotificationMail;
+use App\Http\Controllers\Core\NewsEmailController;
 use App\Jobs\SendEmailJob;
 use App\Jobs\SendManyMailWithManyCustom;
 use App\Jobs\SendOneMailWithManyCustom;
 use Illuminate\Http\Request;
 
-class NotificationController extends AdminController
+class NotificationController extends NewsEmailController
 {
-    public function __construct()
-    {
-        parent::__construct('news_email');
-    }
     public function index(Request $request)
     {
-        $query = $this->getModel();
-        $datas = $this->sortByWithType($query, $request)->paginate(10);
+        $query = $this->getAlls()
+            ->when($request->has('sortType') && $request->sortType === 'desc', function ($query) use ($request) {
+                $query->orderByDesc($request->input('sortBy'));
+            })
+            ->when($request->has('sortType') && $request->sortType === 'asc', function ($query) use ($request) {
+                $query->orderBy($request->input('sortBy'));
+            });
+        $datas = $query->paginate(10);
         return view('admin.page.notify.index', compact('datas'));
     }
     public function customMail()
     {
         return view('admin.page.notify.mail');
     }
-
     public function sentMail(Request $request)
     {
         $dataValidate = ['customer', 'staff', 'news'];
@@ -32,16 +34,12 @@ class NotificationController extends AdminController
             'data' => 'required|in:' . implode(',', $dataValidate),
             'content' => 'required|string',
         ]);
-
         $emails = $this->getEmailsFromQuery( $this->getQueryMail($request->data) );
-
         if (!empty($emails)) {
-            $view = "email.pages.mail_1";
-            return $this->sendManyMails($emails, $view, $request->content);
+            return $this->sendToCustomer($emails, $request->content);
         }
         return redirect()->back()->with('messenger', 0);
     }
-
     protected function getQueryMail(string $table)
     {
         switch ($table) {
@@ -61,13 +59,6 @@ class NotificationController extends AdminController
         if ($query) {
             return $query->whereNotNull('email_verified_at')->pluck('email')->toArray();
         }
-
         return [];
-    }
-
-    protected function sendManyMails(array $emails, string $view, string $content)
-    {
-        event(new SendNotificationMail($view, $emails, $content));
-        return redirect()->back()->with('messenger', 1); // Successful action
     }
 }

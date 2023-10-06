@@ -10,13 +10,19 @@ use Illuminate\Http\Request;
 class RoomCategoryController extends Controller
 {
     private $repository;
-    public function __construct(RoomCategoryInterface $repository) {
+    private $imageController;
+    public function __construct(RoomCategoryInterface $repository,
+                                ImageController $imageController)
+    {
         $this->repository = $repository;
+        $this->imageController = $imageController;
     } 
-    protected function getAlls(){
+    public function getAlls()
+    {
         return $this->repository->getAlls();
     }
-    public function getBySlug($slug){
+    public function getBySlug($slug)
+    {
         return $this->repository->getBySlug($slug);
     }
     protected function createOrUpdate(string $slug = null, Request $request)
@@ -27,19 +33,23 @@ class RoomCategoryController extends Controller
         }
         return $this->repository->create($data);
     }
-    public function delete(string $slug){
+    public function delete(string $slug)
+    {
         $this->repository->delete($slug);
         return redirect()->back();
     }
-    public function foceDelete(string $slug){
+    public function foceDelete(string $slug)
+    {
        $this->repository->forceDelete($slug);
        return redirect()->back();
     }
-    public function restore(string $slug){
+    public function restore(string $slug)
+    {
         $this->repository->restore($slug);
         return redirect()->back();
     }
-    public function setStatus(string $slug){
+    public function setStatus(string $slug)
+    {
         $bool = $this ->repository-> setStatus($slug);
         $rep = $bool ?  1.1 : 1.0;
         return response()->json(["rep"=>($rep)]);
@@ -53,7 +63,8 @@ class RoomCategoryController extends Controller
         }
         return $data;
     }
-    private function validateRequest($request){
+    private function validateRequest($request)
+    {
         return $request->validate([
             'name' => 'required|string',
             'cost' => 'required|numeric',
@@ -64,7 +75,6 @@ class RoomCategoryController extends Controller
     }
     protected function uploadImage($image)
     {
-        $baseModelController = new BaseModelController();
-        return $baseModelController->uploadImage($image);
+        return $this->imageController->uploadImage($image);
     }
 }

@@ -32,9 +32,9 @@ class AdminServiceProvider extends ServiceProvider
             [
                 'model' => StatusContact::class,
                 'views' => [
-                    "admin.page.contact.index",
+                    // "admin.page.contact.index",
                     "admin.page.bookingrequest.advise",
-                    "admin.page.contact.advise",
+                    // "admin.page.contact.advise",
                 ],
                 'variableName' => 'statuses'
             ],

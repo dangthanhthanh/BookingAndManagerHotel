@@ -16,11 +16,16 @@ class EloquentUserRepository implements UserInterface {
     public function getAlls() {
         return $this->model;
     }
+    public function getByPhone(string $phone){
+        return $this->model->where('phone',$phone)->firstOrFail();
+    }
 
     public function getBySlug(string $slug) {
         return $this->model->where('slug', $slug)->firstOrFail();
     }
-
+    public function getRoleBySlug(string $slug) {
+        return $this->getBySlug($slug)->roleLists();
+    }
     public function create(array $data) {
         return $this->model->create($data);
     }

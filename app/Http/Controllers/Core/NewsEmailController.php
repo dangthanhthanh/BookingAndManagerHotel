@@ -11,16 +11,20 @@ use Illuminate\Http\Request;
 class NewsEmailController extends Controller
 {
     private $repository;
-    public function __construct(NewsEmailInterface $repository) {
+    public function __construct(NewsEmailInterface $repository)
+    {
         $this -> repository = $repository;
     }
-    protected function getAlls(){
+    protected function getAlls()
+    {
         return $this->repository->getAlls();
     }
-    protected function getBySlug(string $slug){
+    protected function getBySlug(string $slug)
+    {
         return $this->repository->getBySlug($slug);
     }
-    protected function getById(string $id){
+    protected function getById(string $id)
+    {
         return $this->repository->getById($id);
     }
     public function create(Request $request)
@@ -34,7 +38,8 @@ class NewsEmailController extends Controller
             : null;
         return redirect()->back()->with('messenger','1');
     }
-    public function verificated(Request $request) {
+    public function verificated(Request $request)
+    {
         $this->validateVerificatedRequest($request);
         $updated = $this->getById($request->id);
         if($updated && $updated -> email_verified_token === $request->_token){
@@ -43,28 +48,33 @@ class NewsEmailController extends Controller
         }
         return abort(404);
     }
-    private function updateVerification($updated) {
+    private function updateVerification($updated)
+    {
         $updated->email_verified_at = now();
         $updated->email_verified_token = '';
         $updated->save();
     }
-    public function delete(string $slug){
+    public function delete(string $slug)
+    {
         $this->repository->delete($slug);
         return redirect()->back();
     }
-    private function validateRequest($request){
+    private function validateRequest($request)
+    {
         return $request->validate([
             'email' => 'required|email',
             '_token' => 'required|string'
         ]);
     }
-    private function validateVerificatedRequest($request){
+    private function validateVerificatedRequest($request)
+    {
         return $request->validate([
             'id' => "required|string",
             '_token' => "required|string",
         ]);
     }
-    protected function sendVerificationMail($contact) {
+    protected function sendVerificationMail($contact)
+    {
         SendVerificationMail::dispatch(
             $contact->email,
             $table = 'contact',
@@ -73,7 +83,8 @@ class NewsEmailController extends Controller
             $contact->name ?? ''
         );
     }
-    protected function sendToCustomer(string $mail, string $content){
+    protected function sendToCustomer(string $mail, string $content)
+    {
         SendReplyCustomerContactMail::dispatch(
             $mail,
             $content

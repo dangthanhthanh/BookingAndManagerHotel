@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Core\BookingRoomController;
 use Illuminate\Http\Request;
 
-class BookingFoodController extends ClientController
+class BookingFoodController extends BookingRoomController
 {
-    public function __construct() {
-        parent::__construct('customer');
-    }
+    //
 }

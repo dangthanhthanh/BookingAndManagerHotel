@@ -143,7 +143,7 @@
 						<div class="special_offer_container text-center">
 							<div class="special_offer_title">Special Offer</div>
 							<div class="special_offer_subtitle">Family Room</div>
-							<div class="button special_offer_button"><a href="{{route('client.booking.index')}}">Book now</a></div>
+							<div class="button special_offer_button"><a href="{{route('client.booking.room.index')}}">Book now</a></div>
 						</div>
 					</div>
 

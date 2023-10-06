@@ -9,10 +9,11 @@ use Illuminate\Http\Request;
 class ReviewController extends Controller
 {
     private $repository;
-    public function __construct(ReviewInterface $repository) {
+    public function __construct(ReviewInterface $repository)
+    {
         $this->repository = $repository;
     } 
-    protected function getAlls(){
+    public function getAlls(){
         return $this->repository->getAlls();
     }
     public function create(Request $request)
@@ -25,7 +26,8 @@ class ReviewController extends Controller
         $bool = $this->repository->update($slug, $this->validateRequest($request));
         return redirect()->back()->with('messenger', $bool ? 1 : 0);
     }
-    private function validateRequest($request){
+    private function validateRequest($request)
+    {
         dd('chua xong');
         return $request->validate(
             [
@@ -33,19 +35,23 @@ class ReviewController extends Controller
             ]
         );
     }
-    public function delete(string $slug){
+    public function delete(string $slug)
+    {
         $this->repository->delete($slug);
         return redirect()->back();
     }
-    public function foceDelete(string $slug){
+    public function foceDelete(string $slug)
+    {
         $this->repository->forceDelete($slug);
         return redirect()->back();
     }
-    public function restore(string $slug){
+    public function restore(string $slug)
+    {
         $this->repository->restore($slug);
         return redirect()->back();
     }
-    protected function setStatus(string $slug){
+    protected function setStatus(string $slug)
+    {
         $bool = $this ->repository-> setStatus($slug);
         $rep = $bool ?  1.1 : 1.0;
         return response()->json(["rep"=>($rep)]);

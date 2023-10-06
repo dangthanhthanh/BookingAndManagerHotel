@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use League\Flysystem\UrlGeneration\TemporaryUrlGenerator;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -48,7 +49,7 @@ class Order extends Model
     // Define Slug configuration
     public function getSlugOptions(): SlugOptions
     {
-        $idHash = hash('md5', $this->email.$this->id);
+        $idHash = hash('md5', $this->customer_id.$this->id);
         return SlugOptions::create()
             ->saveSlugsTo('slug')
             ->usingSeparator($idHash);

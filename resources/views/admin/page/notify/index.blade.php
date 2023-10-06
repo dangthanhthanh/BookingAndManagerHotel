@@ -45,7 +45,7 @@
                                                 <td>{!!$item->email_verified_at ? '<span class="btn btn-success p-20">true</span>' : '<span class="btn btn-secondary p-20">false</span>'!!}</td>
                                                 <td>{{$item->created_at}}</td>
                                                 <td>
-                                                    <form method="post" action="{{ route('notify.delete',$item->slug) }}">
+                                                    <form method="post" action="{{ route('notify.delete',$item->id) }}">
                                                         @csrf
                                                         <button type="submit" class="btn btn-danger"><i class="ri-delete-bin-6-line"></i></button>
                                                     </form>

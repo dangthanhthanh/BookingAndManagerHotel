@@ -10,13 +10,19 @@ use Illuminate\Http\Request;
 class GalleryController extends Controller
 {
     private $repository;
-    public function __construct(GalleryInterface $repository) {
+    private $imageController;
+    public function __construct(GalleryInterface $repository,
+                                ImageController $imageController)
+    {
         $this->repository = $repository;
+        $this->imageController = $imageController;
     } 
-    protected function getAlls(){
+    public function getAlls()
+    {
         return $this->repository->getAlls();
     }
-    protected function getById(string $id){
+    public function getById(string $id)
+    {
         return $this->repository->getById($id);
     }
     public function create(Request $request)
@@ -24,7 +30,8 @@ class GalleryController extends Controller
         $bool = $this->repository->create($this->validateRequest($request));
         return redirect()->back()->with('messenger', $bool ? 1 : 0);
     }
-    public function deleteForArrayID(Request $request){
+    public function deleteForArrayID(Request $request)
+    {
         if ($request->has('gallery_id')) {
             $arrayId = json_decode($request->gallery_id);
             foreach ($arrayId as $id) {
@@ -46,7 +53,6 @@ class GalleryController extends Controller
     }
     protected function uploadImage($image)
     {
-        $baseModelController = new BaseModelController();
-        return $baseModelController->uploadImage($image);
+        return $this->imageController->uploadImage($image);
     }
 }

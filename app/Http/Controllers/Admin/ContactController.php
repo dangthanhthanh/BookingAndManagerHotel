@@ -19,7 +19,8 @@ class ContactController extends CoreContactController
         $datas = $query->paginate(10);
         return view('admin.page.contact.index', compact('datas'));
     }
-    public function sendMailToCustomer(Request $request){
+    public function sendMailToCustomer(Request $request)
+    {
         $request->validate([
             'content' => "required|string",
             'mail' => "required|email",

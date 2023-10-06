@@ -1,15 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Pos;
+use App\Http\Controllers\Core\UserController;
 
-class CustomerController extends PosController
+class CustomerController extends UserController
 {
-    public function __construct() {
-        // $this->middleware("redirect.notAdmin");
-        parent::__construct('customer');
-    }
     public function index(string $phone){
-        $data = $this->adminRepository->findCustomerByPhone($phone);
+        $data = $this->getCustomerByPhone($phone);
         return view("pos.page.custoner.index",compact('data'));
     }
 }

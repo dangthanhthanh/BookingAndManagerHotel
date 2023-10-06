@@ -9,13 +9,16 @@ use Illuminate\Support\Facades\DB;
 class BookingFoodController extends Controller
 {
     private $repository;
-    public function __construct(BookingFoodInterface $repository) {
+    public function __construct(BookingFoodInterface $repository)
+    {
         $this->repository = $repository;
     } 
-    protected function getAlls(){
+    protected function getAlls()
+    {
         return $this->repository->getAlls();
     }
-    protected function getBySlug($slug){
+    protected function getBySlug($slug)
+    {
         return $this->repository->getBySlug($slug);
     }
     public function create(string $orderId, string $foodId, $checkIn, $qty, $cost, $ratio, $note = null)
@@ -34,15 +37,17 @@ class BookingFoodController extends Controller
         }
         return DB::rollBack();
     }
-    public function delete(string $slug){
+    public function delete(string $slug)
+    {
         $this->repository->delete($slug);
         return redirect()->back();
     }
-    // check food is active in date
     private function isAvailable(string $foodId, $checkIn)
     {
-        // $this->repository->getById($foodId);
-        // $checkin
+        // if($this->repository->getById($foodId)->active){
+        //     return true;
+        // }
+        // return false;
         return true;
     }
     

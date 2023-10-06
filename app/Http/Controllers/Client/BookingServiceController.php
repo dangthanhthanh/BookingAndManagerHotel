@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Client;
 
-class BookingServiceController extends ClientController
+use App\Http\Controllers\Core\BookingServiceController as CoreBookingServiceController;
+
+class BookingServiceController extends CoreBookingServiceController
 {
-    public function __construct() {
-        parent::__construct('customer');
-    }
+    //
 }

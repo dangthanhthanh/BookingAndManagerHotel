@@ -13,17 +13,18 @@ class BookingRoomController extends Controller
     private $repository;
     private $roomController;
     public function __construct(
-        BookingRoomInterface $repository,
-        RoomController $roomController
-    
-    ) {
+                                BookingRoomInterface $repository,
+                                RoomController $roomController)
+    {
         $this->repository = $repository;
         $this->roomController = $roomController;
     } 
-    protected function getAlls(){
+    protected function getAlls()
+    {
         return $this->repository->getAlls();
     }
-    protected function getBySlug($slug){
+    protected function getBySlug($slug)
+    {
         return $this->repository->getBySlug($slug);
     }
     public function create(string $orderId, string $roomId, string $roomStatusId, $checkIn, $checkOut, $manyPer, $cost, $ratio, $request=null, $note = null)
@@ -45,14 +46,14 @@ class BookingRoomController extends Controller
             ? true 
             : false;
         }
-        return false;
+        throw new \Exception('booking room creation failed.');
     }
-    public function delete(string $slug){
+    public function delete(string $slug)
+    {
         $this->repository->delete($slug);
         return redirect()->back();
     }
-    // check room is active in date
-    private function isAvailable($roomId, $checkIn, $checkOut)
+    public function isAvailable($roomId, $checkIn, $checkOut)
     {
         $room = $this->roomController->getById($roomId);
         return  $room -> isAvailable($checkIn, $checkOut);

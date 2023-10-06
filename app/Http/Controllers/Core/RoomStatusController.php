@@ -12,7 +12,8 @@ class RoomStatusController extends Controller
     public function __construct(RoomStatusInterface $repository) {
         $this->repository = $repository;
     } 
-    protected function getAlls(){
+    protected function getAlls()
+    {
         return $this->repository->getAlls();
     }
     public function create(Request $request)
@@ -25,18 +26,22 @@ class RoomStatusController extends Controller
         $bool = $this->repository->update($id, $this->validateRequest($request));
         return redirect()->back()->with('messenger', $bool ? 1 : 0);
     }
-    private function validateRequest($request){
+    private function validateRequest($request)
+    {
         return $request->validate(['name' => 'required|string']);
     }
-    public function delete(string $slug){
+    public function delete(string $slug)
+    {
         $this->repository->delete($slug);
         return redirect()->back();
     }
-    public function foceDelete(string $slug){
+    public function foceDelete(string $slug)
+    {
         $this->repository->forceDelete($slug);
         return redirect()->back();
     }
-    public function restore(string $slug){
+    public function restore(string $slug)
+    {
         $this->repository->restore($slug);
         return redirect()->back();
     }

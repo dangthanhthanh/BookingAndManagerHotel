@@ -1,15 +1,10 @@
 <?php
-// app/Contracts/BlogInterface.php
-
 namespace App\Contracts;
 
 interface RoleListInterface {
     public function getAlls();
-    public function getBySlug(string $slug);
-    public function create(array $data);
-    public function update(string $slug, array $data);
-    public function delete(string $slug);
-    public function forceDelete(string $slug);
-    public function restore(string $slug);
-    public function setStatus(string $slug);
+    public function getRoleByStaffs(string $staffId);
+    public function deletedByStaffs(string $staffId);
+    public function create(string $staffId, string $roleId);
+    public function delete(string $staffId, string $roleId);
 }

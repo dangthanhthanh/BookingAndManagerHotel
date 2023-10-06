@@ -21,11 +21,13 @@ class BookingRequestController extends CoreBookingRequestController
         return view('admin.page.bookingrequest.index', compact('datas'));
     }
 
-    public function advise(string $slug){
+    public function advise(string $slug)
+    {
         return view("admin.page.bookingrequest.advise",compact('data',$this->getBySlug($slug)));
     }
 
-    public function telesale(string $slug, Request $request){
+    public function telesale(string $slug, Request $request)
+    {
         $request->validate([
             'status' => 'required|numeric',
             'content' => 'required|string',

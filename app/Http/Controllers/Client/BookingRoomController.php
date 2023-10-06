@@ -11,14 +11,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class BookingRoomController extends ClientController
+class BookingRoomController extends CoreBookingRoomController
 {
     private $ratioDefault = 1;
     private $bookingRequestController;
     private $orderController;
     private $paymentController;
     private $roomCategoryController;
-    private $bookingRoomController;
     private $roomStatusBusy = '1';
     private $testUserId = '1';
 
@@ -28,19 +27,16 @@ class BookingRoomController extends ClientController
         OrderController $orderController,
         PaymentController $paymentController,
         RoomCategoryController $roomCategoryController,
-        CoreBookingRoomController $bookingRoomController,
         ) 
     {
-        parent::__construct('customer');
         $this -> bookingRequestController = $bookingRequestController;
         $this -> orderController = $orderController;
         $this -> paymentController = $paymentController;
-        $this -> bookingRoomController = $bookingRoomController;
         $this -> roomCategoryController = $roomCategoryController;
     }
 
     public function index(Request $request){
-        $roomType = $this->getModelWithBaseModelController('room_category')->getModel()->get();
+        $roomType = $this->roomCategoryController->getAlls()->get();
         if($request->online === '1'){
             return view("client.page.booking_room.online",compact('request','roomType'));
         }
@@ -127,8 +123,7 @@ class BookingRoomController extends ClientController
     }
     private function createdItemBookingRoomData($data, $room, $order_id){
         return DB::transaction(function() use($data, $room, $order_id){
-                return $this->bookingRoomController
-                ->create(
+                return $this->create(
                     $order_id,
                     $room->id, 
                     $this->roomStatusBusy, 

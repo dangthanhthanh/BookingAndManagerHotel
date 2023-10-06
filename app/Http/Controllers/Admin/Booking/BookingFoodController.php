@@ -3,19 +3,14 @@
 namespace App\Http\Controllers\Admin\Booking;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Core\BookingFoodController as CoreBookingFoodController;
 use Illuminate\Http\Request;
 
-class BookingFoodController extends BookingController
+class BookingFoodController extends CoreBookingFoodController
 {
-    public function __construct()
-    {
-        parent::__construct('booking_food');
-    }
     public function index(Request $request)
     {   
-        $query = $this->getModel();
-
-        $datas = $query
+        $query = $this->getAlls()
         ->when($request->has('searchByName'), function ($query) use ($request) {
             $query->join('orders','orders.id','=','booking_food.order_id')
             ->where('orders.slug', 'LIKE', '%' . $request->searchByName . '%')
@@ -26,8 +21,8 @@ class BookingFoodController extends BookingController
         })
         ->when($request->has('sortType') && $request->sortType === 'asc', function ($query) use ($request) {
             $query->orderBy($request->input('sortBy'));
-        })
-        ->paginate(10);
+        });
+        $datas = $query->paginate(10);
         return view('admin.page.booking.food.index', compact('datas'));
     }
 }

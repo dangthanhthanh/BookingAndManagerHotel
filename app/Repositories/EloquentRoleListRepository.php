@@ -17,38 +17,23 @@ class EloquentRoleListRepository implements RoleListInterface {
         return $this->model;
     }
 
-    public function getBySlug(string $slug) {
-        return $this->model->where('slug', $slug)->firstOrFail();
+    public function getRoleByStaffs(string $staffId) {
+        return $this->model->where('staff_id', $staffId);
     }
-
-    public function create(array $data) {
-        return $this->model->create($data);
+    public function deletedByStaffs(string $staffId) {
+        return $this->model->where('staff_id', $staffId)
+                    ->delete();
     }
-
-    public function update(string $slug, array $data) {
-        $item = $this->getBySlug($slug);
-        $item->update($data);
-        return $item;
+    public function create(string $staffId, string $roleId){
+        return $this->model->create(
+            [
+                'staff_id' => $staffId,
+                'role_id' => $roleId
+            ]);
     }
-
-    public function delete(string $slug) {
-        $item = $this->getBySlug($slug);
-        $item->delete();
-    }
-
-    public function forceDelete(string $slug) {
-        $item = $this->getBySlug($slug);
-        $item->forceDelete();
-    }
-   
-    public function restore(string $slug) {
-        $item = $this->getBySlug($slug);
-        $item->restore();
-    }   
-
-    public function setStatus(string $slug) {   
-        $item = $this->getBySlug($slug);
-        $item->update(['active' => !$item->active]);
-        return $item;
+    public function delete(string $staffId, string $roleId) {
+        return $this->model->where('staff_id', $staffId)
+                    ->where('role_id', $roleId)
+                    ->delete();
     }
 }

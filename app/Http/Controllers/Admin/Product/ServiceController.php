@@ -16,7 +16,8 @@ class ServiceController extends CoreServiceController
         $datas = $this->buildQuery($query, $request)->paginate(10);
         return view("admin.page.product.service.index", compact('datas'));
     }
-    protected function buildQuery($query, $request) {
+    protected function buildQuery($query, $request)
+    {
         return $query
         ->when($request->has('searchByName'), function ($query) use ($request) {
             $query->where('services.name', 'LIKE', '%' . $request->searchByName . '%');

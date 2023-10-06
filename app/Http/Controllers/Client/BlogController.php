@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Http\Controllers\Core\BlogController as CoreBlogController;
 use Illuminate\Http\Request;
 
-class BlogController extends ClientController
+class BlogController extends CoreBlogController
 {
-    public function __construct() {
-        parent::__construct('blog');
-    }
     public function index(Request $request){
-        $blogs = $this->getModel()
+        $blogs = $this->getAlls()
             ->when($request->keyword, function ($q) use($request){
                 $q->where('slug','like',"%$request->keyword%");
             })
@@ -21,7 +19,7 @@ class BlogController extends ClientController
         return view("client.page.blog",compact('blogs'));
     }
     public function detail(string $slug){
-        $data=$this->adminRepository->findBySlug($slug);
+        $data=$this->getBySlug($slug);
         $description=$data->description;
         $title=$data->title;
         return view("client.page.detail",compact('description','title'));
