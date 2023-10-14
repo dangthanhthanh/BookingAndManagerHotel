@@ -66,6 +66,11 @@
             <i class="bi bi-circle"></i><span>Service</span>
           </a>
         </li>
+        <li>
+          <a class="{{ request()->route()->getName() === 'booking.event.index' ? 'active' : '' }}" href="{{route("booking.event.index")}}">
+            <i class="bi bi-circle"></i><span>Event</span>
+          </a>
+        </li>
       </ul>
     </li>
     {{-- end booking --}}
@@ -135,6 +140,12 @@
       <a class="nav-link {{ request()->route()->getName() === 'service.index' ? '' : 'collapsed' }}" href="{{route("service.index")}}">
         <i class="ri-home-7-line"></i>
         <span>Service</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {{ request()->route()->getName() === 'event.index' ? '' : 'collapsed' }}" href="{{route("event.index")}}">
+        <i class="ri-home-7-line"></i>
+        <span>Event</span>
       </a>
     </li>
     <li class="nav-item">

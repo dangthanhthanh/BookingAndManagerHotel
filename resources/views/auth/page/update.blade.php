@@ -10,7 +10,7 @@
     <div class="icon">
         <label for="image" id="image_label">
             <div id="icon-image" style="background-image: url(
-                {{$user->avatar->url}}
+                {{Auth::user()->avatar->url}}
             )">
             </div>
         </label>
@@ -19,7 +19,7 @@
     <div class="formcontainer">
         <div class="container">
             <label for="user_name"><strong>User Name</strong><span class="text-danger">(*)</span></label>
-            <input type="text" placeholder="Enter User Name" name="user_name" value="{{ (Auth::user()->user_name) }}" autofocus/>
+            <input type="text" placeholder="Enter User Name" name="user_name" value="{{ ucfirst(Auth::user()->user_name) }}" autofocus/>
             @error('user_name')
                 <span class="text-danger">{{ $message }}</span><br>
             @enderror
@@ -47,12 +47,12 @@
             @error('gender')
                 <span class="text-danger">{{ $message }}</span><br>
             @enderror
-            <label for="password"><strong>New Password</strong><span class="text-danger">(*)</span></label>
+            <label for="password"><strong>New Password</strong></label>
             <input type="password" placeholder="Enter Password" name="password" autofocus/>
             @error('password')
                 <span class="text-danger">{{ $message }}</span><br>
             @enderror 
-            <label for="comfirm_password"><strong>Confirm New Password </strong><span class="text-danger">(*)</span></label>
+            <label for="comfirm_password"><strong>Confirm New Password </strong></label>
             <input type="password" placeholder="Comfirm Password" name="comfirm_password" autofocus> 
             @error('confirm_password')
                 <span class="text-danger">{{ $message }}</span><br>

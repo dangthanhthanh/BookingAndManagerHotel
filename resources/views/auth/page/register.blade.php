@@ -33,7 +33,7 @@
                 <span class="text-danger">{{ $message }}</span>
             @enderror 
             <label for="confirm_password">Confirm Password <span class="text-danger">(*)</span></label>
-            <input type="password" placeholder="Confirm Password" name="confirm_password" autofocus> 
+            <input type="password" placeholder="Confirm Password" name="confirm_password"> 
             @error('confirm_password')
                 <span class="text-danger">{{ $message }}</span>
             @enderror

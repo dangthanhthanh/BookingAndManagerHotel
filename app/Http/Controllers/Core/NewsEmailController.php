@@ -11,9 +11,12 @@ use Illuminate\Http\Request;
 class NewsEmailController extends Controller
 {
     private $repository;
-    public function __construct(NewsEmailInterface $repository)
+    private $userController;
+    public function __construct(NewsEmailInterface $repository,
+                                UserController $userController)
     {
         $this -> repository = $repository;
+        $this -> userController = $userController;
     }
     protected function getAlls()
     {
@@ -38,15 +41,17 @@ class NewsEmailController extends Controller
             : null;
         return redirect()->back()->with('messenger','1');
     }
+    //main verificated for user account
     public function verificated(Request $request)
     {
         $this->validateVerificatedRequest($request);
-        $updated = $this->getById($request->id);
-        if($updated && $updated -> email_verified_token === $request->_token){
-            $this->updateVerification($updated);
+        $user = $this->userController->getBySlug($request->id);
+
+        if($user && ($user -> email_verified_token === $request->_token)){
+            $this->updateVerification($user);
             return redirect()->route('home')->with('messenger',1);
         }
-        return abort(404);
+        return abort(419);
     }
     private function updateVerification($updated)
     {

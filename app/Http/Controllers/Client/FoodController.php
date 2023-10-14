@@ -22,7 +22,7 @@ class FoodController extends CoreFoodController
     public function detail(string $slug){
         $data=$this->getBySlug($slug);
         $description=$data->description;
-        $title=$data->title;
+        $title=$data->name;
         return view("client.page.detail",compact('description','title'));
     }
 }

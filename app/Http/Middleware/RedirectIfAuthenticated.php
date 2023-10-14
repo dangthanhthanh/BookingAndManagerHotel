@@ -21,10 +21,28 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                return $this->redirectWithRoleUser();
             }
         }
-
         return $next($request);
+    }
+    /**
+     * Handle get router with request.
+     *
+     * 
+     */
+    private function redirectWithRoleUser(){
+        if(Auth::user()->isCustomer()){
+            return redirect(RouteServiceProvider::HOME);
+        }elseif(Auth::user()->isStaff()){
+            return redirect(RouteServiceProvider::STAFF);
+        }elseif(Auth::user()->isManager()){
+            return redirect(RouteServiceProvider::MANAGER);
+        }elseif(Auth::user()->isAdmin()){
+            return redirect(RouteServiceProvider::ADMIN);
+        }elseif(Auth::user()->isCashier()){
+            return redirect(RouteServiceProvider::CASHIER);
+        }
+        return redirect(RouteServiceProvider::HOME);
     }
 }

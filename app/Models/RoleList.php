@@ -12,7 +12,7 @@ class RoleList extends Model
     protected $table = 'role_lists';// Set the table name for the model
     public $timestamps = true;
     protected $fillable = [// Define the columns that can be mass-assigned
-        'staff_id',
+        'user_id',
         'role_id',
         'created_at',
     ];

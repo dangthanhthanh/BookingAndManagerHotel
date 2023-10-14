@@ -35,7 +35,7 @@
 								<label for="room_type"><strong>Room Type</strong><span class="text-danger">(*)</span></label>
 								<select name="room_type" id="" class="" required>
 									@foreach ($category as $item)
-										<option value="{{$item->id}}" @selected($request['room_type'] === $item->slug) style="color: black; padding: 20px;">{{$item->name}}</option>
+										<option value="{{$item->id}}" @selected($request['room_type'] === $item->slug) style="color: black; padding: 20px;">{{ucfirst($item->name)}}</option>
 									@endforeach
 								</select>
 								@error('room_type')

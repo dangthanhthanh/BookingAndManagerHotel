@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Core\UserController;
 use App\Models\Gallery;
 use App\Models\Role;
 use App\Models\RoleList;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Repositories\EloquentUserRepository;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -26,7 +28,7 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
-
+    private $eloquentUserRepository;
     /**
      * Where to redirect users after registration.
      *
@@ -39,9 +41,10 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(EloquentUserRepository $eloquentUserRepository)
     {
         $this->middleware('guest');
+        $this -> eloquentUserRepository = $eloquentUserRepository;
     }
 
     /**
@@ -53,6 +56,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            '_token' => ['required', 'string'],
             'user_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['required','unique:users', 'max:15'],
@@ -69,12 +73,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'user_name' => $data['user_name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'avatar_id' => Gallery::first()->id,
-            'password' => Hash::make($data['password']),
-        ]);
+        $data['avatar_id'] = Gallery::first()->id;
+        $data['password'] = Hash::make($data['password']);
+        $data['email_verified_token'] = Hash::make($data['_token']);
+        unset($data['_token']);
+        return $this->eloquentUserRepository->create($data);
     }
 }

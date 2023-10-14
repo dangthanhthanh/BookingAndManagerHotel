@@ -13,7 +13,10 @@
                <li class="{{ request()->route()->getName() === 'client.service.index'? 'active': '' }}">
                   <a class="nav-link" href="{{route("client.service.index")}}">Service</a>
                </li>
-               <li class="{{ request()->route()->getName() === 'blog'? 'active': '' }}">
+               <li class="{{ request()->route()->getName() === 'client.event.index'? 'active': '' }}">
+                  <a class="nav-link" href="{{route("client.event.index")}}">Event</a>
+               </li>
+               <li class="{{ request()->route()->getName() === 'client.blog.index'? 'active': '' }}">
                   <a class="nav-link" href="{{route("client.blog.index")}}">Blog</a>
                </li>
                <li class="{{ (request()->route()->getName() === 'client.about.index' || request()->route()->getName() === 'client.contact.index')? 'active': '' }}">
@@ -43,7 +46,7 @@
                @else
                   <li class="{{ (request()->route()->getName() === 'auth.account.index' || request()->route()->getName() === 'auth.account.cart' )? 'active': '' }}">
                      <a id="dropdownMenu" class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ Auth::user()->user_name }}
+                        {{ ucfirst(Auth::user()->user_name) }}
                      </a>
                      <div class="dropdown-menu" id="dropdownmenu" style="background: rgba(0,0,0,0.7)">
                         <a class="dropdown-item nav-link {{ request()->route()->getName() === 'auth.account.index' ? 'bg-light text-dark':''}}" href="{{ route('auth.account.index') }}">
@@ -66,7 +69,7 @@
                @endguest
             </ul>
          </nav>
-         <div class="book_button"><a href="{{route('client.booking.room.index')}}" onclick="Swal.showLoading()">Book</a></div>
+         <div class="book_button"><a href="{{route('client.booking.room.index')}}" onclick="Swal.showLoading()">Book Room</a></div>
          <!-- Hamburger Menu -->
          <div class="hamburger"><i class="fa fa-bars" aria-hidden="true"></i></div>
       </div>

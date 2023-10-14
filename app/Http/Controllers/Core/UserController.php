@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Core;
 
 use App\Contracts\UserInterface;
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -12,18 +13,27 @@ class UserController extends Controller
 {
     private $repository;
     private $roleListController;
+    private $roleController;
     private $imageController;
+    private static $roleNameForCustomer = 'customer';
+
     public function __construct(UserInterface $repository, 
                                 RoleListController $roleListController,
+                                RoleController $roleController,
                                 ImageController $imageController)
     {
         $this->repository = $repository;
         $this->roleListController = $roleListController;
+        $this->roleController = $roleController;
         $this->imageController = $imageController;
     }
     private function getAccountHasPermision()
     {
         return $this->roleListController->getAlls()->pluck('staff_id')->toArray();
+    }
+    public function getModel()
+    {
+        return $this->repository->getAlls();
     }
     protected function getAllStaffs()
     {
@@ -49,7 +59,7 @@ class UserController extends Controller
             ]);
         }
     }
-    protected function getBySlug(string $slug)
+    public function getBySlug(string $slug)
     {
         return $this->repository->getBySlug($slug);
     }
@@ -61,7 +71,9 @@ class UserController extends Controller
             if (!$user) {
                 throw new \Exception('User creation failed.');
             }
-            $this->createRoles($user->id, $data['roles'] ?? []);
+            $this->createRoles($user->id, $data['roles'] ?? [
+                $this->roleController->firstOrCreate(self::$roleNameForCustomer)->id,
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
             throw new \Exception('user account creation failed.');
@@ -71,13 +83,11 @@ class UserController extends Controller
     {
         try {
             $data = $this->processRequestData($request, $slug);
-            if ($this->repository->update($slug, $data)) {
-                throw new \Exception('User update failed.');
-            }
+            $this->repository->update($slug, $data);
             return true;
         } catch (\Exception $e) {
             DB::rollBack();
-            throw new \Exception('User update failed.');
+            return false;
         }
     }
     protected function processRequestData(Request $request, string $slug = null)

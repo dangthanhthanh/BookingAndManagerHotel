@@ -57,41 +57,32 @@
 <!-- Details Right -->
 @foreach ($services as $key => $item)
 <div class="details">
-	<div class="container">
-		<div class="row">
-			@if ($key%2===0)
-				<!-- Details Image -->
-				<div class="col-xl-7 col-lg-6">
-					<div class="details_image">
-						<div class="background_image" style='background-image:url("{{$item->image->url}}"'></div>
-					</div>
-				</div>
+    <div class="container">
+        <div class="row">
+            @php
+                $isEven = $key % 2 === 0;
+                $imageOrder = $isEven ? 'order-1' : 'order-2';
+                $contentOrder = $isEven ? 'order-2' : 'order-1';
+            @endphp
 
-				<!-- Details Content -->
-				<div class="col-xl-5 col-lg-6">
-					<div class="details_content">
-							{!!$item->description!!}
-					</div>
+            <!-- Details Image -->
+            <div class="col-xl-7 col-lg-6 {{$imageOrder}}">
+                <div class="details_image">
+                    <div class="background_image" style='background-image:url("{{$item->image->url}}")'></div>
+                </div>
+            </div>
+
+            <!-- Details Content -->
+            <div class="col-xl-5 col-lg-6 {{$contentOrder}}">
+                <div class="details_title">
+					{{ucfirst($item->name)}}
 				</div>
-			@else
-				<!-- Details Content -->
-				<div class="col-xl-5 col-lg-6 order-lg-1 order-2">
-					<div class="details_content">
-							{!!$item->description!!}
-					</div>
-				</div>
-				
-				<!-- Details Image -->
-				<div class="col-xl-7 col-lg-6 order-lg-2 order-1">
-					<div class="details_image">
-						<div class="background_image" style='background-image:url("{{$item->image->url}}"'></div>
-					</div>
-				</div>
-				
-			@endif
-			</div>
-		</div>
-	</div>
+                <div class="details_content">
+                    {!! $item->description !!}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endforeach
 @endsection

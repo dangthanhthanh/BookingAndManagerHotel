@@ -19,10 +19,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/';
     public const LOGIN = '/login';
-    public const MANAGER = '/manager';
-    public const BLOGER = '/bloger';
-    public const CASHIER = '/cashier';
-    public const STAFF = '/staff';
+    public const MANAGER = '/manager/dashboard';
+    public const ADMIN = '/manager/dashboard';
+    public const CASHIER = '/pos/payment';
+    public const STAFF = '/staff/show';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.

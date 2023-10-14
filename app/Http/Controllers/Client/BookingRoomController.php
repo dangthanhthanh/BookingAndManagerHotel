@@ -29,6 +29,8 @@ class BookingRoomController extends CoreBookingRoomController
         RoomCategoryController $roomCategoryController,
         ) 
     {
+        $this -> middleware('guest');
+        $this -> middleware('role:customer,staff');
         $this -> bookingRequestController = $bookingRequestController;
         $this -> orderController = $orderController;
         $this -> paymentController = $paymentController;

@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use App\Contracts\BlogCategoryInterface;
 use App\Contracts\BlogInterface;
+use App\Contracts\BookingEventInterface;
 use App\Contracts\BookingFoodInterface;
 use App\Contracts\BookingRequestInterface;
 use App\Contracts\BookingRoomInterface;
 use App\Contracts\BookingServiceInterface;
 use App\Contracts\ContactInterface;
+use App\Contracts\EventInterface;
 use App\Contracts\FoodCategoryInterface;
 use App\Contracts\FoodInterface;
 use App\Contracts\GalleryInterface;
@@ -34,11 +36,13 @@ use App\Interfaces\RepositoryInterface;
 use App\Repositories\AdminRepository;
 use App\Repositories\EloquentBlogCategoryRepository;
 use App\Repositories\EloquentBlogRepository;
+use App\Repositories\EloquentBookingEventRepository;
 use App\Repositories\EloquentBookingFoodRepository;
 use App\Repositories\EloquentBookingRequestRepository;
 use App\Repositories\EloquentBookingRoomRepository;
 use App\Repositories\EloquentBookingServiceRepository;
 use App\Repositories\EloquentContactRepository;
+use App\Repositories\EloquentEventRepository;
 use App\Repositories\EloquentFoodCategoryRepository;
 use App\Repositories\EloquentFoodRepository;
 use App\Repositories\EloquentGalleryRepository;
@@ -183,6 +187,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             RoomStatusInterface::class,
             EloquentRoomStatusRepository::class
+        );
+        $this->app->bind(
+            EventInterface::class,
+            EloquentEventRepository::class
+        );
+        $this->app->bind(
+            BookingEventInterface::class,
+            EloquentBookingEventRepository::class
         );
     }
 

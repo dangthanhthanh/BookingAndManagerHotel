@@ -37,7 +37,7 @@
 								<div class="blog_post_date"><a href="#">{{$item->created_at->format('M d, y')}}</a></div>
 							</div>
 							<div class="blog_post_content">
-								<div class="blog_post_title"><a href="{{route('client.blog.detail',$item->slug)}}">{{$item->name}}</a></div>
+								<div class="blog_post_title"><a href="{{route('client.blog.detail',$item->slug)}}">{{ucfirst($item->name)}}</a></div>
 								<div class="blog_post_info">
 									<ul class="d-flex flex-row align-items-start justify-content-start flex-wrap">
 										<li class="d-flex flex-row align-items-center justify-content-start">
@@ -112,7 +112,7 @@
 						<div class="sidebar_list">
 							<ul>
 								@foreach ($category as $item)
-									<li><a href="{{route('client.blog.index',['category'=>$item->slug])}}">{{$item->name}}</a></li>
+									<li><a href="{{route('client.blog.index',['category'=>$item->slug])}}">{{ucfirst($item->name)}}</a></li>
 								@endforeach
 							</ul>
 						</div>

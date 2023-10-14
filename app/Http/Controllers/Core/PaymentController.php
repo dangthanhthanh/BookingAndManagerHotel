@@ -12,15 +12,11 @@ use PhpParser\Node\Stmt\TryCatch;
 class PaymentController extends Controller
 {
     private $repository;
-    private $vnPayController;
-    private $cashController;
-    public function __construct(PaymentInterface $repository,
-                                VnPayController $vnPayController,
-                                CashController $cashController)
+    public function __construct(
+        PaymentInterface $repository,
+        )
     {
         $this -> repository = $repository;
-        $this -> vnPayController = $vnPayController;
-        $this -> cashController = $cashController;
     }
     public function getAlls()
     {
@@ -47,16 +43,5 @@ class PaymentController extends Controller
     {
         $this->repository->delete($slug);
         return redirect()->back();
-    }
-
-    public function initializationPayment(string $orderId,float $totalBalance = null , $method = null)
-    {
-        if ($method === 'cash') {
-            return $this->cashController->initializationPaymentWithCash($orderId);
-        } elseif ($method === 'vnpay') {
-            return $this->vnPayController->initializationPaymentWithVnpay('vnpay_atm', $orderId, $totalBalance);
-        }
-        Log::info('error when initializationPayment error method' .$method );
-        return redirect()->back()->with('messenger',0);
     }
 }

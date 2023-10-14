@@ -59,7 +59,7 @@
 							<label for="room_type"><strong>Room Type</strong><span class="text-danger">(*)</span></label>
 							<select name="room_type" id="" class="" required>
 								@foreach ($category as $item)
-									<option value="{{$item->slug}}" @selected($request['room_type'] === $item->slug) style="color: black; padding: 20px;">{{$item->name}}</option>
+									<option value="{{$item->slug}}" @selected($request['room_type'] === $item->slug) style="color: black; padding: 20px;">{{ucfirst($item->name)}}</option>
 								@endforeach
 							</select>
 							@error('room_type')
@@ -132,7 +132,7 @@
 								@php
 									$request['room_type'] = $item->slug;
 								@endphp
-								<div class="booking_link"><a href="{{route('client.booking.room.index',$request)}}">{{$item->name}}</a></div>
+								<div class="booking_link"><a href="{{route('client.booking.room.index',$request)}}">{{ucfirst($item->name)}}</a></div>
 							</div>
 						@endforeach
 						<!-- Slide -->

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Account\CustomerController;
 use App\Http\Controllers\Admin\Account\StaffController;
+use App\Http\Controllers\Admin\Booking\BookingEventController;
 use App\Http\Controllers\Admin\Booking\BookingFoodController;
 use App\Http\Controllers\Admin\Booking\BookingRoomController;
 use App\Http\Controllers\Admin\Booking\BookingServiceController;
@@ -17,17 +18,20 @@ use App\Http\Controllers\Admin\Category\ServiceCategoryController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GalleryController;
-use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\Product\BlogController;
 use App\Http\Controllers\Admin\Product\FoodController;
 use App\Http\Controllers\Admin\Product\RoomController;
 use App\Http\Controllers\Admin\Product\ServiceController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\Product\EventController;
 use App\Http\Controllers\Admin\Product\RoomCategoryController;
 use App\Http\Controllers\Admin\ReviewController;
 
-Route::prefix('/manager')->group(function () {
+Route::prefix('/manager')
+    ->middleware('manager')
+    ->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('manager.dashboard');
 
      //account
@@ -110,6 +114,21 @@ Route::prefix('/manager')->group(function () {
             // Route::post('/forceDelete/{slug}', [ServiceController::class, 'forceDelete'])->name('service.forceDelete');
         });
 
+        Route::prefix('/event')->group(function () {
+            //view
+            Route::get('/', [EventController::class, 'index'])->name('event.index');
+            Route::get('/edit/{slug}', [EventController::class, 'edit'])->name('event.edit');
+            Route::get('/add', [EventController::class, 'add'])->name('event.add');
+            Route::get('/description/{slug}', [EventController::class, 'description'])->name('event.description');
+            //handle
+            Route::post('/store', [EventController::class, 'store'])->name('event.store');
+            Route::post('/update/{slug}', [EventController::class, 'update'])->name('event.update');
+            Route::post('/delete/{slug}', [EventController::class, 'delete'])->name('event.delete');
+            Route::post('/setstatus/{slug}', [EventController::class, 'setstatus'])->name('event.setstatus');
+            //forceDelete handle
+            // Route::post('/forceDelete/{slug}', [EventController::class, 'forceDelete'])->name('event.forceDelete');
+        });
+
         Route::prefix('/food')->group(function () {
             //view
             Route::get('/', [FoodController::class, 'index'])->name('food.index');
@@ -180,7 +199,7 @@ Route::prefix('/manager')->group(function () {
     });
 
    
-    //booking
+    // booking
     Route::prefix('/booking')->group(function () {
         // Room routes
         Route::prefix('/room')->group(function () {
@@ -204,6 +223,13 @@ Route::prefix('/manager')->group(function () {
             Route::post('/delete/{slug}', [BookingServiceController::class, 'delete'])->name('booking.service.delete');
             Route::post('/restore/{slug}', [BookingServiceController::class, 'restore'])->name('booking.service.restore');
             Route::post('/forceDelete/{slug}', [BookingServiceController::class, 'forceDelete'])->name('booking.service.forceDelete');
+        });
+
+        Route::prefix('/event')->group(function () {
+            Route::get('/', [BookingEventController::class, 'index'])->name('booking.event.index');
+            Route::post('/delete/{slug}', [BookingEventController::class, 'delete'])->name('booking.event.delete');
+            Route::post('/restore/{slug}', [BookingEventController::class, 'restore'])->name('booking.event.restore');
+            Route::post('/forceDelete/{slug}', [BookingEventController::class, 'forceDelete'])->name('booking.event.forceDelete');
         });
     });
 

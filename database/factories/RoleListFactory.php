@@ -18,7 +18,7 @@ class RoleListFactory extends Factory
     public function definition(): array
     {
         $data = [
-            'staff_id' => $this->faker->numberBetween(1, 50),
+            'user_id' => $this->faker->numberBetween(1, 50),
             'role_id' => $this->faker->numberBetween(1, 10),
         ];
         

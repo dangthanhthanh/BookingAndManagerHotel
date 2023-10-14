@@ -1,9 +1,14 @@
-@extends("auth.layouts.auth")
+@extends("auth.layout.auth")
 @section("css")
-    @include("client.public.cssform")
+    @include("client.component.css_js.cssform")
 @endsection
 @section("form")
-<form method="POST" action="{{ route('password.email') }}">
+    @if (session('status'))
+        <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+        </div>
+    @endif
+    <form method="POST" action="{{ route('password.email') }}">
     @csrf
     <h1>Reset Password</h1>
     <div class="icon">
@@ -17,7 +22,7 @@
                 <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
-        <button type="submit" onclick="Swal.showLoading()"><strong>Send Password Reset Link</strong></button>
+        <button type="submit" onclick="Swal.showLoading()"><strong>Send Password Reset Link In Your Mail</strong></button>
     </div>
 </form>
 @endsection

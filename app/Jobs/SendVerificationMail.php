@@ -20,10 +20,15 @@ class SendVerificationMail implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(string $email, string $table, string $token, string $id, string $user_name)
+    public function __construct(
+        string $email, 
+        string $route, 
+        string $token, 
+        string $id, 
+        string $user_name)
     {
         $this -> email = $email;
-        $this -> url = route('client.'.$table.'.verification',['id' => $id ,'_token' => $token]);
+        $this -> url = route('client.'.$route.'.verification',['id' => $id ,'_token' => $token]);
         $this -> subject = 'Wellcome '.ucfirst($user_name).' To Booking Hotel';
     }
 

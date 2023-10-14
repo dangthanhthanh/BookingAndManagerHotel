@@ -7,21 +7,24 @@
                <a class="nav-link" href="{{route("home")}}">Home</a>
             </li>
             <li class="{{ request()->route()->getName() === 'client.room.index'? 'active': '' }}">
-               <a class="nav-link" href="{{route("client.service.index")}}">Room</a>
+               <a class="nav-link" href="{{route("client.room.index")}}">Room</a>
             </li>
             <li class="{{ request()->route()->getName() === 'client.service.index'? 'active': '' }}">
                <a class="nav-link" href="{{route("client.service.index")}}">Service</a>
             </li>
-            <li class="{{ request()->route()->getName() === 'client.service.index'? 'active': '' }}">
+            <li class="{{ request()->route()->getName() === 'client.event.index'? 'active': '' }}">
+               <a class="nav-link" href="{{route("client.event.index")}}">Event</a>
+            </li>
+            <li class="{{ request()->route()->getName() === 'client.food.index'? 'active': '' }}">
                <a class="nav-link" href="{{route("client.food.index")}}">Food</a>
             </li>
-            <li class="{{ request()->route()->getName() === 'client.service.index'? 'active': '' }}">
+            <li class="{{ request()->route()->getName() === 'client.blog.index'? 'active': '' }}">
                <a class="nav-link" href="{{route("client.blog.index")}}">Blog</a>
             </li>
-            <li class="{{ request()->route()->getName() === 'client.service.index'? 'active': '' }}">
+            <li class="{{ request()->route()->getName() === 'client.about.index'? 'active': '' }}">
                <a class="nav-link" href="{{route("client.about.index")}}">About Us</a>
             </li>
-            <li class="{{ request()->route()->getName() === 'client.service.index'? 'active': '' }}">
+            <li class="{{ request()->route()->getName() === 'client.contact.index'? 'active': '' }}">
                <a class="nav-link" href="{{route("client.contact.index")}}">Contact</a>
             </li>
            @auth

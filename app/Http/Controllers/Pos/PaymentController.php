@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pos;
 
 use App\Contracts\UserInterface;
 use App\Http\Controllers\BaseModelController;
+use App\Http\Controllers\Core\BookingEventController;
 use App\Http\Controllers\Core\BookingFoodController;
 use App\Http\Controllers\Core\BookingRoomController;
 use App\Http\Controllers\Core\BookingServiceController;
@@ -42,6 +43,7 @@ class PaymentController extends CorePaymentController
     private $bookingFoodController;
     private $bookingServiceController;
     private $bookingRoomController;
+    private $bookingEventController;
     private $userController;
     private $imageController;
     private $userRepository;
@@ -49,6 +51,7 @@ class PaymentController extends CorePaymentController
     public function __construct(BookingFoodController $bookingFoodController,
                                 BookingServiceController $bookingServiceController,
                                 BookingRoomController $bookingRoomController,
+                                BookingEventController $bookingEventController,
                                 UserController $userController,
                                 UserInterface $userRepository,
                                 OrderController $orderController,
@@ -72,6 +75,7 @@ class PaymentController extends CorePaymentController
         $this -> bookingFoodController = $bookingFoodController;
         $this -> bookingServiceController = $bookingServiceController;
         $this -> bookingRoomController = $bookingRoomController;
+        $this -> bookingEventController = $bookingEventController;
         $this -> userController = $userController;
         $this -> imageController = $imageController;
         $this -> userRepository = $userRepository;
@@ -89,6 +93,7 @@ class PaymentController extends CorePaymentController
         session(['booking_for_food' => null]);
         session(['booking_for_room' => null]);
         session(['booking_for_service' => null]);
+        session(['booking_for_event' => null]);
         
         return redirect()->back()->with('messenger', 1);
     }
@@ -211,6 +216,7 @@ class PaymentController extends CorePaymentController
             $this->createBookingItems('orderRoom', $paymentOrder, $orderId);
             $this->createBookingItems('orderService', $paymentOrder, $orderId);
             $this->createBookingItems('orderFood', $paymentOrder, $orderId);
+            $this->createBookingItems('orderEvent', $paymentOrder, $orderId);
         } catch (\Exception $e) {
             Log::error("Error creating booking Payment: " . $e->getMessage());
             throw $e; // Re-throw the exception to indicate failure
@@ -229,6 +235,9 @@ class PaymentController extends CorePaymentController
                         break;
                     case 'orderFood':
                         $this->createBookingFoods($paymentOrder[$type], $orderId);
+                        break;
+                    case 'orderEvent':
+                        $this->createBookingEvents($paymentOrder[$type], $orderId);
                         break;
                 }
             }
@@ -268,6 +277,20 @@ class PaymentController extends CorePaymentController
         }
     }
 
+    private function createBookingEvents(array $orderEvents, string $orderId)
+    {
+        foreach ($orderEvents as $item) {
+            $this->bookingEventController->create(
+                $orderId,
+                $item['productId'], 
+                $item['checkIn'], 
+                $item['quantity'], 
+                $item['productCost'], 
+                $item['scort']
+            );
+        }
+    }
+
     private function createBookingFoods(array $orderFoods, string $orderId)
     {
         foreach ($orderFoods as $item) {
@@ -284,7 +307,7 @@ class PaymentController extends CorePaymentController
     private function getSumToCheckTotalBalance($paymentOrder)
     {
         $totalBalance = 0;
-        $orderTypes = ['orderRoom', 'orderFood', 'orderService'];
+        $orderTypes = ['orderRoom', 'orderFood', 'orderService' , 'orderEvent'];
         foreach ($orderTypes as $type) {
             if (!empty($paymentOrder[$type])) {
                 foreach ($paymentOrder[$type] as $item) {
@@ -298,20 +321,9 @@ class PaymentController extends CorePaymentController
     public function cashHandlePayment(string $slug){
         return DB::transaction(function () use ($slug) {
             $order = $this->getModelWithBaseModelController('order')->adminRepository->findBySlug($slug);
-            $payment = $this -> createdPayment($order->id, 'cash', $this->paid);//(orderid,method,status=paid)
+            $payment = $this -> created($order->id, 'cash', $this->paid);//(orderid,method,status=paid)
             return view("pos.page.checkout.status",compact('order'))->with('messenger',$payment ? 1 : 0);
         });
-    }
-    private function createdPayment(string $orderId,string $method,string $status)
-    {
-        $method_id = $this -> getModelWithBaseModelController("payment_method")->getModel()->firstOrCreate(['name' => $method])->id;
-        $status_id = $this -> getModelWithBaseModelController("payment_status")->getModel()->firstOrCreate(['name' => $status])->id;
-        $data = [
-            'order_id' => $orderId,
-            'payment_method_id' => $method_id,
-            'payment_status_id' => $status_id,
-        ];
-        return $this->getModelWithBaseModelController('payment')->adminRepository->create($data);
     }
     public function successPaymentWithVnpay(string $slug)
     {

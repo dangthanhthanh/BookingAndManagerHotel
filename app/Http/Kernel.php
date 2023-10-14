@@ -2,6 +2,14 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Administrator;
+use App\Http\Middleware\Cashier;
+use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\Customer;
+use App\Http\Middleware\Manager;
+use App\Http\Middleware\RedirecWithAccess;
+use App\Http\Middleware\Staff;
+use App\Http\Middleware\VerifyEmail;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -21,6 +29,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \App\Http\Middleware\LogRoutes::class,
     ];
 
     /**
@@ -43,12 +52,6 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-
-        'manager.cashier.bloger' => [
-            \App\Http\Middleware\IsManager::class,
-            \App\Http\Middleware\IsCashier::class,
-            \App\Http\Middleware\IsBloger::class
-        ],
     ];
 
     /**
@@ -69,11 +72,13 @@ class Kernel extends HttpKernel
         'precognitive' => \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'is.manager' => \App\Http\Middleware\IsManager::class,
-        'is.bloger' => \App\Http\Middleware\IsBloger::class,
-        'is.cashier' => \App\Http\Middleware\IsCashier::class,
-        'is.customer' => \App\Http\Middleware\IsCustomer::class,
-        'is.staff' => \App\Http\Middleware\IsStaff::class,
+        // 'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'admin' => Administrator::class, // quyen quan tri web
+        'manager' =>  Manager::class,// quan tri hotel item
+        'cashier' =>  Cashier::class,// quan tri thanh toan
+        'customer' =>  Customer::class, // khach hang
+        'staff' =>  Staff::class, // nhan vien 
+        'verify.email' =>  VerifyEmail::class, // verify email ,send email verify, redirect home
+        'role' =>  CheckRole::class, // check role
     ];
 }

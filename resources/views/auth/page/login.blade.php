@@ -10,13 +10,6 @@
     <div class="icon">
       <i class="fas fa-user-circle"></i>
     </div>
-    <div>
-        test account: <br>
-        GeneralManager@example.com <br>
-        AssistantManager1@example.com <br>
-        cashier3@example.com <br>
-        user1@example.com 
-    </div>
     <div class="formcontainer">
         <div class="container">
             <label for="mail"><strong>E-mail</strong><span class="text-danger">(*)</span></label>
@@ -30,22 +23,27 @@
                 <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
-        <button type="submit" onclick="Swal.showLoading()"><strong>LOGIN</strong></button>
-        <br>OR<br>
-        <a href="{{ route('login.google') }}" onclick="Swal.showLoading()" style="width:200px; height: 50px; color: white;" class="btn button">{{ __('Google Sign in') }} <i style="font-size: 30px;" class="fab fa-google"></i></a>
-        <div class="d-flex justify-content-between">
-            <style>
-                .check_remenber{
-                    display: inline;
-                }
-            </style>
-            <div class="check_remenber">
-                <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                <label for="remember">
+        <div class="d-md-flex d-sm-block justify-content-between">
+            <div class="form-check" >
+                <input class="form-check-input" style="width: 12px; height: 12px;" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                <label class="form-check-label" for="remember">
                     {{ __('Remember Me') }}
                 </label>
             </div>
-            <a onclick="Swal.showLoading()" href="{{route("password.request")}}"><strong>Forgot password?</strong></a>
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <button type="submit" class="button" style="width: 300px;">
+                    {{ __('Login') }}
+                </button>
+                <span>OR</span>
+                <div class="button" style="width: 300px;">
+                    <a href="{{ route('login.google') }}" onclick="Swal.showLoading()">{{ __('Google Sign With') }} <i style="font-size: 30px;" class="fab fa-google"></i></a>
+                </div>
+            </div>
+            @if (Route::has('password.request'))
+                <a class="btn btn-link" href="{{ route('password.request') }}">
+                    {{ __('Forgot Your Password?') }}
+                </a>
+            @endif
         </div>
     </div>
 </form>

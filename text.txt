@@ -1,71 +1,60 @@
-repository:
+khach hang  cung nen co phan quyen la role_id cua 'customer' vi sau nay co kha nang mo ron thanh hach hang thanh vien(vip vvip ...);
+    =>cung se de quan ly hon
++quyen ung dung
+mac dinh role table se co ([
+    'admin', //quyen quan tri trang wwep
+    'manager', //quyen quan tri khach san 
+    'cashier', //quyen quan tri giao dich 
+    'customer', //quyen quan tri tai khoan chu
+    'staff', //quyen quan tri tai khoan chu
+])
++quyen data
+admin[
+    1.quyen crud du lieu data cua table 'hotel' // dang hoan thien
+    2.tuy chinh quyen cua quan tri vien khach san.( crud tai khoan quan tri vien khach san)
+    3.quyen xem thong ke cua toan bo hotel.
+    4.xem thong ke cua 1 hotel phu thuoc
+    5.tao vung nho moi cho database(hotel) + tao quyen truy cap cho manager
+    note[khi thuc hien thao tac forceDelete thi xo xach du lieu lien quan].
+]
 
-roomrepository(
-    getalls
-    getBySlug 
-    created 
-    update 
-    deleted 
-    forceDelete 
-    restore 
-    setStatus 
-    #CheckStatus
-    )
+manager[
+    1.xem thong ke cua 1 hotel phu thuoc
+    2.crud thanh vien (staff table with hotel id) cua 1 hotel phu thuoc
+    3.crud bai viet, san phan, staff_account
+    4.xem tat ca giao dich trong [ngay,thang,quy,nam]
+    5.phan cong chi tiet cong viet cho staff_account.
+    6.cap nhat thong tin staff data
+    note[chi cap quyen xoa cung tu duoi cap hotel data]
+]
 
-roomcategory(
-    getAlls 
-    getAllRoomByCategory 
-    getBySlug 
-    created 
-    update 
-    deleted 
-    forceDelete 
-    restore 
-    setStatus)
+cashier[
+    1.tao giao dich (order table)
+    2.tao giao dich (order table) voi order_id //dang hoan thien
+    3.xem giao dich trong khoan thoi gian gan nhat(time befor <= 30 phut) voi giao dich duoc tao boi user_id cua account truy cap hien tai
+]
 
-bookingroom(
-    getalls 
-    getBySlug 
-    created 
-    deleted)
+customer[
+    1.truy cap du lieu ca nhan co ban(table USER[]) chinh sua thong tin.
+        + khi muon xoa tai khan thi thuc hien xoa men truoc sau do gui thong tin ve vho manager xac thuc truoc khi xoa cung 
+    2.tao don hang cap 1(don hang chua xac nhan)
+    3.thanh toan cho don hang cap 1( thanh toan 1 phan (=>don hang cap 2) hoat toan phan(=>don hang cap 3) cho don hang sau khi)
+        +qua trinh tren dong thoi la xac thuc cho don hang.
+    4.quyen truy cap co ban cho cac trang client.
+]
 
-Roomstatus(
-    getalls 
-    getAllRoomByStatus 
-    created 
-    forceDelete)
+staff[(dang hoan thien)
+    1.truy cap trang todolist job
+    2.check list cho todolist
+    3.xac thuc check list( thoi gian bat dau , ket thuc cong viec , trang thai con viec , ghi chu cong viec)
+    4.check_in-check_out thoi gian lam viec
+    note[1 tai khoan duy nhat khong duoc quyen chinh sua thong tin]
+]
+    
+note for all[
+    dam bao viec de quan ly thi chi manager moi co quyen chinh sua cho staff co cung hotel_id
+    nhung thong tin nhu user[id,slug] thi khong duoc quyen chinh sua tren bat ki truong hop nao
 
-
-food(getalls getBySlug created update deleted forceDelete restore setStatus)
-foodcategory(getalls getBySlug created update deleted forceDelete restore setStatus)
-bookingfood(getalls getBySlug created update deleted forceDelete restore setStatus)
-
-service(getalls getBySlug created update deleted forceDelete restore setStatus)
-servicecategory(getalls getBySlug created update deleted forceDelete restore setStatus)
-bookingservice(getalls getBySlug created update deleted forceDelete restore setStatus)
-
-bookingrequest(getalls getBySlug created update deleted forceDelete restore setStatus)
-
-blog(getalls getBySlug created update deleted forceDelete restore setStatus)
-blogcategory(getalls getBySlug created update deleted forceDelete restore setStatus)
-
-contact(getalls getBySlug created update deleted forceDelete restore setStatus)
-Statuscontact(getalls getBySlug created update deleted forceDelete restore setStatus)
-
-payment(getalls getBySlug created update deleted forceDelete restore setStatus)
-paymentmethod(getalls getBySlug created update deleted forceDelete restore setStatus)
-paymentStatus(getalls getBySlug created update deleted forceDelete restore setStatus)
-
-user(getalls getBySlug created update deleted forceDelete restore setStatus)
-roleuser(getalls getBySlug created update deleted forceDelete restore setStatus)
-rolelistuser(getalls getBySlug created update deleted forceDelete restore setStatus)
-
-order(getalls getBySlug created update deleted forceDelete restore setStatus)
-
-review(getalls getBySlug created update deleted forceDelete restore setStatus)
-
-newEmail(getalls getBySlug created update deleted forceDelete restore setStatus)
-
-image(getalls getBySlug created update deleted forceDelete restore setStatus)
-
-#hotel(getalls getBySlug created update deleted forceDelete restore setStatus)
+    voi cac bai viet ........
+] 
+    

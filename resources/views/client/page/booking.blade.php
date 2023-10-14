@@ -119,7 +119,7 @@
 									</div>
 								</div>
 								<div class="booking_price">{{$item->cost}}.đ/night</div>
-								<div class="booking_link"><a href="{{route('booking',['room_type'=>$item->id])}}">{{$item->name}}</a></div>
+								<div class="booking_link"><a href="{{route('booking',['room_type'=>$item->id])}}">{{ucfirst($item->name)}}</a></div>
 							</div>
 						@endforeach
 						<!-- Slide -->

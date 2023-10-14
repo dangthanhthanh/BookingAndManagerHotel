@@ -17,6 +17,10 @@ class RoleController extends Controller
     {
         return $this->repository->getAlls();
     }
+    public function firstOrCreate(string $role)
+    {
+        return $this->repository->getAlls()->where('name',$role)->firstOrCreate();
+    }
     public function create(Request $request)
     {
         $bool = $this->repository->create($this->validateRequest($request));

@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Contracts\RoleInterface;
 use App\Models\Role;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EloquentRoleRepository implements RoleInterface {
     protected $model;

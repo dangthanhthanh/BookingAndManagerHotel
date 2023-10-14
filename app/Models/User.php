@@ -34,8 +34,9 @@ class User extends Authenticatable
         'phone',
         'active',
         'address',
+        'email_verified_token',
+        'email_verified_at',
     ];
-
     protected $dates = ['deleted_at']; // date
     /**
      * The attributes that should be hidden for serialization.
@@ -60,51 +61,90 @@ class User extends Authenticatable
     ];
     public function avatar()
     {
-        return $this->hasOne(Image::class, 'id');
+        return $this->hasOne(Image::class, 'id','avatar_id');
     }
 
     public function roleLists()
     {
-        return $this->hasMany(RoleList::class, 'staff_id');
+        return $this->hasMany(RoleList::class, 'user_id');
     }
 
+    public function roles()
+    {
+        return $this->roleLists->pluck('role_id')->toArray();
+    }
+
+    public function checkRole(string $role){
+        $id = Role::where('name',$role)->first()->id;
+        if(in_array($id,$this->roles())){
+            return true;
+        }
+        return false;
+    }
+     /**
+     * Determine if the current user is authenticated.
+     *
+     * @return bool
+     */
     public function isManager()
     {
-        return $this->roles->contains('name', 'manager');
+        return $this->checkRole('manager');
     }
-
+    /**
+     * Determine if the current user is authenticated.
+     *
+     * @return bool
+     */
     public function isBloger()
     {
-        return $this->roles->contains('name', 'bloger');
+        return $this->checkRole('bloger');
     }
-
+     /**
+     * Determine if the current user is authenticated.
+     *
+     * @return bool
+     */
     public function isCashier()
     {
-        return $this->roles->contains('name', 'cashier');
+        return $this->checkRole('cashier');
     }
-
-    public function isGuest()
-    {
-        return $this->user_name === 'default guest';
-    }
+     /**
+     * Determine if the current user is authenticated.
+     *
+     * @return bool
+     */
     public function isCustomer()
     {
-        return $this->roles->isEmpty();;
+        return $this->checkRole('customer');
     }
-
+     /**
+     * Determine if the current user is authenticated.
+     *
+     * @return bool
+     */
     public function isStaff()
     {
-        return $this->roles->contains('name', 'staff');
+        return $this->checkRole('staff');
     }
-
-    public function payments()
+     /**
+     * Determine if the current user is authenticated.
+     *
+     * @return bool
+     */
+    public function isAdmin()
     {
-        return $this->hasManyThrough(Payment::class, Order::class, 'customer_id', 'order_id');
+        return $this->checkRole('admin');
+    }
+     /**
+     * Determine if the current user is authenticated.
+     *
+     * @return bool
+     */
+    public function isVerificated()
+    {
+        return $this->email_verified_at !== null;
     }
 
-    public function orders(){
-        return $this->hasMany(Order::class, 'customer_id');
-    }
     public function getSlugOptions(): SlugOptions
     {
         $idHash = hash('md5', $this->user_name.$this->id);

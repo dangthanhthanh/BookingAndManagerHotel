@@ -6,14 +6,17 @@ namespace Database\Seeders;
 
 use App\Models\Blog;
 use App\Models\BlogCategory;
+use App\Models\BookingEvent;
 use App\Models\BookingFood;
 use App\Models\BookingRequest;
 use App\Models\BookingRoom;
 use App\Models\BookingService;
 use App\Models\Contact;
+use App\Models\Event;
 use App\Models\Food;
 use App\Models\FoodCategory;
 use App\Models\Gallery;
+use App\Models\Guest;
 use App\Models\Image;
 use App\Models\NewsEmail;
 use App\Models\Order;
@@ -43,30 +46,96 @@ class DatabaseSeeder extends Seeder
         Image::factory(20)->create();
         // Create Account Manager
         User::factory()->create([
-            'user_name' => 'manager',
-            'phone' => '01635763785',
+            'user_name' => 'manager hotel',
+            // 'phone' => '01635763785',
+            'email' => 'dangtanthanh12a1@gmail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('123456789'), // password
+            'avatar_id'  => 1
+        ]);
+        User::factory()->create([
+            'user_name' => 'customer hotel',
+            // 'phone' => '01635763785',
             'email' => 'dangtanthanh12a2@gmail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('123456789'), // password
             'avatar_id'  => 1
         ]);
-        Role::factory()->create([
-            "name"   =>"Manager",
-        ]);
-        RoleList::factory()->create([
-            'staff_id' => 1,
-            'role_id' => 1,
-        ]);
-        // Create Account guest for pos payment
         User::factory()->create([
-            'user_name' => 'default guest',
-            'phone' => substr(hash('sha256','default guest'),11, 11),
-            'email' => 'dangtanthanh213213@gmail.com',
+            'user_name' => 'staff hotel',
+            // 'phone' => '01635763785',
+            'email' => 'dangtanthanh12a3@gmail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('123456789'), // password
             'avatar_id'  => 1
         ]);
+        User::factory()->create([
+            'user_name' => 'cashier hotel',
+            // 'phone' => '01635763785',
+            'email' => 'dangtanthanh12a4@gmail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('123456789'), // password
+            'avatar_id'  => 1
+        ]);
+        User::factory()->create([
+            'user_name' => 'admin hotel',
+            // 'phone' => '01635763785',
+            'email' => 'dangtanthanh12a5@gmail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('123456789'), // password
+            'avatar_id'  => 1
+        ]);
+        Role::factory()->create([
+            "name"   =>"manager",
+        ]);
+        Role::factory()->create([
+            "name"   =>"customer",
+        ]);
+        Role::factory()->create([
+            "name"   =>"staff",
+        ]);
+        Role::factory()->create([
+            "name"   =>"cashier",
+        ]);
+        Role::factory()->create([
+            "name"   =>"admin",
+        ]);
+
+        RoleList::factory()->create([
+            'user_id' => 1,
+            'role_id' => 1,
+        ]);
+
+        RoleList::factory()->create([
+            'user_id' => 2,
+            'role_id' => 2,
+        ]);
+
+        RoleList::factory()->create([
+            'user_id' => 3,
+            'role_id' => 3,
+        ]);
+
+        RoleList::factory()->create([
+            'user_id' => 4,
+            'role_id' => 4,
+        ]);
+
+        RoleList::factory()->create([
+            'user_id' => 5,
+            'role_id' => 5,
+        ]);
+        // Create Account guest for pos payment
+        // User::factory()->create([
+        //     'user_name' => 'default guest',
+        //     'phone' => substr(hash('sha256','default guest'),11, 11),
+        //     'email' => 'dangtanthanh213213@gmail.com',
+        //     'email_verified_at' => now(),
+        //     'password' => Hash::make('123456789'), // password
+        //     'avatar_id'  => 1
+        // ]);
         User::factory(50)->create();
+        Guest::factory(10)->create();
         StatusContact::factory(10)->create();
         Review::factory(20)->create();
         Contact::factory(20)->create();
@@ -87,11 +156,13 @@ class DatabaseSeeder extends Seeder
         Room::factory(20)->create();
         Food::factory(20)->create();
         Service::factory(20)->create();
+        Event::factory(20)->create();
         Order::factory(20)->create();
         BookingFood::factory(20)->create();
         BookingRoom::factory(20)->create();
         BookingService::factory(20)->create();
         BookingRequest::factory(20)->create();
+        BookingEvent::factory(20)->create();
         Payment::factory(20)->create();
     }
 }

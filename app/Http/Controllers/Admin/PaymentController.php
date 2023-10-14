@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Core\PaymentController as CorePaymentController;
-use App\Models\Payment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-
-use function Laravel\Prompts\select;
-
-class PaymentController extends CorePaymentController
+class PaymentController extends Controller
 {
+    private $paymentController;
+    public function __construct(CorePaymentController $paymentController)
+    {
+        $this->paymentController = $paymentController;
+    }
     public function index(Request $request)
     {
-        $query = $this->getAlls()
+        $query = $this->paymentController->getAlls()
         ->leftJoin('orders',"payments.order_id",'=','orders.id')
         ->select('payments.*','orders.slug as order_slug')
         ->when($request->has('searchByName'), function ($query) use ($request) {

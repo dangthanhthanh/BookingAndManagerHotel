@@ -14,14 +14,18 @@ class ImageController extends Controller
     {
         $this->repository = $repository;
     }
+    public function create(string $url)
+    {
+        return $this->repository->create([
+            'url' => $url,
+        ]);
+    }
     public function uploadImage($image)
     {
         $fileName = $this->generateFileName($image);
         $this->moveImageToPublicPath($image, $fileName);
         $url = $this->generateImageUrl($fileName);
-        $imageModel = $this->repository->create([
-            'url' => $url,
-        ]);
+        $imageModel = $this->create($url);
         return $imageModel->id;
     }
     private function generateFileName($file)

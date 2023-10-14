@@ -7,13 +7,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class CashController extends PaymentController
+class CashController extends Controller
 {
+    private $paymentController;
+    public function __construct(PaymentController $paymentController){
+        $this->paymentController = $paymentController;
+    }
     public function initializationPaymentWithCash($orderId)
     {
         try {
             DB::beginTransaction();
-                $this->create($orderId,1,1);//(orderId,status_unpaid,method_Cash);
+                $this->paymentController->create($orderId,1,1);//(orderId,status_unpaid,method_Cash);
             DB::commit();
             return redirect()->route('order.show',$orderId)->with('messenger', 1);
         } catch (\Throwable $th) {
@@ -25,8 +29,8 @@ class CashController extends PaymentController
     public function handleSuccessPayment($paymentId)
     {
         try {
-            $orderId = $this->getBySlug($paymentId)->order_id;
-            $this->create($orderId,3,1);//(orderId,status_success,method_vnpay);
+            $orderId = $this->paymentController->getBySlug($paymentId)->order_id;
+            $this->paymentController->create($orderId,3,1);//(orderId,status_success,method_vnpay);
             return redirect()->route('order.show', $orderId)->with('messenger', 1);
         } catch (\Throwable $th) {
             Log::info('error in cash payment'.$th);
@@ -37,8 +41,8 @@ class CashController extends PaymentController
     public function handleFailedPayment($paymentId)
     {
         try {
-            $orderId = $this->getBySlug($paymentId)->order_id;
-            $this->create($orderId,2,1);//(orderId,status_failed,method_vnpay);
+            $orderId = $this->paymentController->getBySlug($paymentId)->order_id;
+            $this->paymentController->create($orderId,2,1);//(orderId,status_failed,method_vnpay);
             return redirect()->route('order.show', $orderId)->with('messenger', 0);
         } catch (\Throwable $th) {
             Log::info('error in cash payment'.$th);

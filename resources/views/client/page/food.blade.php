@@ -74,6 +74,9 @@
 
             <!-- Details Content -->
             <div class="col-xl-5 col-lg-6 {{$contentOrder}}">
+				<div class="details_title">
+					{{ucfirst($item->name)}}
+				</div>
                 <div class="details_content">
                     {!! $item->description !!}
                 </div>

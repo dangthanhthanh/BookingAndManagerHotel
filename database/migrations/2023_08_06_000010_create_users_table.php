@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('cccd')->unique()->nullable();
             $table->string('phone')->unique()->nullable();
             $table->dateTime('email_verified_at')->nullable();
+            $table->string('email_verified_token')->nullable();
             $table->string('address')->nullable();
             $table->tinyInteger('active')->default(1);
             $table->string('remember_token')->nullable();

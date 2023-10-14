@@ -10,7 +10,7 @@
 		<div class="owl-carousel owl-theme home_slider">
 			<!-- Slide -->
 			<div class="slide">
-				<div class="background_image" style='background-image:url("{{asset('client/images/index_1.jpg')}}")'></div>
+				<div class="background_image" style='background-image:url("{{$gallerys[1]->image->url}}")'></div>
 				<div class="home_container">
 					<div class="container">
 						<div class="row">
@@ -27,14 +27,14 @@
 
 			<!-- Slide -->
 			<div class="slide">
-				<div class="background_image" style='background-image:url("{{asset('client/images/index_1.jpg')}}")'></div>
+				<div class="background_image" style='background-image:url("{{$gallerys[2]->image->url}}")'></div>
 				<div class="home_container">
 					<div class="container">
 						<div class="row">
 							<div class="col">
 								<div class="home_content text-center">
-									<div class="home_title">A Luxury Stay</div>
-									@include("client.component.bookingform")
+									<div class="home_title">A Family Stay</div>
+									{{-- @include("client.component.bookingform") --}}
 								</div>
 							</div>
 						</div>
@@ -44,14 +44,14 @@
 
 			<!-- Slide -->
 			<div class="slide">
-				<div class="background_image" style='background-image:url("{{asset('client/images/index_1.jpg')}}")'></div>
+				<div class="background_image" style='background-image:url("{{$gallerys[3]->image->url}}")'></div>
 				<div class="home_container">
 					<div class="container">
 						<div class="row">
 							<div class="col">
 								<div class="home_content text-center">
-									<div class="home_title">A Luxury Stay</div>
-									@include("client.component.bookingform")
+									<div class="home_title">A Paradise Stay</div>
+									{{-- @include("client.component.bookingform") --}}
 								</div>
 							</div>
 						</div>
@@ -62,7 +62,7 @@
 		</div>
 		
 		<!-- Home Slider Dots -->
-		<div class="home_slider_dots_container">
+		{{-- <div class="home_slider_dots_container">
 			<div class="home_slider_dots">
 				<ul id="home_slider_custom_dots" class="home_slider_custom_dots d-flex flex-row align-items-start justify-content-start">
 					<li class="home_slider_custom_dot active">01.</li>
@@ -70,7 +70,7 @@
 					<li class="home_slider_custom_dot">03.</li>
 				</ul>
 			</div>
-		</div>
+		</div> --}}
 		
 	</div>
 </div>
@@ -134,6 +134,91 @@
 	</div>
 </div>
 
+<!-- Booking -->
+<div class="booking">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<div class="booking_title text-center"><h2>Room</h2></div>
+				<div class="booking_text text-center">
+					<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugiat facere tenetur sequi iusto doloribus eveniet aliquam nihil, explicabo id consequuntur omnis voluptatibus enim praesentium nulla hic officiis illo voluptas non?</p>
+				</div>
+				<div class="booking_slider_container">
+					<div class="owl-carousel owl-theme booking_slider">
+						@foreach ($roomCategorys as $item)
+						<div class="booking_item">
+							<div class="background_image" style='background-image:url("{{$item->image->url}}")'></div>
+							<div class="booking_overlay trans_200"></div>
+							<div class="booking_price">{{number_format($item->cost)}}</div>
+							<div class="booking_link d-flex">
+								<a style="width: 50%;" href="{{route('client.room.detail',$item->slug)}}">Read More</a>
+								<span style="background: white; height:100%; width:4px;"></span>
+								<a style="width: 50%;" href="add_to_cart">Book Now</a>
+							</div>
+						</div>
+						@endforeach
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="booking" style="background-color: rgba(214, 214, 214, 0.4)">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<div class="booking_title text-center"><h2>Food</h2></div>
+				<div class="booking_text text-center">
+					<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugiat facere tenetur sequi iusto doloribus eveniet aliquam nihil, explicabo id consequuntur omnis voluptatibus enim praesentium nulla hic officiis illo voluptas non?</p>
+				</div>
+				<div class="booking_slider_container">
+					<div class="owl-carousel owl-theme booking_slider">
+							@foreach ($foods as $item)
+							<div class="booking_item">
+								<div class="background_image" style='background-image:url("{{$item->image->url}}")'></div>
+								<div class="booking_overlay trans_200"></div>
+								<div class="booking_price">{{number_format($item->cost)}}</div>
+								<div class="booking_link d-flex">
+									<a style="width: 50%;" href="{{route('client.food.detail',$item->slug)}}">Read More</a>
+									<span style="background: white; height:100%; width:4px;"></span>
+									<a style="width: 50%;" href="{{route('client.food.detail',$item->slug)}}">Add To Cart</a>
+								</div>
+							</div>
+							@endforeach
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="booking">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<div class="booking_title text-center"><h2>Service</h2></div>
+				<div class="booking_text text-center">
+					<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugiat facere tenetur sequi iusto doloribus eveniet aliquam nihil, explicabo id consequuntur omnis voluptatibus enim praesentium nulla hic officiis illo voluptas non?</p>
+				</div>
+				<div class="booking_slider_container">
+					<div class="owl-carousel owl-theme booking_slider">
+						@foreach ($services as $item)
+						<div class="booking_item">
+							<div class="background_image" style='background-image:url("{{$item->image->url}}")'></div>
+							<div class="booking_overlay trans_200"></div>
+							<div class="booking_price">{{number_format($item->cost)}}</div>
+							<div class="booking_link d-flex">
+								<a style="width: 50%;" href="{{route('client.service.detail',$item->slug)}}">Read More</a>
+								<span style="background: white; height:100%; width:4px;"></span>
+								<a style="width: 50%;" href="{{route('client.service.detail',$item->slug)}}">Add To Cart</a>
+							</div>
+						</div>
+						@endforeach
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <!-- About -->
 
 <div class="about">
@@ -196,31 +281,7 @@
 		</div>
 	</div>
 </div>
-<!-- Booking -->
-<div class="booking">
-	<div class="container">
-		<div class="row">
-			<div class="col">
-				<div class="booking_title text-center"><h2>Book a room</h2></div>
-				<div class="booking_text text-center">
-					<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugiat facere tenetur sequi iusto doloribus eveniet aliquam nihil, explicabo id consequuntur omnis voluptatibus enim praesentium nulla hic officiis illo voluptas non?</p>
-				</div>
-				<div class="booking_slider_container">
-					<div class="owl-carousel owl-theme booking_slider">
-							@foreach ($roomCategorys as $item)
-							<div class="booking_item">
-								<div class="background_image" style='background-image:url("{{$item->image->url}}")'></div>
-								<div class="booking_overlay trans_200"></div>
-								<div class="booking_price">{{number_format($item->cost)}}</div>
-								<div class="booking_link"><a href="booking a room type">{{$item->name}}</a></div>
-							</div>
-							@endforeach
-						</div>
-					</div>
-			</div>
-		</div>
-	</div>
-</div>
+
 <div class="blog">
 	<!-- Blog Slider -->
 	<div class="blog_slider_container">

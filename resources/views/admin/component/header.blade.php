@@ -29,7 +29,7 @@
             <li class="dropdown-header">
               You have {{$notify}} new notifications
                 <p>in the {{$time}} hours since the most recent access time</p>
-                <a href="{{route('admin.dashboard')}}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                <a href="{{route('manager.dashboard')}}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -81,7 +81,7 @@
               <hr class="dropdown-divider">
             </li>
             <li class="dropdown-footer">
-              <a href="{{route('admin.dashboard')}}">Show all notifications</a>
+              <a href="{{route('manager.dashboard')}}">Show all notifications</a>
             </li>
 
           </ul><!-- End Notification Dropdown Items -->

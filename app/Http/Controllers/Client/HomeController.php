@@ -9,6 +9,7 @@ use App\Http\Controllers\Core\GalleryController;
 use App\Http\Controllers\Core\ReviewController;
 use App\Http\Controllers\Core\RoomCategoryController;
 use App\Http\Controllers\Core\ServiceController;
+use Jenssegers\Agent\Facades\Agent;
 
 class HomeController extends Controller
 {
@@ -40,13 +41,13 @@ class HomeController extends Controller
             ->limit(20)
             ->get();
 
-        $blogs = $this->roomCategoryController->getAlls()
+        $blogs = $this->blogController->getAlls()
             ->orderByDesc('created_at')
             ->where('active', true)
             ->limit(10)
             ->get();
 
-        $roomCategorys = $this->blogController->getAlls()
+        $roomCategorys = $this->roomCategoryController->getAlls()
             ->orderByDesc('id')
             ->where('active', true)
             ->get();
@@ -67,7 +68,7 @@ class HomeController extends Controller
             ->orderByDesc('id')
             ->limit(20)
             ->get();
-
+       
         return view("home",compact("gallerys","roomCategorys","reviews","blogs",'gallerys','foods','services'));
     }
 }

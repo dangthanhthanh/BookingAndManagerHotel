@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Admin\Account;
 
 use App\Http\Controllers\Core\UserController;
-use App\Models\Role;
-use App\Models\RoleList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

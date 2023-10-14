@@ -14,20 +14,22 @@ class ResetPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $url;
+    public $url;
+    public $subject;
     /**
      * Create a new message instance.
      */
-    public function __construct(string $url)
+    public function __construct(string $url, string $subject)
     {
         $this->url = $url;
+        $this->subject = $subject;
     }
 
     public function build()
     {
         Log::info("Email sent to: test_build reset password ok");
-        return $this->subject('Password Reset')
-                    ->view("emails.pages.resetPassWord")
+        return $this->subject($this->subject)
+                    ->view("email.pages.resetPassWord")
                     ->with(['url' => $this->url]);
     }
 }
