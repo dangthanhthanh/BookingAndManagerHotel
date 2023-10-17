@@ -4,17 +4,15 @@ namespace App\Http\Controllers\Core;
 
 use App\Contracts\BookingRoomInterface;
 use App\Http\Controllers\Controller;
-use App\Models\Order;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Core\RoomController;
 
 class BookingRoomController extends Controller
 {
     private $repository;
     private $roomController;
     public function __construct(
-                                BookingRoomInterface $repository,
-                                RoomController $roomController)
+        BookingRoomInterface $repository,
+        RoomController $roomController)
     {
         $this->repository = $repository;
         $this->roomController = $roomController;
@@ -27,7 +25,7 @@ class BookingRoomController extends Controller
     {
         return $this->repository->getBySlug($slug);
     }
-    public function create(string $orderId, string $roomId, string $roomStatusId, $checkIn, $checkOut, $manyPer, $cost, $ratio, $request=null, $note = null)
+    public function create(string $orderId, $roomId, string $roomStatusId, $checkIn, $checkOut, $manyPer, $cost, $ratio, $request=null, $note = null)
     {
         if($this->isAvailable($roomId, $checkIn, $checkOut)){
             $data = [

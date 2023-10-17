@@ -14,6 +14,7 @@ use App\Http\Controllers\Client\RoomController as ClientRoomController;
 use App\Http\Controllers\Client\ServiceController as ClientServiceController;
 
 Route::prefix('/client')->group(function () {
+
     Route::prefix('/room')->group(function () {
         Route::get('/post/{keyword?}', [ClientRoomController::class,'index'])->name("client.room.index"); //khoi chay cho category
         Route::get('/detail/{slug}', [ClientRoomController::class,'detail'])->name("client.room.detail");
@@ -50,8 +51,10 @@ Route::prefix('/client')->group(function () {
         Route::post('/store', [NewsletterEmailController::class,'create'])->name("client.newsemail.store");
         Route::get('/verificated', [NewsletterEmailController::class,'verificated'])->name("client.newsemail.verification");
     });
+
+    // guest
     Route::prefix('/booking/room')
-        ->middleware('customer')
+        ->middleware('role:customer')
         ->group(function () {
         Route::get('/form', [ClientBookingRoomController::class,'index'])->name("client.booking.room.index");
         Route::post('/request/create', [ClientBookingRoomController::class,'createRequest'])->name("client.booking.room.create.request");
@@ -59,7 +62,7 @@ Route::prefix('/client')->group(function () {
     });
 
     Route::prefix('/payment')
-        // ->middleware('customer')
+        ->middleware('role:customer')
         ->group(function () {
         Route::get('/checkout', [ClientPaymentController::class,'index'])->name("client.payment.checkout.index");
         Route::post('/vnpay', [ClientPaymentController::class,'vnpay'])->name("client.payment.vnpay");
@@ -67,7 +70,7 @@ Route::prefix('/client')->group(function () {
     });
     
     Route::prefix('/account')
-        // ->middleware('customer')
+        ->middleware('role:customer')
         ->group(function () {
         Route::get('/', [AuthController::class,'index'])->name("auth.account.index");
         Route::post('/update', [AuthController::class,'update'])->name("auth.account.update");

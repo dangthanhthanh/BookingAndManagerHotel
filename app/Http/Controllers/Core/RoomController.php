@@ -31,7 +31,7 @@ class RoomController extends Controller
         }
         return $this->getAlls()->whereIn('rooms.id',$rooms);
     }
-    public function getById(string $id)
+    public function getById($id)
     {
         return $this->repository->getById($id);
     }

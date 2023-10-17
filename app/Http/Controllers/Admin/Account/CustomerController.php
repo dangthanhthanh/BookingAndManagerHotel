@@ -10,6 +10,8 @@ class CustomerController extends UserController
 {
     public function index(Request $request)
     {   
+        $this->middleware('role:admin,manager');
+
         $query = $this->getAllCustomer()
             ->leftJoin('images', 'users.avatar_id', '=', 'images.id')
             ->select('users.*', 'images.url as avatar_url')
@@ -28,12 +30,16 @@ class CustomerController extends UserController
 
     public function show(string $slug)
     {
+        $this->middleware('role:admin,manager');
+
         $data = $this->getBySlug($slug);
         return view('admin.page.account.customer.detail', compact('data'));
     }
 
     public function addToStaff(Request $request, string $slug)
     {
+        $this->middleware('role:manager');
+
         $data = $request->validate(['roles' => 'required']);
         foreach($data['roles'] as $item){
             DB::transaction(function() use($slug, $item){

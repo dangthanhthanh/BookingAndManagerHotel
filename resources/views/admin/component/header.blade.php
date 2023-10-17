@@ -20,7 +20,7 @@
         @auth
         <li class="nav-item dropdown">
 
-          <a class="nav-link nav-icon" href="/" data-bs-toggle="dropdown">
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell"></i>
             <span class="badge bg-primary badge-number">{{$notify}}</span>
           </a><!-- End Notification Icon -->
@@ -43,40 +43,6 @@
                 <p>in the {{$time}} hours since the most recent access time</p>
               </div>
             </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-circle text-success"></i>
-              <div>
-                <h4>From Orther Administration</h4>
-                <p>You have {{$notify}} new messenger</p>
-                <p>in the {{$time}} hours since the most recent access time</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-circle text-success"></i>
-              <div>
-                <h4>From System</h4>
-                <p>You have {{$notify}} new notification</p>
-                <p>in the {{$time}} hours since the most recent access time</p>
-                {{-- //he thong thong bao co bao nhieu don hang, 
-                  luoc truy cap, 
-                  so luong account duoc tao moi, 
-                  so luong account bi huy dang cho su ly,
-                  so luong don hang duoc tao,
-                  so luong don hang bi huy tren he thong,
-                  so luong don hang bi huy khi giao hang,
-                   --}}
-              </div>
-            </li>
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -88,18 +54,29 @@
 
         </li><!-- End Notification Nav -->
 
-        <li class="nav-item dropdown px-5">
-          <a id="dropdown" class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            @if ( isset(Auth::user()->avatar->url) )
-            <img width="50px" src="{{Auth::user()->avatar->url}}" class="rounded-circle" alt="avatar">
+        <li class="nav-item dropdown px-2">
+          <a id="dropdownAccount" class="nav-link d-flex align-items-center justify-content-center" href="#" role="button" data-bs-toggle="dropdown">
+            @if (isset(Auth::user()->avatar->url))
+              <div 
+              style="
+                width: 50px; height: 50px; border-radius: 50%;
+                background-image:url('{{Auth::user()->avatar->url}}');
+                background-size: cover;
+                background-repeat: no-repeat;
+              "></div>
             @else
-            <img width="50px" id="image-show" src="" alt="avatar" class="rounded-circle" style="display: none">
-            <i class="fas fa-user-circle"></i>
+              <div style="width: 50px; height: 50px; border-radius: 50%;">
+                <i class="fas fa-user-circle"></i>
+              </div>
             @endif
-            {{ Auth::user()->user_name }}
-         </a>
+            <div class="px-2">
+              <strong>
+                {{ Auth::user()->user_name?? 'no name'}}
+              </strong>
+            </div>
+          </a>
           <div class="dropdown-menu" id="dropdownmenu" style="background: rgba(255, 255, 255)">
-              <a class="dropdown-item nav-link {{ request()->route()->getName() === 'my.account' ? 'bg-light':''}}" href="{{ route('staff.show',Auth::user()->id) }}">
+              <a class="dropdown-item nav-link {{ request()->route()->getName() === 'my.account' ? 'bg-light':''}}" href="{{ route('staff.show',Auth::user()->slug) }}">
                     {{ __('My Account') }}
               </a>
               <a class="dropdown-item nav-link" href="{{ route('logout') }}"

@@ -2,11 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\SendNotificationMail;
 use App\Http\Controllers\Core\NewsEmailController;
-use App\Jobs\SendEmailJob;
-use App\Jobs\SendManyMailWithManyCustom;
-use App\Jobs\SendOneMailWithManyCustom;
 use Illuminate\Http\Request;
 
 class NotificationController extends NewsEmailController

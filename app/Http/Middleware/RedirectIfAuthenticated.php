@@ -28,8 +28,6 @@ class RedirectIfAuthenticated
     }
     /**
      * Handle get router with request.
-     *
-     * 
      */
     private function redirectWithRoleUser(){
         if(Auth::user()->isCustomer()){

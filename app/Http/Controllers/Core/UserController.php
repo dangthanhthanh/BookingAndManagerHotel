@@ -27,23 +27,27 @@ class UserController extends Controller
         $this->roleController = $roleController;
         $this->imageController = $imageController;
     }
-    private function getAccountHasPermision()
+    private function getAccountHasPermision(array $role):array
     {
-        return $this->roleListController->getAlls()->pluck('staff_id')->toArray();
+        $roleId = [];
+        foreach ($role as $r){
+            $roleId[]= $this->roleController->firstOrCreate($r)->id;
+        }
+        return $this->roleListController->getAlls()->whereIn('role_id', $roleId)->pluck('user_id')->toArray() ?? [];
     }
     public function getModel()
     {
         return $this->repository->getAlls();
     }
-    protected function getAllStaffs()
+    protected function getAllStaffs(array $role = [])
     {
         return $this->repository->getAlls()
-            ->whereIn('users.id', $this->getAccountHasPermision());
+            ->whereIn('users.id', $this->getAccountHasPermision((!empty($role)) ? $role : ['manager','cashier','staff']));
     }
     protected function getAllCustomer()
     {
         return $this->repository->getAlls()
-            ->whereNotIn('users.id', $this->getAccountHasPermision());
+            ->whereIn('users.id', $this->getAccountHasPermision(['customer']));
     }
     protected function getCustomerByPhone(string $phone)
     {

@@ -22,7 +22,7 @@ class EloquentRoomRepository implements RoomInterface {
         return $this->model->where('slug', $slug)->firstOrFail();
     }
 
-    public function getById(string $id) {
+    public function getById($id) {
         Log::info('room is id = '.$id);
         return $this->model->find($id);
     }

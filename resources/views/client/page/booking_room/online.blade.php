@@ -1,10 +1,3 @@
-@php
-   	$max_date = date('Y-m-d\TH:i', strtotime('+1 year'));
-	$min_date = date('Y-m-d\TH:i', strtotime('+1 hour'));
-	$category = $roomType;
-	$request = $request->all();
-	$roomAvailable = $category->where('slug',$request['room_type'])->first()->countAvailable($request['check_in'], $request['check_out']);
-@endphp
 @extends("client.layouts.client")
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{asset('client/styles/booking.css')}}">
@@ -58,7 +51,7 @@
                             <h3>Booking Information</h3>
 							<label for="room_type"><strong>Room Type</strong><span class="text-danger">(*)</span></label>
 							<select name="room_type" id="" class="" required>
-								@foreach ($category as $item)
+								@foreach ($roomType as $item)
 									<option value="{{$item->slug}}" @selected($request['room_type'] === $item->slug) style="color: black; padding: 20px;">{{ucfirst($item->name)}}</option>
 								@endforeach
 							</select>
@@ -71,7 +64,7 @@
 								<span class="text-danger">{{ $message }}</span>
 							@enderror
 							<label for="people"><strong>Number People</strong><span class="text-danger">(*)</span></label>
-							<input type="number" placeholder="Enter Your Request" name="people" value="{{ old('people') ?? $request['person'] }}" autocomplete="people" required/>
+							<input type="number" placeholder="Enter Your Request" name="people" value="{{ old('people') ?? $request['person'] ?? 1}}" autocomplete="people" required/>
 							@error('people')
 								<span class="text-danger">{{ $message }}</span>
 							@enderror
@@ -82,14 +75,14 @@
 							@enderror
 							<label for="check_in"><strong>Check In</strong><span class="text-danger">(*)</span></label>
 							<input name="check_in" type="datetime-local" class="check_in" 
-				            min="{{$min_date}}"
+				            min="{{date($request['check_in'], strtotime('+ 20 minutes'))}}"
 							placeholder="Check in" value="{{ old('check_in') ?? $request['check_in'] }}" required>
 							@error('check_in')
 							<span class="text-danger">{{ $message }}</span>
 							@enderror
 							<label for="check_out"><strong>Check Out</strong><span class="text-danger">(*)</span></label>
 							<input name="check_out" type="datetime-local" class="check_out" 
-				            min="{{date('Y-m-d\TH:i', strtotime('+1 day'))}}"
+				            min="{{date($request['check_out'], strtotime('+ 20 minutes'))}}"
 							placeholder="Check out" value="{{ old('check_out') ?? $request['check_out'] }}" required>
 							@error('check_out')
 								<span class="text-danger">{{ $message }}</span>

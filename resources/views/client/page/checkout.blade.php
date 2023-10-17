@@ -71,13 +71,13 @@
                     </tfoot>
                 </table>
                 <div class="d-flex">
-                    <form class="d-block" action="{{ route("client.payment.vnpay") }}" method="post">
+                    <form class="d-block" action="{{ route("client.payment.vnpay", ['order' => $order->slug])}}" method="post">
                         @csrf
-                        <input type="hidden" name="{{md5('totalBalance')}}" value = "{{md5($totalBalance)}}">
+                        <input type="hidden" name="{{md5('totalBalance')}}" value = "{{$totalBalance}}">
                         <input type="hidden" name="{{md5('order_slug')}}" value = "{{md5($order->slug)}}">
-                        <button class="button" type="submit" name="{{md5('percent')}}" value="{{ md5(0.2)}}" >Payment 20% <span class="btn-info p-2">{{number_format($totalBalance*0.2)}}</span></button>
-                        <button class="button" type="submit" name="{{md5('percent')}}" value="{{ md5(0.5)}}" >Payment 50% <span class="btn-info p-2">{{number_format($totalBalance*0.5)}}</span></button>
-                        <button class="button" type="submit" name="{{md5('percent')}}" value="{{ md5(1)}}" >Payment 100% <span class="btn-info p-2">{{number_format($totalBalance)}}</span></button>
+                        <button class="button" type="submit" name="{{md5('percent')}}" value="0.2" >Payment 20% <span class="btn-info p-2">{{number_format($totalBalance*0.2)}}</span></button>
+                        <button class="button" type="submit" name="{{md5('percent')}}" value="0.5" >Payment 50% <span class="btn-info p-2">{{number_format($totalBalance*0.5)}}</span></button>
+                        <button class="button" type="submit" name="{{md5('percent')}}" value="1" >Payment 100% <span class="btn-info p-2">{{number_format($totalBalance)}}</span></button>
                     </form> 
                 </div>
             </div>

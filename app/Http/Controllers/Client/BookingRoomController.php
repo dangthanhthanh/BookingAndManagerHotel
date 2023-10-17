@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Contracts\BookingRoomInterface;
 use App\Http\Controllers\Core\BookingRequestController;
 use App\Http\Controllers\Core\BookingRoomController as CoreBookingRoomController;
 use App\Http\Controllers\Core\OrderController;
 use App\Http\Controllers\Core\PaymentController;
 use App\Http\Controllers\Core\RoomCategoryController;
+use App\Http\Controllers\Core\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,14 +25,16 @@ class BookingRoomController extends CoreBookingRoomController
 
 
     public function __construct(
+        BookingRoomInterface $bookingRoomInterface,
+        RoomController $roomController,
         BookingRequestController $bookingRequestController,
         OrderController $orderController,
         PaymentController $paymentController,
         RoomCategoryController $roomCategoryController,
         ) 
     {
-        $this -> middleware('guest');
-        $this -> middleware('role:customer,staff');
+        parent::__construct($bookingRoomInterface, $roomController);
+        
         $this -> bookingRequestController = $bookingRequestController;
         $this -> orderController = $orderController;
         $this -> paymentController = $paymentController;
@@ -40,7 +44,15 @@ class BookingRoomController extends CoreBookingRoomController
     public function index(Request $request){
         $roomType = $this->roomCategoryController->getAlls()->get();
         if($request->online === '1'){
-            return view("client.page.booking_room.online",compact('request','roomType'));
+            $request = $request -> all();
+            if(!isset($request['check_in'])){
+                $request['check_in'] = now()->addHours(1);
+            };
+            if(!isset($request['check_out'])){
+                $request['check_out'] = now()->addDays(1)->addHours(1);
+            };
+            $roomAvailable = $this->roomCategoryController->getAlls()->where('slug',$request['room_type'])->first()->countAvailable($request['check_in'], $request['check_out']);
+            return view("client.page.booking_room.online",compact('request','roomType','roomAvailable'));
         }
         return view("client.page.booking_room.counselors",compact('request'));
     }
@@ -102,14 +114,14 @@ class BookingRoomController extends CoreBookingRoomController
     private function createdBookingRoomData($data, $order){
         $roomCategory = $this->roomCategoryController->getBySlug($data['room_type']);
         $availableRoom = $roomCategory->availableRooms($data['check_in'], $data['check_out']);
-        if($availableRoom->count() >= $data['room']){
+        if(count($availableRoom) >= $data['room']){
             return $this -> loopCreateBookingRoomData($data, $availableRoom, $order);
         }
         return false;
     }
     private function loopCreateBookingRoomData($data, $availableRoom, $order){
         $loop = 0;
-        $max_loop = $availableRoom->count();
+        $max_loop = count($availableRoom);
         
         while($loop < $max_loop){
             $this->createdItemBookingRoomData($data, $availableRoom[$loop], $order->id);
@@ -136,7 +148,7 @@ class BookingRoomController extends CoreBookingRoomController
                     $this->ratioDefault, 
                     null,
                     null
-                );;
+                );
             }
         );
     }

@@ -9,7 +9,7 @@ use App\Http\Controllers\Pos\RoomController as PosRoomController;
 use App\Http\Controllers\Pos\ServiceController as PosServiceController;
 
 Route::prefix('/pos')
-    ->middleware('cashier')
+    ->middleware('role:cashier')
     ->group(function () {
     Route::get('/food', [PosFoodController::class,'index'])->name("pos.food.index");
     Route::get('/room', [PosRoomController::class,'index'])->name("pos.room.index");

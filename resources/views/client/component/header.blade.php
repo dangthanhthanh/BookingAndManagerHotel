@@ -49,12 +49,24 @@
                         {{ ucfirst(Auth::user()->user_name) }}
                      </a>
                      <div class="dropdown-menu" id="dropdownmenu" style="background: rgba(0,0,0,0.7)">
-                        <a class="dropdown-item nav-link {{ request()->route()->getName() === 'auth.account.index' ? 'bg-light text-dark':''}}" href="{{ route('auth.account.index') }}">
-                              {{ __('Account') }}
-                        </a>
-                        <a class="dropdown-item nav-link {{ request()->route()->getName() === 'auth.account.cart' ? 'bg-light text-dark':''}}" href="{{ route('auth.account.cart') }}">
-                           {{ __('My Cart') }}
-                        </a>
+                        @if (Auth::user()->isCustomer())
+                           <a class="dropdown-item nav-link {{ request()->route()->getName() === 'auth.account.index' ? 'bg-light text-dark':''}}" href="{{ route('auth.account.index') }}">
+                                 {{ __('Account') }}
+                           </a>
+                           <a class="dropdown-item nav-link {{ request()->route()->getName() === 'auth.account.cart' ? 'bg-light text-dark':''}}" href="{{ route('auth.account.cart') }}">
+                              {{ __('My Cart') }}
+                           </a>
+                        @endif
+                        @if (Auth::user()->isAdmin())
+                           <a class="dropdown-item nav-link" href="{{ route('manager.dashboard') }}">
+                              {{ __('Access Admin') }}
+                           </a>
+                        @endif
+                        @if (Auth::user()->isManager())
+                           <a class="dropdown-item nav-link" href="{{ route('manager.dashboard') }}">
+                              {{ __('Access Manager') }}
+                           </a>
+                        @endif
                         <a class="dropdown-item nav-link" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                            Swal.showLoading();

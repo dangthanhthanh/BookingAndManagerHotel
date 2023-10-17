@@ -30,7 +30,7 @@ use App\Http\Controllers\Admin\Product\RoomCategoryController;
 use App\Http\Controllers\Admin\ReviewController;
 
 Route::prefix('/manager')
-    ->middleware('manager')
+    ->middleware('role:admin,manager')
     ->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('manager.dashboard');
 

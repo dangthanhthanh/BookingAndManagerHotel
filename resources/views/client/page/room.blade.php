@@ -69,7 +69,8 @@
 								</div>
 								<div class="d-flex">
 									<div class="button blog_post_button"><a href="{{route('client.room.detail',$item->slug)}}">Read More</a></div>
-									<div class="button blog_post_button"><a href="add to cart">Add To Cart</a></div>
+									<div class="button blog_post_button"><a href="{{route('client.booking.room.index',['room_type' => $item->slug , 'online' => '1'])}}">book online</a></div>
+									<div class="button blog_post_button"><a href="{{route('client.booking.room.index',['room_type' => $item->slug])}}">send counselor</a></div>
 								</div>
 							</div>
 						</div>

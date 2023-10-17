@@ -42,13 +42,20 @@ class RoomCategory extends Model
     }
 
     public function availableRooms($start, $end){
-        return $this->room()->get()->filter(function ($room) use ($start, $end) {
-            return $room->isAvailable($start, $end);
-        });
+        $data = [];
+        $room = $this->room()->get();
+        if(!empty($room)){
+            foreach($room as $r){
+                if($r->isAvailable($start, $end)){
+                    $data[] = $r;
+                }
+            }
+        }
+        return $data;
     }
     public function countAvailable($start, $end)
     {
-        return $this->availableRooms($start, $end)->count();
+        return count($this->availableRooms($start,$end));
     }
     // Define Slug configuration
     public function getSlugOptions(): SlugOptions

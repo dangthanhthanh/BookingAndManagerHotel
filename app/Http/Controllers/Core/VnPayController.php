@@ -9,37 +9,34 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
+use function PHPUnit\Framework\throwException;
+
 class VnPayController extends Controller
 {
     private $paymentController;
-    public function __construct(PaymentController $paymentController){
+    public function __construct(
+        PaymentController $paymentController,
+        OrderController $orderController,
+    )
+    {
         $this->paymentController = $paymentController;
     }
-    public function initializationPaymentWithVnpay($method, $orderId, $totalBalance)
+    public function initializationPaymentWithVnpay($method, $order, $totalBalance)
     {
         if (in_array($method, ['vnpay_atm', 'vnpay_creditcard'])) {
             try {
                 DB::beginTransaction();
-                    $payment = $this->paymentController->create($orderId,1,2);//(orderId,status_unpaid,method_Vnpay);
-                DB::commit();
+                $payment = $this->paymentController->create($order->id,1,2);//(orderId,status_unpaid,method_Vnpay);
                 $vnp_Url = $this->urlVnPay($payment->slug, $totalBalance, $method);
+                DB::commit();
                 return Redirect::to($vnp_Url);
             } catch (\Throwable $th) {
                 DB::rollBack();
                 Log::info('error when initializationPaymentWithVnpay');
             }
         }
-        return redirect()->route('order.show',$orderId)->with('messenger', 0);//error form
+        return redirect()->route('client.payment.checkout.index',['orderSlug' => $order->lug])->with('messenger', 0);//error form
     }
-    public function callbackVnpay(Request $request)
-    {
-        Log::info('callbackVnpay function with vnp_ResponseCode = '.$request->get('vnp_ResponseCode'));
-        if ($request->get('vnp_ResponseCode') === '00') {
-            return $this->handleSuccessPayment($request->get('vnp_TxnRef'));
-        }
-        return $this->handleFailedPayment($request->get('vnp_TxnRef'));
-    }
-
     private function urlVnPay($paymentId, $totalBalance, $paymentMethod): string
     {
         $vnp_TxnRef = $paymentId;
@@ -75,20 +72,48 @@ class VnPayController extends Controller
         $query = http_build_query($inputData);
         $vnpSecureHash = hash_hmac('sha512', $query, config('vnpay.vnp_hashsecret'));
         $vnp_Url = config('vnpay.vnp_url') . '?' . $query . '&vnp_SecureHash=' . $vnpSecureHash;
+
         return $vnp_Url;
+    }
+    public function callbackVnpay(Request $request)
+    {
+        Log::info('callbackVnpay function with vnp_ResponseCode = '.$request->get('vnp_ResponseCode'));
+        try {
+            $paymentId = $request->get('vnp_TxnRef');
+            $isSuccess = $request->get('vnp_ResponseCode') === '00';
+
+            return $isSuccess
+                ? $this->handleSuccessPayment($paymentId)
+                : $this->handleFailedPayment($paymentId);
+
+        } catch (\Throwable $th) {
+            Log::info('error server payment ' . now());
+            return abort(500, 'server error [payment callback]');
+        }
+    }
+
+    private function handlePayment($paymentId, $status, $method)
+    {
+        $payment = $this->paymentController->getBySlug($paymentId);
+        $order = $payment->order;
+        $newPayment = $this->paymentController->create($order->id, $status, $method);
+
+        if (!$newPayment) {
+            $statusMessage = $status === 3 ? 'success' : 'false';
+            throw new \Exception("Failed to create a new payment with status $statusMessage");
+        }
+
+        $messengerValue = $status === 3 ? 1 : 0;
+        return redirect()->route('client.payment.checkout.index', ['orderSlug' => $order->slug])->with('messenger', $messengerValue);
     }
 
     private function handleSuccessPayment($paymentId)
     {
-        $orderId = $this->paymentController->getBySlug($paymentId)->order_id;
-        $this->paymentController->create($orderId,3,2);//(orderId,status_success,method_vnpay);
-        return redirect()->route('order.show', $orderId)->with('messenger', 1);
+        return $this->handlePayment($paymentId, 3, 2); // (orderId, status_success, method_vnpay);
     }
 
     private function handleFailedPayment($paymentId)
     {
-        $orderId = $this->paymentController->getBySlug($paymentId)->order_id;
-        $this->paymentController->create($orderId,2,2);//(orderId,status_error,method_vnpay);
-        return redirect()->route('order.show', $orderId)->with('messenger', 0);
+        return $this->handlePayment($paymentId, 2, 2); // (orderId, status_error, method_vnpay);
     }
 }

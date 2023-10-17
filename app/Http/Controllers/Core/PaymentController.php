@@ -30,7 +30,7 @@ class PaymentController extends Controller
     {
         return $this->repository->getByOrderId($orderId);
     }
-    public function create(string $orderId ,string $paymentStatusId = '1', string $paymentMethodId = '1')
+    public function create(string $orderId ,string $paymentStatusId, string $paymentMethodId)
     {
         $data = [
             'order_id' => $orderId,
