@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Core;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -17,35 +16,36 @@ class CashController extends Controller
     {
         try {
             DB::beginTransaction();
-                $this->paymentController->create($orderId,1,1);//(orderId,status_unpaid,method_Cash);
+            $this->createPayment($orderId, 1, 1); // (orderId, status_unpaid, method_Cash);
             DB::commit();
-            return redirect()->route('order.show',$orderId)->with('messenger', 1);
+            return redirect()->route('order.show', $orderId)->with('messenger', 1);
         } catch (\Throwable $th) {
             DB::rollBack();
-            Log::infor('error when initializationPaymentWithCash');
+            Log::error('Error when initializing payment with cash: ' . $th);
             return redirect()->back()->with('messenger', 0);
         }
     }
     public function handleSuccessPayment($paymentId)
     {
-        try {
-            $orderId = $this->paymentController->getBySlug($paymentId)->order_id;
-            $this->paymentController->create($orderId,3,1);//(orderId,status_success,method_vnpay);
-            return redirect()->route('order.show', $orderId)->with('messenger', 1);
-        } catch (\Throwable $th) {
-            Log::info('error in cash payment'.$th);
-            return redirect()->route('order.show', $orderId)->with('messenger', 0);
-        }
+        return $this->handlePayment($paymentId, 3, 1); // (orderId, status_success, method_vnpay);
     }
 
     public function handleFailedPayment($paymentId)
     {
+        return $this->handlePayment($paymentId, 2, 1); // (orderId, status_failed, method_vnpay);
+    }
+    private function createPayment($orderId, $status, $method)
+    {
+        $this->paymentController->create($orderId, $status, $method);
+    }
+    private function handlePayment($paymentId, $status, $method)
+    {
         try {
             $orderId = $this->paymentController->getBySlug($paymentId)->order_id;
-            $this->paymentController->create($orderId,2,1);//(orderId,status_failed,method_vnpay);
-            return redirect()->route('order.show', $orderId)->with('messenger', 0);
+            $this->createPayment($orderId, $status, $method);
+            return redirect()->route('order.show', $orderId)->with('messenger', 1);
         } catch (\Throwable $th) {
-            Log::info('error in cash payment'.$th);
+            Log::error('Error in payment handling: ' . $th);
             return redirect()->route('order.show', $orderId)->with('messenger', 0);
         }
     }

@@ -34,8 +34,8 @@ class PaymentController extends Controller
     {
         $data = [
             'order_id' => $orderId,
-            'payment_method_id ' => $paymentStatusId,
-            'payment_status_id ' => $paymentMethodId,
+            'payment_method_id' => $paymentStatusId,
+            'payment_status_id' => $paymentMethodId,
         ];
         return $this->repository->create($data);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
@@ -41,6 +42,11 @@ class BookingRoom extends Model
     public function room()
     {
         return $this->hasOne(Room::class, 'id', 'room_id');
+    }
+    
+    public function totalCost()
+    {
+        return $this->cost * $this->ratio * Carbon::parse($this->check_in)->diffInDays(Carbon::parse($this->check_out));
     }
 
     public function status()

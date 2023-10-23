@@ -14,7 +14,10 @@
 				<div class="col">
 					<div class="home_content text-center">
 						<div class="home_title">Services</div>
-						@include("client.component.bookingform")
+						@include("client.component.checkinform",[
+							'checkin' => $checkin,
+							'route' => route('client.service.index')
+						])
 					</div>
 				</div>
 			</div>
@@ -42,7 +45,15 @@
 								<div class="booking_price">{{number_format($item->cost)}}</div>
 								<div class="booking_link d-flex">
 									<a style="width: 50%;" href="{{route('client.service.detail',$item->slug)}}">Read More</a>
-									<a style="width: 50%;" href="add_to_cart">Add to Cart</a>
+									<a style="width: 50%;" id="add_to_cart" href="#"
+										data-id="{{$item->id}}"
+										data-checkin="{{$checkin}}"
+										data-slug="{{$item->slug}}"
+										data-name="{{$item->name}}"
+										data-image="{{$item->image->url}}"
+										data-cost="{{$item->cost}}"
+										onclick="addToCart(event)"
+									>Add to Cart</a>
 								</div>
 							</div>
 						@endforeach
@@ -85,7 +96,18 @@
     </div>
 </div>
 @endforeach
+<div class="page_nav">
+	<ul class="d-flex flex-row align-items-center justify-content-center">
+		@foreach (($services->links()["elements"][0]) as $key=>$value)
+			@php
+				$url = $value . "&check_in=" . urlencode($checkin);
+			@endphp
+			<li class="{{(request()->query('page') == $key) ? 'active' : ''}}"><a href="{{$url}}">0{{$key}}.</a></li>
+		@endforeach
+	</ul>
+</div>
 @endsection
 @section('js')
 <script src="{{asset('client/js/booking.js')}}"></script>
+@include("client.component.css_js.service")
 @endsection

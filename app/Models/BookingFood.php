@@ -36,6 +36,11 @@ class BookingFood extends Model
         return $this->belongsTo(Food::class, 'food_id');
     }
 
+    public function totalCost()
+    {
+        return $this->cost * $this->ratio * $this->qty;
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         $idHash = hash('md5', $this->order_id.$this->food_id.$this->id);

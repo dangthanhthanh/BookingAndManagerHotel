@@ -42,8 +42,8 @@ class BookingRoomController extends CoreBookingRoomController
     }
 
     public function index(Request $request){
-        $roomType = $this->roomCategoryController->getAlls()->get();
         if($request->online === '1'){
+            $roomType = $this->roomCategoryController->getAlls()->paginate(5);
             $request = $request -> all();
             if(!isset($request['check_in'])){
                 $request['check_in'] = now()->addHours(1);
@@ -58,21 +58,18 @@ class BookingRoomController extends CoreBookingRoomController
     }
 
     public function createRequest(Request $request){
-        if($this->bookingRequestController->create(Auth::user()->id ?? $this->testUserId, $request)){
-            return redirect()->route('home')->with('messenger',1);
-        };
-        return redirect()->back()->with('messenger',0);
+        return $this->bookingRequestController->create(Auth::user()->id ?? $this->testUserId, $request)
+            ?redirect()->route('home')->with('messenger',1)
+            :redirect()->back()->with('messenger',0);
     }
     public function createOrder(Request $request){
         $data = $this-> validateOrder($request);
         $orderSlug = $this -> createData($data) -> slug;
-        if ($orderSlug) {
-            return redirect()
-                ->route('client.payment.checkout.index', compact('orderSlug'))
-                ->with('messenger', '1');
-        } else {
-            return redirect()->back()->with('messenger', '0');
-        }
+        return $orderSlug
+            ?redirect()
+            ->route('auth.account.checkout', compact('orderSlug'))
+            ->with('messenger', '1')
+            :redirect()->back()->with('messenger', '0');
     }
     private function validateOrder($request){
         return $request -> validate([
@@ -106,7 +103,7 @@ class BookingRoomController extends CoreBookingRoomController
     }
     private function createdPaymentData($order_id){
         return DB::transaction(function() use($order_id){
-                return $this->paymentController->create($order_id);
+                return $this->paymentController->create($order_id ,1 ,1);
             }
         );
     }

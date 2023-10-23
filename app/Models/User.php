@@ -69,6 +69,15 @@ class User extends Authenticatable
         return $this->hasMany(RoleList::class, 'user_id');
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'customer_id');
+    }
+    public function bookingRequest()
+    {
+        return $this->hasOne(BookingRequest::class,'customer_id');
+    }
+
     public function roles()
     {
         return $this->roleLists->pluck('role_id')->toArray();

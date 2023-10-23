@@ -9,14 +9,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
-use function PHPUnit\Framework\throwException;
-
 class VnPayController extends Controller
 {
     private $paymentController;
     public function __construct(
         PaymentController $paymentController,
-        OrderController $orderController,
     )
     {
         $this->paymentController = $paymentController;
@@ -35,7 +32,7 @@ class VnPayController extends Controller
                 Log::info('error when initializationPaymentWithVnpay');
             }
         }
-        return redirect()->route('client.payment.checkout.index',['orderSlug' => $order->lug])->with('messenger', 0);//error form
+        return redirect()->route('auth.account.checkout',['orderSlug' => $order->slug])->with('messenger', 0);//error form
     }
     private function urlVnPay($paymentId, $totalBalance, $paymentMethod): string
     {
@@ -104,7 +101,7 @@ class VnPayController extends Controller
         }
 
         $messengerValue = $status === 3 ? 1 : 0;
-        return redirect()->route('client.payment.checkout.index', ['orderSlug' => $order->slug])->with('messenger', $messengerValue);
+        return redirect()->route('auth.account.checkout', ['orderSlug' => $order->slug])->with('messenger', $messengerValue);
     }
 
     private function handleSuccessPayment($paymentId)

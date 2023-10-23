@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use League\Flysystem\UrlGeneration\TemporaryUrlGenerator;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -31,6 +30,22 @@ class Order extends Model
     }
     public function bookingService(){
         return $this->hasMany(BookingService::class, 'order_id');
+    }
+    public function bookingEvent(){
+        return $this->hasMany(BookingEvent::class, 'order_id');
+    }
+    public function totalBalance(){
+        $total = 0;
+        foreach ($this->bookingRoom as $item){
+            $total += $item->totalCost();
+        };
+        foreach ($this->bookingFood as $item){
+            $total += $item->totalCost();
+        };
+        foreach ($this->bookingService as $item){
+            $total += $item->totalCost();
+        };
+        return $total;
     }
     public function customer(){
         return $this->belongsTo(User::class, 'customer_id');

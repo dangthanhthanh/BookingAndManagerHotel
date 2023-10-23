@@ -51,10 +51,13 @@
                      <div class="dropdown-menu" id="dropdownmenu" style="background: rgba(0,0,0,0.7)">
                         @if (Auth::user()->isCustomer())
                            <a class="dropdown-item nav-link {{ request()->route()->getName() === 'auth.account.index' ? 'bg-light text-dark':''}}" href="{{ route('auth.account.index') }}">
-                                 {{ __('Account') }}
+                                 {{ __('My Account') }}
                            </a>
                            <a class="dropdown-item nav-link {{ request()->route()->getName() === 'auth.account.cart' ? 'bg-light text-dark':''}}" href="{{ route('auth.account.cart') }}">
                               {{ __('My Cart') }}
+                           </a>
+                           <a class="dropdown-item nav-link {{ request()->route()->getName() === 'auth.account.checkout' ? 'bg-light text-dark':''}}" href="{{ route('auth.account.checkout') }}">
+                              {{ __('My Payment') }}
                            </a>
                         @endif
                         @if (Auth::user()->isAdmin())

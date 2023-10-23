@@ -75,14 +75,6 @@
 							</div>
 						</div>
 					@endforeach
-					<!-- Page Nav -->
-					<div class="page_nav">
-						<ul class="d-flex flex-row align-items-center justify-content-center">
-							@foreach (($rooms->links()["elements"][0]) as $key=>$value)
-								<li class="{{(request()->query('page') == $key) ? 'active' : ''}}"><a href="{{$value}}">0{{$key}}.</a></li>
-							@endforeach
-						</ul>
-					</div>
 				</div>
 			</div>
 			<!-- Sidebar -->
@@ -154,6 +146,14 @@
 
 		</div>
 	</div>
+</div>
+<!-- Page Nav -->
+<div class="page_nav">
+	<ul class="d-flex flex-row align-items-center justify-content-center">
+		@foreach (($rooms->links()["elements"][0]) as $key=>$value)
+			<li class="{{(request()->query('page') == $key) ? 'active' : ''}}"><a href="{{$value}}">0{{$key}}.</a></li>
+		@endforeach
+	</ul>
 </div>
 @endsection
 @section('js')

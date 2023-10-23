@@ -58,3 +58,46 @@ note for all[
     voi cac bai viet ........
 ] 
     
+default cach tinh gia cua booking
+    booking_room : 
+        cost = (cost cua room tai thoi diem dat phong)
+        ratio = phan tram gia theo thoi gian uu dai (default = 1.0)
+        check_in
+        check_out
+        total_cost_bookingroom = cost * ratio * (days = (check_in->diff(check_out)))
+
+    booking_food,  booking_service, ...booking_event:
+        cost = (cost cua room tai thoi diem dat phong)
+        ratio = phan tram gia theo thoi gian uu dai (default = 1.0)
+        qty = soluong
+        total cost booking = cost + ratio + qty
+
+    order_totalBalance
+        default (total balance = 0)
+        foreach (booking_room){total balance += nhu tren}
+        foreach (booking_food){total balance += nhu tren}
+        foreach (booking_service){total balance += nhu tren}
+        foreach (booking_event){total balance += nhu tren}
+
+customer_cart dung cho booking room food event phia local ;
+
+bam add_to_cart => luu 
+    table_Local[booking_food,booking_event,booking_service]
+    product_id,
+    quantity (default = 1),
+    slug,
+    url_image,
+
+page cart co cac chung nang nhu {
+    1xac nhan don hang,
+    1chon san phan de xac nhan,
+    2bam xac nhan order thi gui thong tin len local secction
+    dung secction de trao doi voi controller
+    kiem tr tinh kha dung tung san pham
+    tao order
+    tao booking
+    chuyen huong ve trang checkout va thuc hien thanh toan nhu cu (trang thanh toan)
+    {voi danh muc dich vu thi khong can thanh toan truoc don hang}
+
+}
+thieu check_in cho booking product o phia client  

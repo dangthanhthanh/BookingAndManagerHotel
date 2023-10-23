@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Core;
 
 use App\Contracts\RoomCategoryInterface;
-use App\Http\Controllers\BaseModelController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 

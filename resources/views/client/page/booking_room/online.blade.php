@@ -187,6 +187,21 @@
 		</div>
 	</div>
 @endforeach
+<!-- Page Nav -->
+<div class="page_nav m-3">
+	<ul class="d-flex flex-row align-items-center justify-content-center">
+			@php
+				$type=request()->query('room_type');
+				$online=request()->query('online');
+			@endphp
+		@foreach (($roomType->links()["elements"][0]) as $key=>$value)
+			@php
+				$url = $value."&room_type=".$type."&online=".$online;
+			@endphp
+			<li class="{{(request()->query('page') == $key) ? 'active' : ''}}"><a style="color: black" href="{{$url}}">0{{$key}}.</a></li>
+		@endforeach
+	</ul>
+</div>
 <!-- Special -->
 
 <div class="special">

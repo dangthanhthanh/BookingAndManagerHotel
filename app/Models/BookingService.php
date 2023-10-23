@@ -35,6 +35,11 @@ class BookingService extends Model
         return $this->belongsTo(Service::class, 'service_id');
     }
 
+    public function totalCost()
+    {
+        return $this->cost * $this->ratio * $this->qty;
+    }
+
     public function status()
     {
         return $this->belongsTo(RoomStatus::class, 'room_status_id');

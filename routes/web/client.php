@@ -3,17 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\NewsletterEmailController;
 use App\Http\Controllers\Client\AboutController;
-use App\Http\Controllers\Client\AuthController;
 use App\Http\Controllers\Client\BlogController as ClientBlogController;
-use App\Http\Controllers\Client\BookingRoomController as ClientBookingRoomController;
 use App\Http\Controllers\Client\ContactController as ClientContactController;
 use App\Http\Controllers\Client\EventController;
 use App\Http\Controllers\Client\FoodController as ClientFoodController;
-use App\Http\Controllers\Client\PaymentController as ClientPaymentController;
 use App\Http\Controllers\Client\RoomController as ClientRoomController;
 use App\Http\Controllers\Client\ServiceController as ClientServiceController;
 
-Route::prefix('/client')->group(function () {
+Route::prefix('/client')
+    ->group(function () {
 
     Route::prefix('/room')->group(function () {
         Route::get('/post/{keyword?}', [ClientRoomController::class,'index'])->name("client.room.index"); //khoi chay cho category
@@ -50,30 +48,5 @@ Route::prefix('/client')->group(function () {
     Route::prefix('/newsemail')->group(function () {
         Route::post('/store', [NewsletterEmailController::class,'create'])->name("client.newsemail.store");
         Route::get('/verificated', [NewsletterEmailController::class,'verificated'])->name("client.newsemail.verification");
-    });
-
-    // guest
-    Route::prefix('/booking/room')
-        ->middleware('role:customer')
-        ->group(function () {
-        Route::get('/form', [ClientBookingRoomController::class,'index'])->name("client.booking.room.index");
-        Route::post('/request/create', [ClientBookingRoomController::class,'createRequest'])->name("client.booking.room.create.request");
-        Route::post('/order/create', [ClientBookingRoomController::class,'createOrder'])->name("client.booking.room.create.order");
-    });
-
-    Route::prefix('/payment')
-        ->middleware('role:customer')
-        ->group(function () {
-        Route::get('/checkout', [ClientPaymentController::class,'index'])->name("client.payment.checkout.index");
-        Route::post('/vnpay', [ClientPaymentController::class,'vnpay'])->name("client.payment.vnpay");
-        Route::post('/destroy', [ClientPaymentController::class,'destroy_order'])->name("client.payment.destroy");
-    });
-    
-    Route::prefix('/account')
-        ->middleware('role:customer')
-        ->group(function () {
-        Route::get('/', [AuthController::class,'index'])->name("auth.account.index");
-        Route::post('/update', [AuthController::class,'update'])->name("auth.account.update");
-        Route::get('/booking', [AuthController::class,'showCart'])->name("auth.account.cart");
     });
 });

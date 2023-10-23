@@ -21,7 +21,6 @@ class BookingEvent extends Model
         'check_in',
         'cost',
         'ratio',
-        'qty',
         'note',
     ];
     public function order()
@@ -32,6 +31,11 @@ class BookingEvent extends Model
     public function event()
     {
         return $this->belongsTo(Event::class, 'event_id');
+    }
+
+    public function totalCost()
+    {
+        return $this->cost * $this->ratio;
     }
 
     public function status()
