@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Core;
 
 use App\Contracts\UserInterface;
 use App\Http\Controllers\Controller;
-use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -39,12 +38,12 @@ class UserController extends Controller
     {
         return $this->repository->getAlls();
     }
-    protected function getAllStaffs(array $role = [])
+    public function getAllStaffs(array $role = [])
     {
         return $this->repository->getAlls()
             ->whereIn('users.id', $this->getAccountHasPermision((!empty($role)) ? $role : ['manager','cashier','staff']));
     }
-    protected function getAllCustomer()
+    public function getAllCustomer()
     {
         return $this->repository->getAlls()
             ->whereIn('users.id', $this->getAccountHasPermision(['customer']));

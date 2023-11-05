@@ -100,4 +100,14 @@ page cart co cac chung nang nhu {
     {voi danh muc dich vu thi khong can thanh toan truoc don hang}
 
 }
-thieu check_in cho booking product o phia client  
+
+=> created new element in database(
+    6(if true)=> created new table ('element_category'){
+        turn back to 1 step (with 'element_category);
+    }
+    1created new table('element') in database , custom model , custom factory
+    2created new repository (interact with the model)
+    3created new coreController for element (interact with the repository)
+    4created new controller into [manager,staff,pos,client](interact with the CoreController)
+    5=>custom view,report,dashboard,... 
+)

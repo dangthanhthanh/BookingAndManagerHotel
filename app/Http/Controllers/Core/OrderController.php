@@ -12,7 +12,7 @@ class OrderController extends Controller
     {
         $this -> repository = $repository;
     }
-    protected function getAlls()
+    public function getAlls()
     {
         return $this->repository->getAlls();
     }

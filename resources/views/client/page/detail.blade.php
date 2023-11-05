@@ -30,7 +30,7 @@
 					</div>
 				@endif
 				<div class="book_button">
-					<a href="javascript:window.location='{{ URL::previous() }}'">Return Back</a>
+					<a href="javascript:history.back();" >Turn Back</a>
 				</div>
 			</div>
 		</div>
